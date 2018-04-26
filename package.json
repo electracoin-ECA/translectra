@@ -10,7 +10,10 @@
   },
   "scripts": {
     "start": "node build/index.js",
-    "test": "mocha 'src/**/*.spec.ts'"
+    "test": "mocha 'src/**/*.spec.ts'",
+    "watch": "concurrently 'npm run watch:build' 'npm run watch:start'",
+    "watch:build": "webpack --config webpack.dev.js --watch",
+    "watch:start": "nodemon --config nodemon.json build/index.js"
   },
   "dependencies": {
     "clean-webpack-plugin": "^0.1.19",
