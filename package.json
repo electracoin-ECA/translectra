@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.prod.js",
+    "prestart": "npm run build",
     "start": "node build/index.js",
     "start:dev": "npm run watch",
     "test": "mocha 'src/**/*.spec.ts'",
