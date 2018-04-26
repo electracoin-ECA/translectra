@@ -9,6 +9,7 @@
     "npm": "5.8.0"
   },
   "scripts": {
+    "build": "webpack --config webpack.prod.js",
     "start": "node build/index.js",
     "start:dev": "npm run watch",
     "test": "mocha 'src/**/*.spec.ts'",
