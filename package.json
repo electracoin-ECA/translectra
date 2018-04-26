@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Electra-project/translectra#readme",
   "dependencies": {
+    "dotenv": "^5.0.1",
     "lexpress": "^0.37.0",
     "mongoose": "^5.0.16",
     "webpack": "^4.6.0",
