@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/Electra-project/translectra/issues"
   },
-  "homepage": "https://github.com/Electra-project/translectra#readme"
+  "homepage": "https://github.com/Electra-project/translectra#readme",
+  "dependencies": {
+    "lexpress": "^0.37.0"
+  }
 }
