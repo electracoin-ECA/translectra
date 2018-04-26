@@ -9,6 +9,7 @@
     "npm": "5.8.0"
   },
   "scripts": {
+    "start": "node build/index.js",
     "test": "mocha 'src/**/*.spec.ts'"
   },
   "dependencies": {
