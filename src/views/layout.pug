@@ -1,0 +1,9 @@
+extends base.pug
+
+block body
+  include partials/navbar.pug
+
+  div(class='container')
+    div(class='row')
+      main(role='main' class='pt-3 px-4')
+        block content
