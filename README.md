@@ -33,14 +33,6 @@ Translectra is quite easy to deploy and just require environment variables to be
 
 That's it ! It should automatically build and deploy now ;)
 
-### Start developing
-
-Once you're all set up, you can start coding:
-
-    npm run start:dev
-
-will automatically start a "live" watch compiling the backend & frontend JS code (in `build` folder) on file changes.
-
 ## Contribute
 
 ### Getting Started
