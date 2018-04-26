@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "node build/index.js",
+    "start:dev": "npm run watch",
     "test": "mocha 'src/**/*.spec.ts'",
     "watch": "concurrently 'npm run watch:build' 'npm run watch:start'",
     "watch:build": "webpack --config webpack.dev.js --watch",
