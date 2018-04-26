@@ -12,6 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "clean-webpack-plugin": "^0.1.19",
     "dotenv": "^5.0.1",
     "lexpress": "^0.37.0",
     "moment": "^2.22.1",
