@@ -1,2 +1,12 @@
 nav(class='navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0')
   a(class='navbar-brand col-md-3 mr-0' href='/') #{websiteName}
+  if me
+    ul(class='navbar-nav px-3')
+      li(class='nav-item text-nowrap')
+        a(class='nav-link' href='/auth/logout' aria-label='Log out') Log Out
+  else
+    ul(class='navbar-nav px-3')
+      li(class='nav-item text-nowrap')
+        a(class='nav-link' href='/auth/login' aria-label='Log in with Google') Log In with Google
+          svg(class='icon')
+            use(xlink:href='/sprites/open-iconic.svg#account-login')
