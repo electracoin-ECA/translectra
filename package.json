@@ -22,6 +22,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
+    "concurrently": "^3.5.1",
     "nodemon": "^1.17.3"
   },
   "repository": {
