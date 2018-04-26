@@ -1,0 +1,25 @@
+{
+  "name": "translectra",
+  "version": "0.0.0",
+  "description": "Open-source Translation Management System.",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Electra-project/translectra.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Electra Project",
+    "email": "dev@electraproject.org",
+    "url": "https://electraproject.org"
+  },
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/Electra-project/translectra/issues"
+  },
+  "homepage": "https://github.com/Electra-project/translectra#readme"
+}
