@@ -17,11 +17,11 @@ Translectra is quite easy to deploy and just require environment variables to be
 1. Create your heroku app in the dashboard or via the Heroku Toolbelt.<br>
 2. Add a MongoDB add-on, **mLab MongoDB** for example.<br>
 3. Set up the required Config Variables:
-    - **BASE_URL**: your translation website URL.
     - **MONGODB_URL**: your MongoDB URL.<br>
       _It will be added automatically if you use mLab MongoDB._
     - **SESSION_SECRET**: a randomly generated, long and complex passphrase.
-    - **WEBSITE_NAME**: your translation website name.<br>
+    - **WEBSITE_NAME**: your translation website name.
+    - **WEBSITE_URL**: your translation website URL.<br>
 4. Clone the project locally:<br>
    `git clone https://github.com/Electra-project/translectra.git`<br>
 5. Enter the directory:<br>
