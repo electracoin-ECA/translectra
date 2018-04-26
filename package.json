@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Electra-project/translectra#readme",
   "dependencies": {
     "lexpress": "^0.37.0",
+    "mongoose": "^5.0.16",
     "webpack": "^4.6.0",
     "webpack-merge": "^4.1.2",
     "webpack-node-externals": "^1.7.2"
