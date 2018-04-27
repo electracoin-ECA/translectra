@@ -1,4 +1,8 @@
 /build
 /node_modules
 
+*.crt
+*.csr
+*.key
+
 .env
