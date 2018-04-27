@@ -2,7 +2,6 @@ import passport from 'passport'
 
 import AuthCallbackController from './controllers/auth/CallbackController'
 import AuthLogOutController from './controllers/auth/LogOutController'
-
 import WebHomeController from './controllers/web/HomeController'
 
 const routes = [
@@ -12,12 +11,18 @@ const routes = [
   {
     path: '/auth/callback',
     method: 'get',
+    middleware: passport.authenticate('google', { failureRedirect: '/' }),
     controller: AuthCallbackController,
   },
   {
     path: '/auth/login',
     method: 'get',
-    middleware: passport.authenticate('google', { scope: 'https://www.google.com/m8/feeds' }),
+    call: passport.authenticate('google', {
+      scope: [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ],
+    }),
   },
   {
     path: '/auth/logout',
