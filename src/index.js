@@ -27,19 +27,13 @@ passport.use(new passportGoogleOauth.OAuth2Strategy(
       }
 
       if (!user) {
-        console.log('Create new user', {
-          googleId: profile.id,
-          displayName: profile.displayName,
-          email: profile.emails[0].value,
-          gravatar: crypto.createHash('md5').update(profile.emails[0].value).digest('hex'),
-          createdAt: Date.now(),
-        })
         const newUser = User.create({
           googleId: profile.id,
           displayName: profile.displayName,
           email: profile.emails[0].value,
           gravatar: crypto.createHash('md5').update(profile.emails[0].value).digest('hex'),
           createdAt: Date.now(),
+          updatedAt: Date.now(),
         })
           .then(newUser => {
             console.log(newUser)
