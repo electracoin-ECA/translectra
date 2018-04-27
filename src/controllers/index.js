@@ -11,6 +11,7 @@ export default class BaseController extends lexpress.BaseController {
     data = data | {}
     const global = {
       me: this.req.user,
+      releaseVersion: process.env[process.env.RELEASE_VERSION_ENV_VAR_NAME],
       version: VERSION,
       websiteName: process.env.WEBSITE_NAME,
     }
