@@ -6,19 +6,19 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  email: {
+  displayName: {
     type: String,
     required: true,
     unique: true,
   },
-  slug: {
+  email: {
     type: String,
     required: true,
     unique: true,
   },
   isActivated: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   isAdmin: {
     type: Boolean,
