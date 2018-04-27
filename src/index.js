@@ -6,6 +6,7 @@ import passport from 'passport'
 import passportGoogleOauth from 'passport-google-oauth'
 import path from 'path'
 
+import https from './middlewares/https'
 import mongoDb from './middlewares/mongoDb'
 import User from './models/User'
 import routes from './routes'
@@ -61,6 +62,7 @@ passport.deserializeUser((id, cb) => User.findById(id, cb))
 
 const commonConfig = {
   middlewares: [
+    https,
     passport.initialize(),
     passport.session(),
     mongoDb,
