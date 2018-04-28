@@ -16,6 +16,6 @@ export default class BaseController extends lexpress.BaseController {
       websiteName: process.env.WEBSITE_NAME,
     }
 
-    this.res.render(view, { ...data, global })
+    this.res.render(view, { ...data, flash: this.req.flash(), global })
   }
 }
