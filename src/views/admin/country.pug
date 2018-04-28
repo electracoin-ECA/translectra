@@ -1,0 +1,49 @@
+extends ../layout.pug
+
+block content
+  h1(class='display-1') Countries
+
+  p(class='text-right')
+    button(
+      class='btn btn-primary'
+      type='button'
+      data-toggle='collapse'
+      data-target='#dataForm'
+      aria-expanded='false'
+      aria-controls='dataForm'
+    ) NEW COUNTRY
+
+  div(class=`card card-body collapse mb-4${flash.hasError ? ' show' : ''}` id='dataForm')
+    form(class='form mb-0' method='post' action='/admin/country' novalidate autocomplete='off')
+      div(class='form-group row')
+        label(class='col-sm-2 col-form-label' for='name') Name
+        div(class='col-sm-10')
+          input(
+            autocapitalize='off'
+            autocorrect='off'
+            class=`form-control${flash.nameError ? ' is-invalid' : ''}`
+            id='name'
+            name='name'
+            spellcheck='false'
+            type='text'
+            value=`${flash.name ? flash.name : ''}`
+          )
+          div(class='invalid-feedback') #{flash.nameError}
+      div(class='form-group row')
+        div(class='col-sm-10 offset-sm-2')
+          button(
+            class='btn btn-primary'
+            type='submit'
+            aria-label='Submit and add this new country'
+          ) CREATE
+
+  table(class='table table-bordered table-sm')
+    thead
+      tr
+        th(scope='col') #
+        th(scope='col') Name
+    tbody
+      each country in countries
+        tr
+          th(scope='row') #{country.id}
+          td #{country.name}
