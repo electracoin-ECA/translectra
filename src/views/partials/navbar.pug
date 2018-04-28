@@ -1,8 +1,8 @@
 nav(class='navbar navbar-dark fixed-top bg-dark')
   a(class='navbar-brand' href='/') #{global.websiteName}
   if global.me
-    a(class='btn btn-outline-success' href='/auth/logout' aria-label='Log out')
+    a(class='btn btn-secondary btn-sm' href='/auth/logout' aria-label='Log out')
       img(class='rounded-circle navbar__picture' src=`https://www.gravatar.com/avatar/${global.me.gravatar}`)
       span Log Out
   else
-    a(class='btn btn-outline-success' href='/auth/login' aria-label='Log in with Google') Log In with Google
+    a(class='btn btn-primary btn-sm' href='/auth/login' aria-label='Log in with Google') Log In with Google
