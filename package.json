@@ -25,6 +25,7 @@
     "lexpress": "^0.37.0",
     "moment": "^2.22.1",
     "mongoose": "^5.0.16",
+    "mongoose-unique-validator": "^2.0.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
     "passport-local-mongoose": "^5.0.0",
