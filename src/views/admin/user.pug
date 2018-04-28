@@ -1,0 +1,25 @@
+extends ../layout.pug
+
+block content
+  h1(class='display-1') Users
+
+  table(class='table table-bordered table-sm')
+    thead
+      tr
+        th(scope='col') Display Name
+        th(scope='col') Email
+        th(scope='col') Last Connection
+        th(class='list__iconCell' scope='col')
+        th(class='list__iconCell' scope='col')
+    tbody
+      each user in users
+        tr
+          td #{user.displayName}
+          td #{user.email}
+          td #{lodash.capitalize(moment(user.updatedAt).fromNow())}.
+          td(class='list__iconCell')
+            a(href=`/admin/user/${user.id}/toggleManager`)
+              i(class=`material-icons list__icon ${user.isManager ? 'text-info' : 'text-muted'}`) work
+          td(class='list__iconCell')
+            a(href=`/admin/user/${user.id}/toggleAdmin`)
+              i(class=`material-icons list__icon ${user.isAdmin ? 'text-info' : 'text-muted'}`) computer
