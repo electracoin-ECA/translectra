@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const LanguageSchema = new mongoose.Schema({
   parent: {
@@ -25,5 +26,7 @@ const LanguageSchema = new mongoose.Schema({
     required: true,
   },
 })
+
+LanguageSchema.plugin(mongooseUniqueValidator)
 
 export default mongoose.model('Language', LanguageSchema)
