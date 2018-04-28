@@ -14,11 +14,18 @@ body {
 }
 
 .footer {
-  background-color: #222222;
+  background-color: rgba(0, 0, 0, .2);
   bottom: 0;
-  font-size: 12px;
+  font-size: 11px;
   height: 2rem;
   padding: 0 1rem;
   position: absolute;
   width: 100%;
+}
+.footer__image {
+  margin-bottom: 2px;
+}
+.footer__button {
+  font-size: 10px;
+  padding: 2px 4px;
 }
