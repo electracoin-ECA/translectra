@@ -1,3 +1,4 @@
+import connectFlash from 'connect-flash'
 import crypto from 'crypto'
 import dotenv from 'dotenv'
 import fs from 'fs'
@@ -65,6 +66,7 @@ const commonConfig = {
     https,
     passport.initialize(),
     passport.session(),
+    connectFlash(),
     mongoDb,
   ],
   routes,
