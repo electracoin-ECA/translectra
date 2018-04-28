@@ -1,5 +1,7 @@
 nav(class='navbar navbar-dark fixed-top bg-dark')
-  a(class='navbar-brand' href='/') #{global.websiteName}
+  a(class='navbar-brand' href='/')
+    img(class='d-inline-block align-top' src='/img/logo.svg' width='30' height='30' alt='')
+    span(class='ml-2') #{global.websiteName}
   if global.me
     a(class='btn btn-secondary btn-sm' href='/auth/logout' aria-label='Log out')
       img(class='rounded-circle navbar__picture' src=`https://www.gravatar.com/avatar/${global.me.gravatar}`)
