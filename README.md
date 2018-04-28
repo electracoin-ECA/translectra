@@ -8,6 +8,10 @@
 
 [![NSP Status](https://nodesecurity.io/orgs/ivan-gabriele/projects/9a5931e7-b38c-4e64-9a6f-c832982ab133/badge)](https://nodesecurity.io/orgs/ivan-gabriele/projects/9a5931e7-b38c-4e64-9a6f-c832982ab133)
 
+## Example
+
+Electra Project is using this tool to handle all their translations: [https://translations.electraproject.org](https://translations.electraproject.org).
+
 ## Deploy
 
 Translectra is quite easy to deploy and just require environment variables to be set in order to work (no need to touch the code at all id you use modern CI environments like Heroku).
