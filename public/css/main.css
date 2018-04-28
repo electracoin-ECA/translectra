@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 body {
   padding-top: 4.5rem;
 }
@@ -5,4 +11,14 @@ body {
 .navbar__picture {
   height: 1.5rem;
   margin-right: .5rem;
+}
+
+.footer {
+  background-color: #222222;
+  bottom: 0;
+  font-size: 12px;
+  height: 2rem;
+  padding: 0 1rem;
+  position: absolute;
+  width: 100%;
 }
