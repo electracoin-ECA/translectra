@@ -40,10 +40,8 @@ block content
   table(class='table table-bordered table-sm')
     thead
       tr
-        th(scope='col') #
         th(scope='col') Name
     tbody
       each country in countries
         tr
-          th(scope='row') #{country.id}
           td #{country.name}
