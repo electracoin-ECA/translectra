@@ -15,17 +15,18 @@ nav(class='navbar navbar-expand-lg navbar-dark fixed-top bg-dark')
     span(class='navbar-toggler-icon')
   div(class='collapse navbar-collapse' id='mainMenu')
     ul(class='navbar-nav')
-      li(class='nav-item dropdown')
-        a(
-          class='nav-link dropdown-toggle'
-          href='#'
-          id='navbarDropdownMenuLink'
-          data-toggle='dropdown'
-          aria-haspopup='true'
-          aria-expanded='false'
-        ) Administration
-        div(class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink')
-          a(class='dropdown-item' href='/admin/country') Countries
+      if (global.me && global.me.isAdmin)
+        li(class='nav-item dropdown')
+          a(
+            class='nav-link dropdown-toggle'
+            href='#'
+            id='navbarDropdownMenuLink'
+            data-toggle='dropdown'
+            aria-haspopup='true'
+            aria-expanded='false'
+          ) Administration
+          div(class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink')
+            a(class='dropdown-item' href='/admin/country') Countries
 
   if global.me
     a(class='btn btn-secondary btn-sm' href='/auth/logout' aria-label='Log out')
