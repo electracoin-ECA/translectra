@@ -1,10 +1,23 @@
 import passport from 'passport'
 
+import AdminCountryController from './controllers/admin/CountryController'
 import AuthCallbackController from './controllers/auth/CallbackController'
 import AuthLogOutController from './controllers/auth/LogOutController'
 import WebHomeController from './controllers/web/HomeController'
 
+import isAdmin from './middlewares/isAdmin'
+
 const routes = [
+  /* ========================================
+    Admin
+  */
+  {
+    path: '/admin/country',
+    method: 'get',
+    middleware: isAdmin,
+    controller: AdminCountryController,
+  },
+
   /* ========================================
     Auth
   */
