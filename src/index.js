@@ -3,6 +3,8 @@ import crypto from 'crypto'
 import dotenv from 'dotenv'
 import fs from 'fs'
 import { Lexpress } from 'lexpress'
+import lodash from 'lodash'
+import moment from 'moment'
 import passport from 'passport'
 import passportGoogleOauth from 'passport-google-oauth'
 import path from 'path'
@@ -62,6 +64,10 @@ passport.serializeUser((user, cb) => cb(null, user.id))
 passport.deserializeUser((id, cb) => User.findById(id, cb))
 
 const commonConfig = {
+  locals: {
+    lodash,
+    moment,
+  },
   middlewares: [
     https,
     passport.initialize(),
