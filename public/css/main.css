@@ -51,3 +51,15 @@ body {
   font-size: 10px;
   padding: 2px 4px;
 }
+
+/*
+  List
+*/
+
+.list__iconCell {
+  width: 1rem;
+}
+.list__icon {
+  font-size: 1rem;
+  margin-top: 1px;
+}
