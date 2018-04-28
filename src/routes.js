@@ -17,6 +17,12 @@ const routes = [
     middleware: isAdmin,
     controller: AdminCountryController,
   },
+  {
+    path: '/admin/country',
+    method: 'post',
+    middleware: isAdmin,
+    controller: AdminCountryController,
+  },
 
   /* ========================================
     Auth
