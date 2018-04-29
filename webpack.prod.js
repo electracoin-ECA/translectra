@@ -1,11 +1,21 @@
 const cleanWebpackPlugin = require('clean-webpack-plugin')
-const common = require('./webpack.common')
+const [app, server] = require('./webpack.common')
 const merge = require('webpack-merge')
 
-module.exports = merge({
-  mode: 'production',
+module.exports = [
+  merge(app, {
+    mode: 'production',
 
-  plugins: [
-    new cleanWebpackPlugin(['build']),
-  ],
-}, common)
+    plugins: [
+      new cleanWebpackPlugin(['public/js']),
+    ],
+  }),
+
+  merge(server, {
+    mode: 'production',
+
+    plugins: [
+      new cleanWebpackPlugin(['build']),
+    ],
+  })
+]
