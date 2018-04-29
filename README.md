@@ -23,9 +23,9 @@ Since Translectra is dedicated to crowdsourced translations, we found that the m
 
 You thus need to setup a [Google Developer account](https://console.developers.google.com) if you don't already have one.
 
-Once it's done, you'll need to setup your credentials, with `https://www.example.com/auth/callback` as authorized redirect URIs.
+Once it's done, you'll need to setup your credentials, with `https://www.example.com/auth/callback` as authorized redirect URIs. You can add `https://localhost/auth/callback` if you want to run it locally.
 
-You will also need to enable Google+ API.
+You will also need to enable **Google+ API**.
 
 ### Mandatory environment variables
 
