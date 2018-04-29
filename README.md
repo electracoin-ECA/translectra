@@ -15,7 +15,7 @@ Electra Project is using this tool to handle all their translations: [https://tr
 
 ## Deploy
 
-Translectra is quite easy to deploy and just require environment variables as well as a Google  to be set in order to work (no need to touch the code at all if you use modern CI environments like Heroku).
+Translectra is quite easy to deploy and just require environment variables and a Google developer account to be set in order to work There is no need to touch the code at all if you use modern CI environments like Heroku.
 
 ### Setup Google signup/login
 
