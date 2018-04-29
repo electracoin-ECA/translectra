@@ -2,6 +2,7 @@
 
 > Open-source Translation Management System in NodeJS.
 
+[![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Travis](https://img.shields.io/travis/Electra-project/translectra.svg?style=flat-square)](https://travis-ci.org/Electra-project/translectra)
 [![David](https://img.shields.io/david/Electra-project/translectra.svg?style=flat-square)](https://david-dm.org/Electra-project/translectra)
 [![David](https://img.shields.io/david/dev/Electra-project/translectra.svg?style=flat-square)](https://david-dm.org/Electra-project/translectra)
