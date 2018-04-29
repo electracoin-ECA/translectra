@@ -22,7 +22,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "connect-flash": "^0.1.1",
     "dotenv": "^5.0.1",
-    "lexpress": "^0.38.1",
+    "lexpress": "^0.39.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "mongoose": "^5.0.16",
