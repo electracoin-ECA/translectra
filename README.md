@@ -40,7 +40,7 @@ You will also need to enable **Google+ API**.
 
 1. Create your heroku app in the dashboard or via the Heroku Toolbelt.
 2. Add a MongoDB add-on, **mLab MongoDB** for example.
-3. Set up the [mandatory environment variables]() in your app settings.
+3. Set up the [mandatory environment variables](#mandatory-environment-variables) in your app settings.
 4. Clone the project locally:<br>
    `git clone https://github.com/Electra-project/translectra.git`
 5. Enter the directory:<br>
