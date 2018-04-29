@@ -15,24 +15,38 @@ Electra Project is using this tool to handle all their translations: [https://tr
 
 ## Deploy
 
-Translectra is quite easy to deploy and just require environment variables to be set in order to work (no need to touch the code at all id you use modern CI environments like Heroku).
+Translectra is quite easy to deploy and just require environment variables as well as a Google  to be set in order to work (no need to touch the code at all if you use modern CI environments like Heroku).
+
+### Setup Google signup/login
+
+Since Translectra is dedicated to crowdsourced translations, we found that the most universal and easiest way to manage the authentication process was to focus on authentications via Google accounts.
+
+You thus need to setup a [Google Developer account](https://console.developers.google.com) if you don't already have one.
+
+Once it's done, you'll need to setup your credentials, with `https://www.example.com/auth/callback` as authorized redirect URIs.
+
+You will also need to enable Google+ API.
+
+### Mandatory environment variables
+
+- **GOOGLE_API_KEY**: your Google API credentials `client_id`.
+- **GOOGLE_API_SECRET**: your Google API credentials `client_secret`.
+- **MONGODB_URL**: your full MongoDB url.
+- **SESSION_SECRET**: a randomly generated, long and complex passphrase.
+- **WEBSITE_NAME**: your translation website name.
+- **WEBSITE_URL**: your translation website url _(**without** slash at the end)_.
 
 ### Heroku
 
-1. Create your heroku app in the dashboard or via the Heroku Toolbelt.<br>
-2. Add a MongoDB add-on, **mLab MongoDB** for example.<br>
-3. Set up the required Config Variables:
-    - **MONGODB_URL**: your MongoDB URL.<br>
-      _It will be added automatically if you use mLab MongoDB._
-    - **SESSION_SECRET**: a randomly generated, long and complex passphrase.
-    - **WEBSITE_NAME**: your translation website name.
-    - **WEBSITE_URL**: your translation website URL.<br>
+1. Create your heroku app in the dashboard or via the Heroku Toolbelt.
+2. Add a MongoDB add-on, **mLab MongoDB** for example.
+3. Set up the [mandatory environment variables]() in your app settings.
 4. Clone the project locally:<br>
-   `git clone https://github.com/Electra-project/translectra.git`<br>
+   `git clone https://github.com/Electra-project/translectra.git`
 5. Enter the directory:<br>
-   `cd translectra`<br>
+   `cd translectra`
 6. Link your Heroku app:<br>
-  `heroku git:remote -a translectra` _(Replace "translectra" by the name of your Heroku app)_<br>
+  `heroku git:remote -a translectra` _(Replace "translectra" by the name of your Heroku app)_
 7. Push the project to Heroku:<br>
    `git push heroku master`
 
