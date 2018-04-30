@@ -18,16 +18,4 @@ export default class BaseController extends lexpress.BaseController {
 
     this.res.render(view, { ...data, flash: this.req.flash(), global })
   }
-
-  flashMongooseErrors(err, data) {
-    if (err === null) return
-
-    this.req.flash('hasError', '1')
-    for (let prop in err.errors) {
-      this.req.flash(`${prop}Error`, err.errors[prop].message)
-    }
-    for (let prop in data) {
-      if (typeof data[prop] === 'string') this.req.flash(prop, data[prop])
-    }
-  }
 }
