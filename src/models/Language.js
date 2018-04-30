@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
-const LanguageSchema = new mongoose.Schema({
+const languageSchema = new mongoose.Schema({
   parent: {
     type: Schema.Types.ObjectId,
     ref: 'Country',
@@ -27,6 +27,6 @@ const LanguageSchema = new mongoose.Schema({
   },
 })
 
-LanguageSchema.plugin(mongooseUniqueValidator)
+languageSchema.plugin(mongooseUniqueValidator)
 
-export default mongoose.model('Language', LanguageSchema)
+export default mongoose.model('Language', languageSchema)
