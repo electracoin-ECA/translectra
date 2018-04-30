@@ -2,6 +2,8 @@ import passport from 'passport'
 
 import AdminCountryController from './controllers/admin/CountryController'
 import AdminUserController from './controllers/admin/UserController'
+import ApiCountryController from './controllers/api/CountryController'
+import ApiUserController from './controllers/api/UserController'
 import AuthCallbackController from './controllers/auth/CallbackController'
 import AuthLogOutController from './controllers/auth/LogOutController'
 import WebHomeController from './controllers/web/HomeController'
@@ -19,16 +21,56 @@ const routes = [
     controller: AdminCountryController,
   },
   {
-    path: '/admin/country',
-    method: 'post',
-    middleware: isAdmin,
-    controller: AdminCountryController,
-  },
-  {
     path: '/admin/user',
     method: 'get',
     middleware: isAdmin,
     controller: AdminUserController,
+  },
+
+  /* ========================================
+    Api
+  */
+  {
+    path: '/api/country',
+    method: 'get',
+    middleware: isAdmin,
+    controller: ApiCountryController,
+  },
+  {
+    path: '/api/country',
+    method: 'post',
+    middleware: isAdmin,
+    controller: ApiCountryController,
+  },
+  {
+    path: '/api/country/:countryId',
+    method: 'put',
+    middleware: isAdmin,
+    controller: ApiCountryController,
+  },
+  {
+    path: '/api/country/:countryId',
+    method: 'delete',
+    middleware: isAdmin,
+    controller: ApiCountryController,
+  },
+  {
+    path: '/api/user',
+    method: 'get',
+    middleware: isAdmin,
+    controller: ApiUserController,
+  },
+  {
+    path: '/api/user/:userId',
+    method: 'put',
+    middleware: isAdmin,
+    controller: ApiUserController,
+  },
+  {
+    path: '/api/user/:userId',
+    method: 'delete',
+    middleware: isAdmin,
+    controller: ApiUserController,
   },
 
   /* ========================================
