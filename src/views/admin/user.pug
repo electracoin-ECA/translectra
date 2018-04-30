@@ -1,25 +1,22 @@
 extends ../layout.pug
 
-block content
-  h1(class='display-1') Users
+block meta
+  meta(name='model' content=JSON.stringify('user'))
+  meta(name='schema' content=JSON.stringify([
+    { name: 'displayName', type: 'text', isColumn: true, isField: true, label: 'Display Name' },
+    { name: 'email', type: 'text', isColumn: true, isField: false, label: 'Email' },
+    { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Last Login' },
+    { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Registration' },
+    { name: 'isManager', type: 'boolean', isColumn: true, isField: true, label: 'Manager' },
+    { name: 'isAdmin', type: 'boolean', isColumn: true, isField: true, label: 'Admin' },
+  ]))
+  meta(name='meta' content=JSON.stringify({
+    canCreate: false,
+    defaultName: 'displayName',
+    sortBy: 'updatedAt',
+    sortOrder: false,
+  }))
 
-  table(class='table table-bordered table-sm')
-    thead
-      tr
-        th(scope='col') Display Name
-        th(scope='col') Email
-        th(scope='col') Last Connection
-        th(class='list__iconCell' scope='col')
-        th(class='list__iconCell' scope='col')
-    tbody
-      each user in users
-        tr
-          td #{user.displayName}
-          td #{user.email}
-          td #{lodash.capitalize(moment(user.updatedAt).fromNow())}.
-          td(class='list__iconCell')
-            a(href=`/admin/user/${user.id}/toggleManager`)
-              i(class=`material-icons list__icon ${user.isManager ? 'text-info' : 'text-muted'}`) work
-          td(class='list__iconCell')
-            a(href=`/admin/user/${user.id}/toggleAdmin`)
-              i(class=`material-icons list__icon ${user.isAdmin ? 'text-info' : 'text-muted'}`) computer
+block content
+  h1(class='display-1 no-select') Users
+  div(id='root') Loading...
