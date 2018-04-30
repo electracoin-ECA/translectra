@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
-const CountrySchema = new mongoose.Schema({
+const countrySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -17,6 +17,6 @@ const CountrySchema = new mongoose.Schema({
   },
 })
 
-CountrySchema.plugin(mongooseUniqueValidator)
+countrySchema.plugin(mongooseUniqueValidator)
 
-export default mongoose.model('Country', CountrySchema)
+export default mongoose.model('Country', countrySchema)
