@@ -40,6 +40,8 @@
     "passport-google-oauth": "^1.0.0",
     "passport-local-mongoose": "^5.0.0",
     "popper.js": "^1.14.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "underscore": "^1.9.0",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15",
