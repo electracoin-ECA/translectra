@@ -3,15 +3,15 @@ html(lang='en')
   head
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    block meta
     title #{global.websiteName}
     link(rel='icon' href='favicon.png')
     block styles
       link(rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons')
-      link(rel='stylesheet' href='/css/bootswatch-superhero-4.1.0.min.css')
+      link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css')
       link(rel='stylesheet' href='/css/main.css')
   body
     block body
     block scripts
-      script(src='/js/jquery-3.3.1.slim.min.js')
-      script(src='/js/popper-1.14.3.min.js')
-      script(src='/js/bootstrap-4.0.0.min.js')
+      script(src='/js/vendors.js')
+      script(src='/js/app.js')
