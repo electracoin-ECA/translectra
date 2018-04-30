@@ -23,7 +23,7 @@ export default class CountryController extends BaseController {
     const country = new Country({
       name,
       createdAt: nowDate,
-      updatedAt: nowDate
+      updatedAt: nowDate,
     })
 
     country.save((err) => {
