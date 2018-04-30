@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const languageSchema = new mongoose.Schema({
-  parent: {
+  country: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Country',
   },
