@@ -31,13 +31,14 @@ passport.use(new passportGoogleOauth.OAuth2Strategy(
       }
 
       if (!user) {
+        const nowDate = Date.now()
         const newUser = User.create({
           googleId: profile.id,
           displayName: profile.displayName,
           email: profile.emails[0].value,
           gravatar: crypto.createHash('md5').update(profile.emails[0].value).digest('hex'),
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
+          createdAt: nowDate,
+          updatedAt: nowDate,
         })
           .then(newUser => {
             console.log(newUser)
