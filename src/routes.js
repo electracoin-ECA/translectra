@@ -31,6 +31,12 @@ const routes = [
     controller: AdminLanguageController,
   },
   {
+    path: '/admin/project',
+    method: 'get',
+    middleware: isAdmin,
+    controller: AdminProjectController,
+  },
+  {
     path: '/admin/user',
     method: 'get',
     middleware: isAdmin,
