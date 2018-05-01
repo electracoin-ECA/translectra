@@ -1,3 +1,5 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
 const nodeExternals = require('webpack-node-externals')
 
 const app = {
@@ -24,8 +26,55 @@ const app = {
         exclude: /(node_modules|vendors)/,
         use: ['babel-loader'],
       },
-    ]
+    ],
   },
+}
+
+const assets = {
+  entry: {
+    app: [
+      './node_modules/bootstrap/dist/css/bootstrap.min.css',
+      './app/css/index.css',
+    ],
+  },
+
+  output: {
+    path: __dirname + '/build',
+    filename: '[name].css',
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ExtractTextWebpackPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader',
+        }),
+      },
+      {
+        test: /\.(gif|jpg|png|woff2)$/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 1024,
+          },
+        }],
+      },
+    ],
+  },
+
+  plugins: [
+    new CopyWebpackPlugin(
+      [
+        {
+          from:  __dirname + '/node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff2',
+          to: __dirname + '/public/fonts',
+        },
+      ]
+    ),
+    new ExtractTextWebpackPlugin('app.css'),
+  ],
 }
 
 const server = {
@@ -45,4 +94,4 @@ const server = {
   externals: [nodeExternals()],
 }
 
-module.exports = [app, server]
+module.exports = [app, assets, server]

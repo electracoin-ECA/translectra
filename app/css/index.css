@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url(./fonts.css);
 
 /*
   Global
@@ -6,6 +6,7 @@
 
 * {
   font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
 }
 
 body {

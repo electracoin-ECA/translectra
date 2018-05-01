@@ -1,5 +1,5 @@
 const cleanWebpackPlugin = require('clean-webpack-plugin')
-const [app, server] = require('./webpack.common')
+const [app, assets, server] = require('./webpack.common')
 const merge = require('webpack-merge')
 
 module.exports = [
@@ -11,11 +11,15 @@ module.exports = [
     ],
   }),
 
-  merge(server, {
+  merge(assets, {
     mode: 'production',
 
     plugins: [
       new cleanWebpackPlugin(['build']),
     ],
-  })
+  }),
+
+  merge(server, {
+    mode: 'production',
+  }),
 ]
