@@ -1,0 +1,19 @@
+extends ../layout.pug
+
+block meta
+  meta(name='model' content=JSON.stringify('project'))
+  meta(name='schema' content=JSON.stringify([
+    { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
+    { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
+    { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
+  ]))
+  meta(name='meta' content=JSON.stringify({
+    canCreate: true,
+    defaultName: 'name',
+    sortBy: 'name',
+    sortOrder: true,
+  }))
+
+block content
+  h1(class='display-1 no-select') Projects
+  div(id='root') Loading...
