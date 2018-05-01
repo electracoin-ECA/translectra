@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React from 'react'
 
-import Form from './components/form'
-import Table from './components/table'
+import Form from './form'
+import Table from './table'
 
 // @see https://github.com/axios/axios/issues/960#issuecomment-320659373
 axios.interceptors.response.use(response => response, error => Promise.reject(error.response))

@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import App from './app'
+import DataTable from './data-table'
 
 import getMeta from './helpers/getMeta'
 
-if (document.getElementById('root') !== null) {
+if (document.getElementById('data-table') !== null) {
   ReactDOM.render(
-    <App meta={getMeta('meta')} model={getMeta('model')} schema={getMeta('schema')} />,
-    document.getElementById('root')
+    <DataTable meta={getMeta('meta')} model={getMeta('model')} schema={getMeta('schema')} />,
+    document.getElementById('data-table')
   )
 }
