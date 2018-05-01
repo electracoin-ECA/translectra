@@ -20,7 +20,7 @@ export default class UserController extends BaseController {
     User
       .find({
         $or: [
-          { displayName: { $regex: new RegExp( this.req.query.query !== undefined ? this.req.query.query : '', 'i') } },
+          { name: { $regex: new RegExp( this.req.query.query !== undefined ? this.req.query.query : '', 'i') } },
           { email: { $regex: new RegExp( this.req.query.query !== undefined ? this.req.query.query : '', 'i') } },
         ],
       })
