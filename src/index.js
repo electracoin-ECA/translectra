@@ -90,13 +90,17 @@ const lexpress = new Lexpress(process.env.NODE_ENV === 'development'
         cert: fs.readFileSync(path.resolve('./server.crt')),
         key: fs.readFileSync(path.resolve('./server.key')),
         requestCert: false,
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
       },
     },
   }
   : {
     ...commonConfig,
-    ...{},
+    ...{
+      staticOptions: {
+        maxAge: '1y',
+      },
+    },
   }
 )
 
