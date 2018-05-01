@@ -2,9 +2,11 @@ import passport from 'passport'
 
 import AdminCountryController from './controllers/admin/CountryController'
 import AdminLanguageController from './controllers/admin/LanguageController'
+import AdminProjectController from './controllers/admin/ProjectController'
 import AdminUserController from './controllers/admin/UserController'
 import ApiCountryController from './controllers/api/CountryController'
 import ApiLanguageController from './controllers/api/LanguageController'
+import ApiProjectController from './controllers/api/ProjectController'
 import ApiUserController from './controllers/api/UserController'
 import AuthCallbackController from './controllers/auth/CallbackController'
 import AuthLogOutController from './controllers/auth/LogOutController'
@@ -85,6 +87,30 @@ const routes = [
     method: 'delete',
     middleware: isAdmin,
     controller: ApiLanguageController,
+  },
+  {
+    path: '/api/project',
+    method: 'get',
+    middleware: isAdmin,
+    controller: ApiProjectController,
+  },
+  {
+    path: '/api/project',
+    method: 'post',
+    middleware: isAdmin,
+    controller: ApiProjectController,
+  },
+  {
+    path: '/api/project/:projectId',
+    method: 'put',
+    middleware: isAdmin,
+    controller: ApiProjectController,
+  },
+  {
+    path: '/api/project/:projectId',
+    method: 'delete',
+    middleware: isAdmin,
+    controller: ApiProjectController,
   },
   {
     path: '/api/user',
