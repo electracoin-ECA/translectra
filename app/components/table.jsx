@@ -101,6 +101,9 @@ export default class Table extends React.PureComponent {
             case 'date':
               return <td key={index}>{moment(item[name]).fromNow()}</td>
 
+            case 'foreign':
+              return <td key={index}>{item[name].name}</td>
+
             default:
               return <td key={index}>{item[name]}</td>
           }
