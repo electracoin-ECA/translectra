@@ -28,6 +28,7 @@
     "bootstrap": "^4.1.0",
     "clean-webpack-plugin": "^0.1.19",
     "connect-flash": "^0.1.1",
+    "css-loader": "^0.28.11",
     "dotenv": "^5.0.1",
     "jquery": "^3.3.1",
     "lexpress": "^0.39.2",
