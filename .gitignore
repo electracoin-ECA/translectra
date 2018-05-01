@@ -1,6 +1,7 @@
 /build
 /node_modules
 /public/fonts/MaterialIcons-Regular.woff2
+/public/js
 
 *.crt
 *.csr
