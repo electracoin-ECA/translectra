@@ -72,10 +72,16 @@ export default class Table extends React.PureComponent {
           <td className='no-select' colSpan={this.props.columns.length}>
             Are you sure to remove « {item[this.props.defaultName]} » ?
           </td>
-          <td className='bg-danger no-select list__iconCell' onClick={() => this.delete(item._id)}>
+          <td
+            className='bg-danger text-light text-center no-select list__iconCell'
+            onClick={() => this.delete(item._id)}
+          >
             <i className='material-icons'>done</i>
           </td>
-          <td className='bg-primary no-select list__iconCell' onClick={() => this.setState({ removeConfirmationItemId: '' })}>
+          <td
+            className='bg-primary text-light text-center no-select list__iconCell'
+            onClick={() => this.setState({ removeConfirmationItemId: '' })}
+          >
             <i className='material-icons'>clear</i>
           </td>
         </tr>
@@ -108,10 +114,10 @@ export default class Table extends React.PureComponent {
               return <td key={index}>{item[name]}</td>
           }
         })}
-        <td className={`${buttonClass} no-select list__iconCell`} onClick={() => this.edit(item._id)}>
+        <td className={`${buttonClass} text-center no-select list__iconCell`} onClick={() => this.edit(item._id)}>
           <i className='material-icons'>edit</i>
         </td>
-        <td className={`${buttonClass} no-select list__iconCell`} onClick={() => this.remove(item._id)}>
+        <td className={`${buttonClass} text-center no-select list__iconCell`} onClick={() => this.remove(item._id)}>
           <i className='material-icons'>delete</i>
         </td>
       </tr>

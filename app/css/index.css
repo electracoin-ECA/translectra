@@ -82,8 +82,7 @@ body {
 }
 .list__iconCell {
   cursor: pointer;
-  font-size: .7rem;
-  padding: .3rem .3rem 0 !important;
+  font-size: 1.15rem;
   width: 2rem;
 }
 .list__iconCell:hover {
