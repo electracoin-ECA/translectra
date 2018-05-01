@@ -34,7 +34,7 @@ passport.use(new passportGoogleOauth.OAuth2Strategy(
         const nowDate = Date.now()
         const newUser = User.create({
           googleId: profile.id,
-          displayName: profile.displayName,
+          name: profile.displayName,
           email: profile.emails[0].value,
           gravatar: crypto.createHash('md5').update(profile.emails[0].value).digest('hex'),
           createdAt: nowDate,
