@@ -1,0 +1,24 @@
+extends ../layout.pug
+
+block meta
+  meta(name='model' content=JSON.stringify('language'))
+  meta(name='schema' content=JSON.stringify([
+    { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
+    { name: 'code', type: 'text', isColumn: true, isField: true, label: 'Code' },
+    { name: 'country', type: 'foreign', isColumn: true, isField: true, label: 'Country' },
+    { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
+    { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
+  ]))
+  meta(name='meta' content=JSON.stringify({
+    canCreate: true,
+    defaultName: 'name',
+    foreignData: {
+      country: countries,
+    },
+    sortBy: 'updatedAt',
+    sortOrder: false,
+  }))
+
+block content
+  h1(class='display-1 no-select') Languages
+  div(id='root') Loading...
