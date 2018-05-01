@@ -4,6 +4,8 @@ import React from 'react'
 import Form from './form'
 import Table from './table'
 
+import capitalizeFirstLetter from '../helpers/capitalizeFirstLetter'
+
 // @see https://github.com/axios/axios/issues/960#issuecomment-320659373
 axios.interceptors.response.use(response => response, error => Promise.reject(error.response))
 
@@ -177,7 +179,7 @@ export default class App extends React.PureComponent {
           </div>
           {this.props.meta.canCreate && (
             <button
-              children={`NEW ${this.props.model.toUpperCase()}`}
+              children={`New ${capitalizeFirstLetter(this.props.model)}`}
               className='btn btn-primary no-select'
               onClick={this.toggleForm.bind(this)}
               type='button'
