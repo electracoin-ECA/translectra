@@ -6,11 +6,14 @@ const HTTP_STATUS_CODE_CREATED = 201
 const HTTP_STATUS_CODE_ACCEPTED = 202
 const HTTP_STATUS_CODE_BAD_REQUEST = 400
 const HTTP_STATUS_CODE_NOT_FOUND = 404
+const LIMIT_DEFAULT = 25
+const LIMIT_MAX = 100
 
 export default class ProjectController extends BaseController {
   get() {
     this.isJson = true
 
+    const limit = this.req.query.limit !== undefined ? Number(this.req.query.limit) : LIMIT_DEFAULT
     const sortData = {}
     sortData[this.req.query.sortBy] = Number(this.req.query.sortOrder)
 
@@ -21,7 +24,7 @@ export default class ProjectController extends BaseController {
         ],
       })
       .sort(sortData)
-      .limit(this.req.query.limit !== undefined ? Number(this.req.query.limit) : 25)
+      .limit(limit > LIMIT_MAX ? LIMIT_MAX : limit)
       .exec((err, countries) => {
         if (err !== null) {
           this.answerError(err)
