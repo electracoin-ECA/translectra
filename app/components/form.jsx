@@ -54,6 +54,33 @@ export default class Form extends React.PureComponent {
           </div>
         )
 
+      case 'foreign':
+        return (
+          <div className='form-group row' key={index}>
+            <label className='col-sm-2 col-form-label no-select' htmlFor={schemaProp.name}>{schemaProp.label}</label>
+            <div className='col-sm-10'>
+              <select
+                className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
+                defaultValue={this.props.initialData !== undefined ? this.props.initialData[schemaProp.name]._id : ''}
+                disabled={this.props.isLoading || this.state.isUpdating}
+                id={schemaProp.name}
+                key={this.props.initialData !== undefined ? keyify(this.props.initialData[schemaProp.name].name) : undefined}
+                name={schemaProp.name}
+              >
+                <option value='' />
+                {this.props.foreignData[schemaProp.name].map((foreignDataItem, index) => (
+                  <option
+                    children={foreignDataItem.name}
+                    key={index}
+                    value={foreignDataItem._id}
+                  />
+                ))}
+              </select>
+              <div className='invalid-feedback'>{hasError && this.props.errors[schemaProp.name].message}</div>
+            </div>
+          </div>
+        )
+
       default:
         return (
           <div className='form-group row' key={index}>
