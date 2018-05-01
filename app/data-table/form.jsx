@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import React from 'react'
 
+import capitalizeFirstLetter from '../helpers/capitalizeFirstLetter'
 import keyify from '../helpers/keyify'
 
 export default class Form extends React.PureComponent {
@@ -121,7 +122,7 @@ export default class Form extends React.PureComponent {
           <div className='form-group row'>
             <div className='col-sm-10 offset-sm-2'>
               <button
-                children={this.props.action.toUpperCase()}
+                children={capitalizeFirstLetter(this.props.action)}
                 className='btn btn-primary'
                 disabled={this.props.isLoading || this.state.isUpdating}
                 type='submit'
