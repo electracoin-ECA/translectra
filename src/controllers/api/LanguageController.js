@@ -28,14 +28,14 @@ export default class LanguageController extends BaseController {
       .sort(sortData)
       .limit(limit > LIMIT_MAX ? LIMIT_MAX : limit)
       .populate('country')
-      .exec((err, countries) => {
+      .exec((err, languages) => {
         if (err !== null) {
           this.answerError(err)
 
           return
         }
 
-        this.res.status(HTTP_STATUS_CODE_OK).json(countries)
+        this.res.status(HTTP_STATUS_CODE_OK).json(languages)
       })
   }
 
