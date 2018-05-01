@@ -10,5 +10,5 @@ html(lang='en')
       include ../../build/app.css
   body
     block body
-    script(src='/js/vendors.js')
-    script(src='/js/app.js')
+    script(src=`/js/vendors.js?v=${global.version}`)
+    script(src=`/js/app.js?v=${global.version}`)
