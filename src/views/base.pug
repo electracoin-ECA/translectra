@@ -5,13 +5,10 @@ html(lang='en')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     block meta
     title #{global.websiteName}
-    link(rel='icon' href='favicon.png')
-    block styles
-      link(rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons')
-      link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css')
-      link(rel='stylesheet' href='/css/main.css')
+    link(rel='icon' href='/favicon.png')
+    style
+      include ../../build/app.css
   body
     block body
-    block scripts
-      script(src='/js/vendors.js')
-      script(src='/js/app.js')
+    script(src='/js/vendors.js')
+    script(src='/js/app.js')
