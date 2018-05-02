@@ -49,9 +49,6 @@ export default class Table extends React.PureComponent {
   renderHead({ label, name, type }) {
     switch (type) {
       case 'boolean':
-      case 'link':
-      case 'textarea':
-      case 'tooltip':
         return (
           <th
             className='text-center list__headCell'
@@ -59,8 +56,19 @@ export default class Table extends React.PureComponent {
             onClick={() => this.props.onSort(name)}
             scope='col'
           >
-            {type === 'boolean' && label[0]}
+            {label[0]}
           </th>
+        )
+
+      case 'link':
+      case 'textarea':
+      case 'tooltip':
+        return (
+          <th
+            className='text-center'
+            key={name}
+            scope='col'
+          />
         )
 
       case 'collection':
@@ -75,7 +83,9 @@ export default class Table extends React.PureComponent {
             scope='col'
           >
             {label}
-            <i className='material-icons'>{this.props.sortOrder ? 'arrow_drop_up' : 'arrow_drop_down'}</i>
+            {this.props.sortBy === name && (
+              <i className='material-icons'>{this.props.sortOrder ? 'arrow_drop_up' : 'arrow_drop_down'}</i>
+            )}
           </th>
         )
     }
