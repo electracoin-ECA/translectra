@@ -16,7 +16,8 @@ export default class App extends React.PureComponent {
   constructor(props) {
     super(props)
 
-    this.isLoading = false
+    this.sortBy = props.meta.sortBy
+    this.sortOrder = props.meta.sortOrder
 
     this.state = {
       currentEditedItemId: '',
@@ -25,6 +26,7 @@ export default class App extends React.PureComponent {
       formErrors: {},
       formKey: 0,
       isFormOpen: false,
+      isLoading: false,
       items: [],
       sortBy: props.meta.sortBy,
       sortOrder: props.meta.sortOrder,
@@ -37,35 +39,36 @@ export default class App extends React.PureComponent {
 
   fetch(mustLoop) {
     const params = {
-      sortBy: this.state.sortBy,
-      sortOrder: this.state.sortOrder ? 1 : -1,
+      sortBy: this.sortBy,
+      sortOrder: this.sortOrder ? 1 : -1,
     }
     if (this.$searchInput.value.length !== 0) params.query = this.$searchInput.value
 
     axios.get(`${API_URL}/${this.props.model}`, { params })
       .then(({ data }) => {
-        if (!mustLoop && this.isLoading) this.isLoading = false
         this.setState({
-          isFormOpen: !mustLoop && this.isUpdating ? false : this.state.isFormOpen,
+          isLoading: !mustLoop && this.state.isLoading ? false : this.state.isLoading,
           items: data,
         })
         if (mustLoop) setTimeout(() => this.fetch(true), FETCH_INTERVAL)
       })
   }
 
-  sort(fieldName) {
-    this.isLoading = true
+  sort(fieldName, fieldType) {
+    if (this.state.isLoading) return
 
-    this.setState({
-      sortBy: fieldName,
-      sortOrder: this.state.sortBy === fieldName ? !this.state.sortOrder : true,
-    })
+    this.setState({ isLoading: true })
+
+    this.sortOrder = this.sortBy === fieldName ? !this.sortOrder : !['boolean', 'date'].includes(fieldType)
+    this.sortBy = fieldName
 
     this.fetch(false)
   }
 
   create(data) {
-    this.isLoading = true
+    if (this.state.isLoading) return
+
+    this.setState({ isLoading: true })
 
     axios.post(`${API_URL}/${this.props.model}`, data)
       .then(() => {
@@ -73,18 +76,20 @@ export default class App extends React.PureComponent {
           formData: undefined,
           formErrors: {},
           formKey: this.state.formKey + 1,
-          isLoading: true,
         })
-        this.isLoading = true
         this.fetch(false)
       })
       .catch(({ data }) => {
-        this.isLoading = false
-        this.setState({ formErrors: data })
+        this.setState({
+          formErrors: data,
+          isLoading: false,
+        })
       })
   }
 
   edit(itemId) {
+    if (this.state.isLoading) return
+
     const formData = this.state.items.find(({ _id }) => _id === itemId)
     if (formData === undefined) return
 
@@ -98,8 +103,9 @@ export default class App extends React.PureComponent {
   }
 
   update($form) {
-    this.isLoading = true
-    this.isUpdating = true
+    if (this.state.isLoading) return
+
+    this.setState({ isLoading: true })
 
     const data = {}
     this.props.schema
@@ -120,28 +126,32 @@ export default class App extends React.PureComponent {
         this.setState({
           formData: undefined,
           formErrors: {},
-          isLoading: true,
         })
-        this.isLoading = true
         this.fetch(false)
       })
       .catch(({ data }) => {
-        this.isLoading = false
-        this.setState({ formErrors: data })
+        this.setState({
+          formErrors: data,
+          isLoading: false,
+        })
       })
   }
 
   delete(itemId) {
-    this.isLoading = true
+    if (this.state.isLoading) return
+
+    this.setState({ isLoading: true })
 
     axios.delete(`${API_URL}/${this.props.model}/${itemId}`)
       .then(() => this.fetch(false))
       .catch(({ data }) => {
-        this.isLoading = false
+        this.setState({ isLoading: false })
       })
   }
 
   toggleForm() {
+    if (this.state.isLoading) return
+
     this.setState({
       formAction: 'create',
       formData: undefined,
@@ -161,6 +171,7 @@ export default class App extends React.PureComponent {
             <input
               aria-label='Search'
               className='form-control'
+              disabled={this.state.isLoading}
               onInput={this.fetch.bind(this)}
               placeholder='Search'
               type='text'
@@ -171,6 +182,7 @@ export default class App extends React.PureComponent {
             <button
               children={`New ${capitalizeFirstLetter(this.props.model)}`}
               className='btn btn-primary no-select'
+              disabled={this.state.isLoading}
               onClick={this.toggleForm.bind(this)}
               type='button'
             />
@@ -183,7 +195,7 @@ export default class App extends React.PureComponent {
             errors={this.state.formErrors}
             foreignData={this.props.meta.foreignData}
             initialData={this.state.formData}
-            isLoading={this.isLoading || this.isLoading}
+            isLoading={this.state.isLoading}
             key={this.state.formKey}
             onSubmit={this.state.formAction === 'create' ? this.create.bind(this) : this.update.bind(this)}
             schema={this.props.schema.filter(({ isField }) => isField)}
@@ -193,15 +205,15 @@ export default class App extends React.PureComponent {
         <Table
           columns={this.props.schema.filter(({ isColumn }) => isColumn)}
           defaultName={this.props.meta.defaultName}
-          isLoading={this.isLoading || this.isLoading}
+          isLoading={this.state.isLoading}
           items={this.state.items}
           meta={this.props.meta}
           model={this.props.model}
           onDelete={this.delete.bind(this)}
           onEdit={this.edit.bind(this)}
           onSort={this.sort.bind(this)}
-          sortBy={this.state.sortBy}
-          sortOrder={this.state.sortOrder}
+          sortBy={this.sortBy}
+          sortOrder={this.sortOrder}
         />
       </div>
     )

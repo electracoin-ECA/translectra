@@ -15,14 +15,12 @@ export default class Table extends React.PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.isDeleting && !nextProps.isLoading) {
-      return {
+    return !nextProps.isLoading && prevState.isDeleting
+      ? {
         isDeleting: false,
         removeConfirmationItemId: '',
       }
-    }
-
-    return null
+      : null
   }
 
   toggleOpenedItem(itemId) {
@@ -32,16 +30,20 @@ export default class Table extends React.PureComponent {
   }
 
   edit(itemId) {
-    if (this.props.isLoading || this.state.isDeleting) return
+    if (this.props.isLoading) return
+
     this.props.onEdit(itemId)
   }
 
   remove(itemId) {
-    if (this.props.isLoading || this.state.isDeleting) return
+    if (this.props.isLoading) return
+
     this.setState({ removeConfirmationItemId: itemId })
   }
 
   delete(itemId) {
+    if (this.props.isLoading) return
+
     this.setState({ isDeleting: true })
     this.props.onDelete(itemId)
   }
@@ -53,7 +55,7 @@ export default class Table extends React.PureComponent {
           <th
             className='text-center list__headCell'
             key={name}
-            onClick={() => this.props.onSort(name)}
+            onClick={() => this.props.onSort(name, type)}
             scope='col'
           >
             {label[0]}
@@ -74,12 +76,27 @@ export default class Table extends React.PureComponent {
       case 'collection':
         return undefined
 
+      case 'date':
+        return (
+          <th
+            className='list__headCell'
+            key={name}
+            onClick={() => this.props.onSort(name, type)}
+            scope='col'
+          >
+            {label}
+            {this.props.sortBy === name && (
+              <i className='material-icons'>{!this.props.sortOrder ? 'arrow_drop_up' : 'arrow_drop_down'}</i>
+            )}
+          </th>
+        )
+
       default:
         return (
           <th
             className='list__headCell'
             key={name}
-            onClick={() => this.props.onSort(name)}
+            onClick={() => this.props.onSort(name, type)}
             scope='col'
           >
             {label}
@@ -124,7 +141,7 @@ export default class Table extends React.PureComponent {
       )
     }
 
-    const buttonClass = this.props.isLoading || this.state.isDeleting ? 'text-muted' : 'text-primary'
+    const buttonClass = this.props.isLoading ? 'text-muted' : 'text-primary'
 
     return [
       <tr key={item._id}>
@@ -242,7 +259,7 @@ export default class Table extends React.PureComponent {
     return (
       <table className='table table-sm'>
         <thead>
-          <tr className='no-select'>
+          <tr className={`no-select${this.props.isLoading ? ' text-muted' : ''}`}>
             {this.props.columns.map(this.renderHead.bind(this))}
             <th className='list__iconHeadCell' scope='col' />
             <th className='list__iconHeadCell' scope='col' />
