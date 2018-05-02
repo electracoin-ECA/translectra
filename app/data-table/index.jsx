@@ -10,7 +10,7 @@ import capitalizeFirstLetter from '../helpers/capitalizeFirstLetter'
 axios.interceptors.response.use(response => response, error => Promise.reject(error.response))
 
 const API_URL = '/api'
-const FETCH_INTERVAL = 2000
+const FETCH_INTERVAL = 100000
 
 export default class App extends React.PureComponent {
   constructor(props) {
@@ -23,6 +23,7 @@ export default class App extends React.PureComponent {
       formAction: 'create',
       formData: undefined,
       formErrors: {},
+      formKey: 0,
       isFormOpen: false,
       items: [],
       sortBy: props.meta.sortBy,
@@ -63,28 +64,15 @@ export default class App extends React.PureComponent {
     this.fetch(false)
   }
 
-  create($form) {
+  create(data) {
     this.isLoading = true
-
-    const data = {}
-    this.props.schema
-      .filter(({ isField }) => isField)
-      .forEach(({ name, type }) => {
-        switch (type) {
-          case 'boolean':
-            data[name] = $form[name].checked
-            break
-
-          default:
-            data[name] = $form[name].value
-        }
-      })
 
     axios.post(`${API_URL}/${this.props.model}`, data)
       .then(() => {
         this.setState({
           formData: undefined,
           formErrors: {},
+          formKey: this.state.formKey + 1,
           isLoading: true,
         })
         this.isLoading = true
@@ -102,8 +90,9 @@ export default class App extends React.PureComponent {
 
     this.setState({
       currentEditedItemId: itemId,
-      formData,
       formAction: 'update',
+      formData,
+      formKey: this.state.formKey + 1,
       isFormOpen: true,
     })
   }
@@ -156,6 +145,7 @@ export default class App extends React.PureComponent {
     this.setState({
       formAction: 'create',
       formData: undefined,
+      formKey: this.state.formKey + 1,
       isFormOpen: this.state.formAction === 'update' && this.state.isFormOpen ? true : !this.state.isFormOpen,
     })
   }
@@ -194,6 +184,7 @@ export default class App extends React.PureComponent {
             foreignData={this.props.meta.foreignData}
             initialData={this.state.formData}
             isLoading={this.isLoading || this.isLoading}
+            key={this.state.formKey}
             onSubmit={this.state.formAction === 'create' ? this.create.bind(this) : this.update.bind(this)}
             schema={this.props.schema.filter(({ isField }) => isField)}
           />

@@ -2,13 +2,25 @@ import * as R from 'ramda'
 import React from 'react'
 
 import capitalizeFirstLetter from '../helpers/capitalizeFirstLetter'
-import keyify from '../helpers/keyify'
 
 export default class Form extends React.PureComponent {
   constructor(props) {
     super(props)
 
+    this.inputWidth = 0
+
+    const state = props.schema
+      .filter(({ type }) => type === 'collection')
+      .reduce((prev, { name }) => {
+        prev[`${name}IsFocused`] = false
+        prev[`${name}Query`] = ''
+        prev[`${name}SelectedItems`] = []
+
+        return prev
+      }, {})
+
     this.state = {
+      ...state,
       isUpdating: false,
     }
   }
@@ -24,33 +36,163 @@ export default class Form extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!this.state.isUpdating && prevState.isUpdating && R.isEmpty(this.props.errors)) this.$form.reset()
+    if (!this.state.isUpdating && prevState.isUpdating && R.isEmpty(this.props.errors)) {
+      this.$form.reset()
+
+      const nextState = this.props.schema
+        .filter(({ type }) => type === 'collection')
+        .reduce((prev, { name }) => {
+          prev[`${name}SelectedItems`] = []
+
+          return prev
+        }, {})
+
+      this.setState(nextState)
+    }
+  }
+
+  focusCollection(fieldName) {
+    this.inputWidth = this[`$${fieldName}`].clientWidth
+
+    const state = {...this.state}
+    state[`${fieldName}IsFocused`] = true
+    this.setState({...state})
+  }
+
+  blurCollection(fieldName) {
+    // We delay the blur actions to let the onClick event to be handled before
+    // in case a collection item has been clicked.
+    setTimeout(() => {
+      const state = {...this.state}
+      state[`${fieldName}IsFocused`] = false
+      this.setState({...state})
+    }, 150)
+  }
+
+  queryCollection(fieldName) {
+    const state = {...this.state}
+    state[`${fieldName}Query`] = this[`$${fieldName}`].value
+    this.setState({...state})
+  }
+
+  selectCollectionItem(fieldName, itemId) {
+    const state = {...this.state}
+    state[`${fieldName}SelectedItems`]
+      .push(this.props.foreignData[fieldName].find(({ _id }) => _id === itemId))
+    this.setState({...state})
+  }
+
+  unselectCollectionItem(fieldName, itemId) {
+    const state = {...this.state}
+    state[`${fieldName}IsFocused`] = false
+    state[`${fieldName}Query`] = ''
+    state[`${fieldName}SelectedItems`] = state[`${fieldName}SelectedItems`].filter(({ _id }) => _id !== itemId)
+    this.setState({...state})
   }
 
   submit(event) {
     event.preventDefault()
     this.setState({ isUpdating: true })
-    this.props.onSubmit(this.$form)
+
+    const data = {}
+    this.props.schema
+      .filter(({ isField }) => isField)
+      .forEach(({ name, type }) => {
+        switch (type) {
+          case 'boolean':
+            data[name] = this.$form[name].checked
+            break
+
+          case 'collection':
+            data[name] = this.state[`${name}SelectedItems`].map(({ _id }) => _id)
+            break
+
+          default:
+            data[name] = this.$form[name].value
+        }
+      })
+
+    this.props.onSubmit(data)
   }
 
-  renderField(schemaProp, index) {
-    const hasError = this.props.errors[schemaProp.name] !== undefined
+  renderField(field, index) {
+    const hasError = this.props.errors[field.name] !== undefined
 
-    switch (schemaProp.type) {
+    switch (field.type) {
       case 'boolean':
         return (
           <div className='form-group row' key={index}>
             <div className='col-sm-10 offset-md-2'>
               <input
                 className='form-check-input'
-                defaultChecked={this.props.initialData !== undefined ? this.props.initialData[schemaProp.name] : false}
+                defaultChecked={this.props.initialData !== undefined ? this.props.initialData[field.name] : false}
                 disabled={this.props.isLoading || this.state.isUpdating}
-                id={schemaProp.name}
-                key={this.props.initialData !== undefined ? keyify(this.props.initialData[schemaProp.name]) : undefined}
-                name={schemaProp.name}
+                id={field.name}
+                name={field.name}
                 type='checkbox'
               />
-              <label className='form-check-label no-select' htmlFor={schemaProp.name}>{schemaProp.label}</label>
+              <label className='form-check-label no-select' htmlFor={field.name}>{field.label}</label>
+            </div>
+          </div>
+        )
+
+      case 'collection':
+        return (
+          <div className='form-group row' key={index}>
+            <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
+            <div className='col-sm-10'>
+              <input
+                autoCapitalize='off'
+                autoCorrect='off'
+                className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
+                disabled={this.props.isLoading || this.state.isUpdating}
+                onBlur={() => this.blurCollection(field.name)}
+                onFocus={() => this.focusCollection(field.name)}
+                onInput={() => this.queryCollection(field.name)}
+                ref={node => this[`$${field.name}`] = node}
+                spellCheck='false'
+                type='text'
+              />
+              {this.state[`${field.name}IsFocused`] && (
+                <div
+                  className='dropdown-menu no-select'
+                  style={{
+                    cursor: 'pointer',
+                    display: 'block',
+                    left: '15px',
+                    width: `${this.inputWidth}px`,
+                  }}
+                >
+                  {this.props.foreignData[field.name]
+                    .filter(({ _id, name }) =>
+                      (new RegExp(this.state[`${field.name}Query`], 'i')).test(name) &&
+                      this.state[`${field.name}SelectedItems`].filter(({ _id: id }) => id === _id).length === 0
+                    )
+                    .slice(0, 5)
+                    .map((collectionItem, index) => (
+                      <span
+                        children={collectionItem.name}
+                        className='dropdown-item'
+                        key={index}
+                        onClick={() => this.selectCollectionItem(field.name, collectionItem._id)}
+                      />
+                    ))
+                  }
+                </div>
+              )}
+              <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
+              {this.state[`${field.name}SelectedItems`].length !== 0 && (
+                <div className='mt-1'>
+                  {this.state[`${field.name}SelectedItems`].map((collectionItem, index) => (
+                    <button
+                      children={collectionItem.name}
+                      className='btn btn-sm btn-secondary mr-1'
+                      key={index}
+                      onClick={() => this.unselectCollectionItem(field.name, collectionItem._id)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )
@@ -58,26 +200,46 @@ export default class Form extends React.PureComponent {
       case 'foreign':
         return (
           <div className='form-group row' key={index}>
-            <label className='col-sm-2 col-form-label no-select' htmlFor={schemaProp.name}>{schemaProp.label}</label>
+            <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
             <div className='col-sm-10'>
               <select
                 className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
-                defaultValue={this.props.initialData !== undefined ? this.props.initialData[schemaProp.name]._id : ''}
+                defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name]._id : ''}
                 disabled={this.props.isLoading || this.state.isUpdating}
-                id={schemaProp.name}
-                key={this.props.initialData !== undefined ? keyify(this.props.initialData[schemaProp.name].name) : undefined}
-                name={schemaProp.name}
+                id={field.name}
+                name={field.name}
               >
                 <option value='' />
-                {this.props.foreignData[schemaProp.name].map((foreignDataItem, index) => (
+                {this.props.foreignData[field.name].map((foreignItem, index) => (
                   <option
-                    children={foreignDataItem.name}
+                    children={foreignItem.name}
                     key={index}
-                    value={foreignDataItem._id}
+                    value={foreignItem._id}
                   />
                 ))}
               </select>
-              <div className='invalid-feedback'>{hasError && this.props.errors[schemaProp.name].message}</div>
+              <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
+            </div>
+          </div>
+        )
+
+      case 'textarea':
+        return (
+          <div className='form-group row' key={index}>
+            <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
+            <div className='col-sm-10'>
+              <textarea
+                autoCapitalize='off'
+                autoCorrect='off'
+                className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
+                defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name] : ''}
+                disabled={this.props.isLoading || this.state.isUpdating}
+                id={field.name}
+                name={field.name}
+                spellCheck='false'
+                type='text'
+              />
+              <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
             </div>
           </div>
         )
@@ -85,21 +247,20 @@ export default class Form extends React.PureComponent {
       default:
         return (
           <div className='form-group row' key={index}>
-            <label className='col-sm-2 col-form-label no-select' htmlFor={schemaProp.name}>{schemaProp.label}</label>
+            <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
             <div className='col-sm-10'>
               <input
                 autoCapitalize='off'
                 autoCorrect='off'
                 className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
-                defaultValue={this.props.initialData !== undefined ? this.props.initialData[schemaProp.name] : ''}
+                defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name] : ''}
                 disabled={this.props.isLoading || this.state.isUpdating}
-                id={schemaProp.name}
-                key={this.props.initialData !== undefined ? keyify(this.props.initialData[schemaProp.name]) : undefined}
-                name={schemaProp.name}
+                id={field.name}
+                name={field.name}
                 spellCheck='false'
                 type='text'
               />
-              <div className='invalid-feedback'>{hasError && this.props.errors[schemaProp.name].message}</div>
+              <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
             </div>
           </div>
         )
@@ -120,7 +281,7 @@ export default class Form extends React.PureComponent {
         >
           {this.props.schema.map(this.renderField.bind(this))}
           <div className='form-group row'>
-            <div className='col-sm-10 offset-sm-2'>
+            <div className='col-sm-10 offset-sm-2 text-right'>
               <button
                 children={capitalizeFirstLetter(this.props.action)}
                 className='btn btn-primary'
