@@ -75,6 +75,7 @@ body {
   background-color: springgreen;
 }
 .list__headCell > i {
+  font-size: 1.5rem;
   vertical-align: bottom;
 }
 .list__iconHeadCell {
@@ -85,9 +86,9 @@ body {
   font-size: 1.15rem;
   width: 2rem;
 }
-.list__iconCell:hover {
+.list__iconCell-action:hover {
   background-color: #007bff;
 }
-.list__iconCell:hover > i {
+.list__iconCell-action:hover > i {
   color: white;
 }
