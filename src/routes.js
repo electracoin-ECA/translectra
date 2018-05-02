@@ -5,14 +5,17 @@ import AdminLanguageController from './controllers/admin/LanguageController'
 import AdminProjectController from './controllers/admin/ProjectController'
 import AdminUserController from './controllers/admin/UserController'
 import ApiCountryController from './controllers/api/CountryController'
+import ApiKeyController from './controllers/api/KeyController'
 import ApiLanguageController from './controllers/api/LanguageController'
 import ApiProjectController from './controllers/api/ProjectController'
 import ApiUserController from './controllers/api/UserController'
 import AuthCallbackController from './controllers/auth/CallbackController'
 import AuthLogOutController from './controllers/auth/LogOutController'
+import ManagementKeyController from './controllers/management/KeyController'
 import WebHomeController from './controllers/web/HomeController'
 
 import isAdmin from './middlewares/isAdmin'
+import isManager from './middlewares/isManager'
 
 const routes = [
   /* ========================================
@@ -69,6 +72,30 @@ const routes = [
     method: 'delete',
     middleware: isAdmin,
     controller: ApiCountryController,
+  },
+  {
+    path: '/api/key',
+    method: 'get',
+    middleware: isManager,
+    controller: ApiKeyController,
+  },
+  {
+    path: '/api/key',
+    method: 'post',
+    middleware: isManager,
+    controller: ApiKeyController,
+  },
+  {
+    path: '/api/key/:keyId',
+    method: 'put',
+    middleware: isManager,
+    controller: ApiKeyController,
+  },
+  {
+    path: '/api/key/:keyId',
+    method: 'delete',
+    middleware: isManager,
+    controller: ApiKeyController,
   },
   {
     path: '/api/language',
@@ -160,6 +187,16 @@ const routes = [
     path: '/auth/logout',
     method: 'get',
     controller: AuthLogOutController,
+  },
+
+  /* ========================================
+    Management
+  */
+  {
+    path: '/management/key',
+    method: 'get',
+    middleware: isManager,
+    controller: ManagementKeyController,
   },
 
   /* ========================================
