@@ -82,9 +82,12 @@ body {
   width: 2rem;
 }
 .list__iconCell {
-  cursor: pointer;
   font-size: 1.15rem;
   width: 2rem;
+  user-select: none;
+}
+.list__iconCell-action {
+  cursor: pointer;
 }
 .list__iconCell-action:hover {
   background-color: #007bff;
