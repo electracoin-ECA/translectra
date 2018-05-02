@@ -1,0 +1,28 @@
+extends ../layout.pug
+
+block meta
+  meta(name='model' content=JSON.stringify('key'))
+  meta(name='schema' content=JSON.stringify([
+    { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
+    { name: 'projects', type: 'collection', isColumn: true, isField: true, label: 'Projects' },
+    { name: 'note', type: 'tooltip', isColumn: true, isField: true, label: 'Note' },
+    { name: 'url', type: 'link', isColumn: true, isField: true, label: 'URL' },
+    { name: 'value', type: 'textarea', isColumn: true, isField: true, label: 'Value' },
+    { name: 'createdBy', type: 'foreign', isColumn: true, isField: false, label: 'Created by' },
+    { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
+    { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
+  ]))
+  meta(name='meta' content=JSON.stringify({
+    canCreate: true,
+    defaultName: 'name',
+    foreignData: {
+      projects,
+      createdBy: users,
+    },
+    sortBy: 'updatedAt',
+    sortOrder: false,
+  }))
+
+block content
+  h1(class='display-1 no-select') Keys
+  div(id='data-table') Loading...
