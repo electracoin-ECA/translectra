@@ -166,7 +166,7 @@ export default class App extends React.PureComponent {
         <div className={`${this.props.meta.canCreate ? 'd-flex justify-content-between ' : ''}mb-4`}>
           <div className='input-group mr-3'>
             <div className='input-group-prepend'>
-              <i className='input-group-text material-icons no-select'>search</i>
+              <i className='input-group-text material-icons no-select' style={{ fontSize: '1.5rem' }}>search</i>
             </div>
             <input
               aria-label='Search'
