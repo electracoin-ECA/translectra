@@ -1,0 +1,64 @@
+import mongoose from 'mongoose'
+import mongooseUniqueValidator from 'mongoose-unique-validator'
+
+const keySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'The key name is a required field.'],
+    unique: [true, 'This key name is already taken.'],
+    validate: {
+      validator: v => /^[a-z]+[a-z_]+[a-z]+$/.test(v),
+      message: `
+        A key code can only contain lowercase letters and underscores.
+        It must be contain at least 3 characters and can't start or finish with an underscore.
+      `,
+    },
+  },
+  projects: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Project',
+  }],
+  url: {
+    type: String,
+    validate: {
+      validator: v => v.length === 0 || /^https:\/\//.test(v),
+      message: `The key URL must start with "https://".`,
+    },
+  },
+  note: {
+    type: String,
+  },
+  value: {
+    type: String,
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
+  updatedAt: {
+    type: Date,
+    required: true,
+  },
+})
+
+keySchema.path('projects').validate(v => v && v.length > 0, `You must attach at least one project to a key.`)
+keySchema.path('url').validate(
+  function(v) {
+    return (typeof this.value === 'string' && this.value.length > 0) || (typeof v === 'string' && v.length > 0)
+  },
+  `You must fill either the URL or the value of a key.`
+)
+keySchema.path('value').validate(
+  function(v) {
+    return (typeof this.url === 'string' && this.url.length > 0) || (typeof v === 'string' && v.length > 0)
+  },
+  `You must fill either the URL or the value of a key.`
+)
+keySchema.plugin(mongooseUniqueValidator)
+
+export default mongoose.model('Key', keySchema)
