@@ -26,5 +26,6 @@ const projectSchema = new mongoose.Schema({
 })
 
 projectSchema.plugin(mongooseUniqueValidator)
+projectSchema.path('versions').validate(v => v && v.length > 0, `You must create at least one version for each project.`)
 
 export default mongoose.model('Project', projectSchema)
