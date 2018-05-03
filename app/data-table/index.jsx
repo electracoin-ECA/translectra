@@ -184,7 +184,7 @@ export default class App extends React.PureComponent {
             foreignData={this.props.meta.foreignData}
             initialData={this.state.formData}
             isLoading={this.state.isLoading}
-            key={this.state.formKey}
+            key={String(this.state.formKey)}
             onSubmit={this.state.formAction === 'create' ? this.create.bind(this) : this.update.bind(this)}
             schema={this.props.schema.filter(({ isField }) => isField)}
           />
