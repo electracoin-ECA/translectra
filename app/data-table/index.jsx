@@ -98,6 +98,7 @@ export default class App extends React.PureComponent {
       currentEditedItemId: itemId,
       formAction: 'update',
       formData,
+      formErrors: {},
       formKey: this.state.formKey + 1,
       isFormOpen: true,
     })
@@ -140,6 +141,7 @@ export default class App extends React.PureComponent {
     this.setState({
       formAction: 'create',
       formData: undefined,
+      formErrors: {},
       formKey: this.state.formKey + 1,
       isFormOpen: this.state.formAction === 'update' && this.state.isFormOpen ? true : !this.state.isFormOpen,
     })
