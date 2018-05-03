@@ -128,13 +128,13 @@ export default class Table extends React.PureComponent {
             Are you sure to remove « {item[this.props.defaultName]} » ?
           </td>
           <td
-            className='bg-danger text-light text-center no-select list__iconCell'
+            className='bg-danger text-light text-center no-select list__iconCell list__iconCell-action'
             onClick={() => this.delete(item._id)}
           >
             <i className='material-icons'>done</i>
           </td>
           <td
-            className='bg-primary text-light text-center no-select list__iconCell'
+            className='bg-primary text-light text-center no-select list__iconCell list__iconCell-action'
             onClick={() => this.setState({ removeConfirmationItemId: '' })}
           >
             <i className='material-icons'>clear</i>
