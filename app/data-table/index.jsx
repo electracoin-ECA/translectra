@@ -103,24 +103,8 @@ export default class App extends React.PureComponent {
     })
   }
 
-  update($form) {
+  update(data) {
     if (this.state.isLoading) return
-
-    this.setState({ isLoading: true })
-
-    const data = {}
-    this.props.schema
-      .filter(({ isField }) => isField)
-      .forEach(({ name, type }) => {
-        switch (type) {
-          case 'boolean':
-            data[name] = $form[name].checked
-            break
-
-          default:
-            data[name] = $form[name].value
-        }
-      })
 
     axios.put(`${API_URL}/${this.props.model}/${this.state.currentEditedItemId}`, data)
       .then(() => {
