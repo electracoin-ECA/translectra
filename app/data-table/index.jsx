@@ -112,6 +112,7 @@ export default class App extends React.PureComponent {
         this.setState({
           formData: undefined,
           formErrors: {},
+          isFormOpen: false,
         })
         this.fetch(false)
       })
