@@ -1,4 +1,5 @@
 import BaseController from '..'
+import Language from '../../models/Language'
 
 export default class LanguageController extends BaseController {
   get() {
@@ -14,6 +15,6 @@ export default class LanguageController extends BaseController {
   }
 
   delete() {
-    this.apiDelete(Country)
+    this.apiDelete(Language)
   }
 }
