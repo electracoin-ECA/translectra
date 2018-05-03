@@ -10,10 +10,6 @@ const projectSchema = new mongoose.Schema({
   versions: [{
     type: String,
     unique: [true, `You can't have duplicates in your project version names.`],
-    validate: {
-      validator: v => v.length === 0 || /^v\d+\.\d+.\d+$/.test(v),
-      message: `The project versions must be of form "vX.Y.Z" (X, Y & Z being numbers).`,
-    },
   }],
   createdAt: {
     type: Date,
@@ -27,5 +23,9 @@ const projectSchema = new mongoose.Schema({
 
 projectSchema.plugin(mongooseUniqueValidator)
 projectSchema.path('versions').validate(v => v && v.length > 0, `You must create at least one version for each project.`)
+projectSchema.path('versions').validate(
+  v => /^v\d+\.\d+.\d+$/.test(v),
+  `The project versions must be of form "vX.Y.Z" (X, Y & Z being numbers).`
+)
 
 export default mongoose.model('Project', projectSchema)
