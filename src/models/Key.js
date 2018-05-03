@@ -1,11 +1,15 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
+import Project from './Project'
+import Translation from './Translation'
+import User from './User'
+
 const keySchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'The key name is a required field.'],
-    unique: [true, 'This key name is already taken.'],
+    unique: [true, 'This key name already exists.'],
     validate: {
       validator: v => /^[a-z]+[a-z_]+[a-z]+$/.test(v),
       message: `
@@ -31,11 +35,15 @@ const keySchema = new mongoose.Schema({
   value: {
     type: String,
   },
-  createdBy: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
+  translations: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Translation',
+  }],
   createdAt: {
     type: Date,
     required: true,
