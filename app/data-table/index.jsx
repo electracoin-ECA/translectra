@@ -107,6 +107,8 @@ export default class App extends React.PureComponent {
   update(data) {
     if (this.state.isLoading) return
 
+    this.setState({ isLoading: true })
+
     axios.put(`${API_URL}/${this.props.model}/${this.state.currentEditedItemId}`, data)
       .then(() => {
         this.setState({
