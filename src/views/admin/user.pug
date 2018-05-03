@@ -3,7 +3,7 @@ extends ../layout.pug
 block meta
   meta(name='model' content=JSON.stringify('user'))
   meta(name='schema' content=JSON.stringify([
-    { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Display Name' },
+    { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Display Name', isDisabled: true },
     { name: 'email', type: 'text', isColumn: true, isField: false, label: 'Email' },
     { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Last Login' },
     { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Registration' },
