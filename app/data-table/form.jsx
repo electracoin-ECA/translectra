@@ -8,8 +8,9 @@ export default class Form extends React.PureComponent {
     super(props)
 
     this.inputWidth = 0
+    this.refocusField = ''
 
-    this.state = props.schema
+    const collectionsStateProps = props.schema
       .filter(({ type }) => type === 'collection')
       .reduce((prev, { name }) => {
         prev[`${name}IsFocused`] = false
@@ -18,6 +19,27 @@ export default class Form extends React.PureComponent {
 
         return prev
       }, {})
+
+    const tagsStateProps = props.schema
+      .filter(({ type }) => type === 'tags')
+      .reduce((prev, { name }) => {
+        prev[`${name}Key`] = 0
+        prev[`${name}Tags`] = []
+
+        return prev
+      }, {})
+
+    this.state = {
+      ...collectionsStateProps,
+      ...tagsStateProps,
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.refocusField !== '') {
+      this[this.refocusField].focus()
+      this.refocusField = ''
+    }
   }
 
   focusCollection(fieldName) {
@@ -59,8 +81,51 @@ export default class Form extends React.PureComponent {
     this.setState({...state})
   }
 
-  submit(event) {
+  checkTagsInput(fieldName) {
+    const value = this[`$${fieldName}`].value
+    if (!value.endsWith(' ')) return
+
+    if (value.trim().length === 0) {
+      this.refocusField = `$${fieldName}`
+      const state = {...this.state}
+      state[`${fieldName}Key`] = state[`${fieldName}Key`] + 1
+      this.setState({...state})
+
+      return
+    }
+
+    this.addTag(fieldName)
+  }
+
+  checkTagsKeyDown(event, fieldName) {
+    if (event.keyCode !== 13) return
+
     event.preventDefault()
+    if (this[`$${fieldName}`].value.length === 0) {
+      this.submit()
+
+      return
+    }
+
+    this.addTag(fieldName)
+  }
+
+  addTag(fieldName) {
+    this.refocusField = `$${fieldName}`
+    const state = {...this.state}
+    state[`${fieldName}Key`] = state[`${fieldName}Key`] + 1
+    state[`${fieldName}Tags`].push(this[`$${fieldName}`].value.trim())
+    this.setState({...state})
+  }
+
+  removeTag(fieldName, tag) {
+    const state = {...this.state}
+    state[`${fieldName}Tags`] = state[`${fieldName}Tags`].filter(_tag => _tag !== tag)
+    this.setState({...state})
+  }
+
+  submit(event) {
+    if (event !== undefined) event.preventDefault()
 
     const data = {}
     this.props.schema
@@ -73,6 +138,10 @@ export default class Form extends React.PureComponent {
 
           case 'collection':
             data[name] = this.state[`${name}SelectedItems`].map(({ _id }) => _id)
+            break
+
+          case 'tags':
+            data[name] = this.state[`${name}Tags`]
             break
 
           default:
@@ -166,7 +235,7 @@ export default class Form extends React.PureComponent {
                   {this.state[`${field.name}SelectedItems`].map((collectionItem, index) => (
                     <button
                       children={collectionItem.name}
-                      className='btn btn-sm btn-secondary mr-1'
+                      className='btn btn-sm btn-info mr-1'
                       key={index}
                       onClick={() => this.unselectCollectionItem(field.name, collectionItem._id)}
                     />
@@ -199,6 +268,40 @@ export default class Form extends React.PureComponent {
                 ))}
               </select>
               <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
+            </div>
+          </div>
+        )
+
+      case 'tags':
+        return (
+          <div className='form-group row' key={index}>
+            <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
+            <div className='col-sm-10'>
+              <input
+                autoCapitalize='off'
+                autoCorrect='off'
+                className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
+                disabled={this.props.isLoading}
+                key={String(this.state[`${field.name}Key`])}
+                onInput={() => this.checkTagsInput(field.name)}
+                onKeyDown={event => this.checkTagsKeyDown(event, field.name)}
+                ref={node => this[`$${field.name}`] = node}
+                spellCheck='false'
+                type='text'
+              />
+              <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
+              {this.state[`${field.name}Tags`].length !== 0 && (
+                <div className='mt-1'>
+                  {this.state[`${field.name}Tags`].map((tag, index) => (
+                    <button
+                      children={tag}
+                      className='btn btn-sm btn-info mr-1'
+                      key={String(index)}
+                      onClick={() => this.removeTag(field.name, tag)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )
