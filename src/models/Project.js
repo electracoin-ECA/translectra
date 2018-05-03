@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
+import R from 'ramda'
 
 const projectSchema = new mongoose.Schema({
   name: {
@@ -9,7 +10,6 @@ const projectSchema = new mongoose.Schema({
   },
   versions: [{
     type: String,
-    unique: [true, `You can't have duplicates in your project version names.`],
   }],
   createdAt: {
     type: Date,
@@ -26,6 +26,10 @@ projectSchema.path('versions').validate(v => v && v.length > 0, `You must create
 projectSchema.path('versions').validate(
   versions => !Boolean(versions.filter(version => !/^v\d+\.\d+.\d+$/.test(version)).length),
   `The project versions must be of form "vX.Y.Z" (X, Y & Z being numbers).`
+)
+projectSchema.path('versions').validate(
+  versions => versions.length === R.uniq(versions).length,
+  `You can't have duplicates in your project version names.`
 )
 
 export default mongoose.model('Project', projectSchema)
