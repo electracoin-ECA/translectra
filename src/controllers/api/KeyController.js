@@ -27,7 +27,7 @@ export default class KeyController extends BaseController {
       })
       .sort(sortData)
       .limit(limit > LIMIT_MAX ? LIMIT_MAX : limit)
-      .populate('createdBy')
+      .populate('author')
       .populate('projects')
       .exec((err, keys) => {
         if (err !== null) {
@@ -43,19 +43,16 @@ export default class KeyController extends BaseController {
   post() {
     this.isJson = true
 
-    const userId = this.req.user._id
-    const { name, projects, note, url, value } = this.req.body
-    const nowDate = Date.now()
-
     const key = new Key({
-      name,
-      projects,
-      note,
-      url,
-      value,
-      createdBy: userId,
-      createdAt: nowDate,
-      updatedAt: nowDate,
+      name: this.req.body.name,
+      projects: this.req.body.projects,
+      note: this.req.body.note,
+      url: this.req.body.url,
+      value: this.req.body.value,
+      author: this.req.user._id,
+      translations: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     })
 
     key.save((err) => {
@@ -72,19 +69,14 @@ export default class KeyController extends BaseController {
   put() {
     this.isJson = true
 
-    const userId = this.req.user._id
-    const { name, projects, note, url, value } = this.req.body
-    const nowDate = Date.now()
-
     Key.findByIdAndUpdate(
       this.req.params.keyId,
       {
-        name,
-        projects,
-        note,
-        url,
-        value,
-        createdBy: userId,
+        name: this.req.body.name,
+        projects: this.req.body.projects,
+        note: this.req.body.note,
+        url: this.req.body.url,
+        value: this.req.body.value,
         updatedAt: Date.now(),
       },
       (err) => {
