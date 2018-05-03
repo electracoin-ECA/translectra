@@ -43,6 +43,7 @@ const keySchema = new mongoose.Schema({
   translations: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Translation',
+    unique: true,
   }],
   createdAt: {
     type: Date,
