@@ -9,7 +9,7 @@ export default class Form extends React.PureComponent {
 
     this.inputWidth = 0
 
-    const state = props.schema
+    this.state = props.schema
       .filter(({ type }) => type === 'collection')
       .reduce((prev, { name }) => {
         prev[`${name}IsFocused`] = false
@@ -18,37 +18,6 @@ export default class Form extends React.PureComponent {
 
         return prev
       }, {})
-
-    this.state = {
-      ...state,
-      isUpdating: false,
-    }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.isLoading && prevState.isUpdating) {
-      return {
-        isUpdating: false,
-      }
-    }
-
-    return null
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!this.state.isUpdating && prevState.isUpdating && R.isEmpty(this.props.errors)) {
-      this.$form.reset()
-
-      const nextState = this.props.schema
-        .filter(({ type }) => type === 'collection')
-        .reduce((prev, { name }) => {
-          prev[`${name}SelectedItems`] = []
-
-          return prev
-        }, {})
-
-      this.setState(nextState)
-    }
   }
 
   focusCollection(fieldName) {
@@ -92,7 +61,6 @@ export default class Form extends React.PureComponent {
 
   submit(event) {
     event.preventDefault()
-    this.setState({ isUpdating: true })
 
     const data = {}
     this.props.schema
@@ -126,7 +94,7 @@ export default class Form extends React.PureComponent {
               <input
                 className='form-check-input'
                 defaultChecked={this.props.initialData !== undefined ? this.props.initialData[field.name] : false}
-                disabled={this.props.isLoading || this.state.isUpdating}
+                disabled={this.props.isLoading}
                 id={field.name}
                 name={field.name}
                 type='checkbox'
@@ -145,7 +113,7 @@ export default class Form extends React.PureComponent {
                 autoCapitalize='off'
                 autoCorrect='off'
                 className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
-                disabled={this.props.isLoading || this.state.isUpdating}
+                disabled={this.props.isLoading}
                 onBlur={() => this.blurCollection(field.name)}
                 onFocus={() => this.focusCollection(field.name)}
                 onInput={() => this.queryCollection(field.name)}
@@ -205,7 +173,7 @@ export default class Form extends React.PureComponent {
               <select
                 className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
                 defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name]._id : ''}
-                disabled={this.props.isLoading || this.state.isUpdating}
+                disabled={this.props.isLoading}
                 id={field.name}
                 name={field.name}
               >
@@ -233,7 +201,7 @@ export default class Form extends React.PureComponent {
                 autoCorrect='off'
                 className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
                 defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name] : ''}
-                disabled={this.props.isLoading || this.state.isUpdating}
+                disabled={this.props.isLoading}
                 id={field.name}
                 name={field.name}
                 spellCheck='false'
@@ -254,7 +222,7 @@ export default class Form extends React.PureComponent {
                 autoCorrect='off'
                 className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
                 defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name] : ''}
-                disabled={this.props.isLoading || this.state.isUpdating}
+                disabled={this.props.isLoading}
                 id={field.name}
                 name={field.name}
                 spellCheck='false'
@@ -285,7 +253,7 @@ export default class Form extends React.PureComponent {
               <button
                 children={capitalizeFirstLetter(this.props.action)}
                 className='btn btn-primary'
-                disabled={this.props.isLoading || this.state.isUpdating}
+                disabled={this.props.isLoading}
                 type='submit'
               />
             </div>
