@@ -8,8 +8,8 @@ import User from './User'
 const keySchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'The key name is a required field.'],
-    unique: [true, 'This key name already exists.'],
+    required: [true, `The key name is a required field.`],
+    unique: true,
     validate: {
       validator: v => /^[a-z]+[a-z_]+[a-z]+$/.test(v),
       message: `
@@ -67,6 +67,6 @@ keySchema.path('value').validate(
   },
   `You must fill either the URL or the value of a key.`
 )
-keySchema.plugin(mongooseUniqueValidator)
+keySchema.plugin(mongooseUniqueValidator, { message: `This key {PATH} already exists.` })
 
 export default mongoose.model('Key', keySchema)
