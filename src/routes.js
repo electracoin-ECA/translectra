@@ -8,13 +8,17 @@ import ApiCountryController from './controllers/api/CountryController'
 import ApiKeyController from './controllers/api/KeyController'
 import ApiLanguageController from './controllers/api/LanguageController'
 import ApiProjectController from './controllers/api/ProjectController'
+import ApiTranslateController from './controllers/api/TranslateController'
 import ApiUserController from './controllers/api/UserController'
 import AuthCallbackController from './controllers/auth/CallbackController'
 import AuthLogOutController from './controllers/auth/LogOutController'
 import ManagementKeyController from './controllers/management/KeyController'
+import UserDashboardController from './controllers/user/DashboardController'
+import UserTranslateController from './controllers/user/TranslateController'
 import WebHomeController from './controllers/web/HomeController'
 
 import isAdmin from './middlewares/isAdmin'
+import isUser from './middlewares/isUser'
 import isManager from './middlewares/isManager'
 
 const routes = [
@@ -62,13 +66,13 @@ const routes = [
     controller: ApiCountryController,
   },
   {
-    path: '/api/country/:countryId',
+    path: '/api/country/:id',
     method: 'put',
     middleware: isAdmin,
     controller: ApiCountryController,
   },
   {
-    path: '/api/country/:countryId',
+    path: '/api/country/:id',
     method: 'delete',
     middleware: isAdmin,
     controller: ApiCountryController,
@@ -86,13 +90,13 @@ const routes = [
     controller: ApiKeyController,
   },
   {
-    path: '/api/key/:keyId',
+    path: '/api/key/:id',
     method: 'put',
     middleware: isManager,
     controller: ApiKeyController,
   },
   {
-    path: '/api/key/:keyId',
+    path: '/api/key/:id',
     method: 'delete',
     middleware: isManager,
     controller: ApiKeyController,
@@ -110,13 +114,13 @@ const routes = [
     controller: ApiLanguageController,
   },
   {
-    path: '/api/language/:languageId',
+    path: '/api/language/:id',
     method: 'put',
     middleware: isAdmin,
     controller: ApiLanguageController,
   },
   {
-    path: '/api/language/:languageId',
+    path: '/api/language/:id',
     method: 'delete',
     middleware: isAdmin,
     controller: ApiLanguageController,
@@ -134,16 +138,22 @@ const routes = [
     controller: ApiProjectController,
   },
   {
-    path: '/api/project/:projectId',
+    path: '/api/project/:id',
     method: 'put',
     middleware: isAdmin,
     controller: ApiProjectController,
   },
   {
-    path: '/api/project/:projectId',
+    path: '/api/project/:id',
     method: 'delete',
     middleware: isAdmin,
     controller: ApiProjectController,
+  },
+  {
+    path: '/api/translate',
+    method: 'get',
+    middleware: isAdmin,
+    controller: ApiTranslateController,
   },
   {
     path: '/api/user',
@@ -152,13 +162,13 @@ const routes = [
     controller: ApiUserController,
   },
   {
-    path: '/api/user/:userId',
+    path: '/api/user/:id',
     method: 'put',
     middleware: isAdmin,
     controller: ApiUserController,
   },
   {
-    path: '/api/user/:userId',
+    path: '/api/user/:id',
     method: 'delete',
     middleware: isAdmin,
     controller: ApiUserController,
@@ -197,6 +207,22 @@ const routes = [
     method: 'get',
     middleware: isManager,
     controller: ManagementKeyController,
+  },
+
+  /* ========================================
+    Website
+  */
+  {
+    path: '/user/dashboard',
+    method: 'get',
+    middleware: isUser,
+    controller: UserDashboardController,
+  },
+  {
+    path: '/user/translate',
+    method: 'get',
+    middleware: isUser,
+    controller: UserTranslateController,
   },
 
   /* ========================================
