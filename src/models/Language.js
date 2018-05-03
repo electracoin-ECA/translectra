@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
+import Country from './Country'
+
 const languageSchema = new mongoose.Schema({
   country: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,7 +17,10 @@ const languageSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: /^[a-z]{2}-[A-Z]{2}$/,
+    validate: {
+      validator: v => v.length === 0 || /^[a-z]{2}-[A-Z]{2}$/.test(v),
+      message: `The language code must be of form "xx-XX".`,
+    },
   },
   createdAt: {
     type: Date,
