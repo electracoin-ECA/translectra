@@ -85,36 +85,30 @@ export default class Form extends React.PureComponent {
     const value = this[`$${fieldName}`].value
     if (!value.endsWith(' ')) return
 
-    if (value.trim().length === 0) {
-      this.refocusField = `$${fieldName}`
-      const state = {...this.state}
-      state[`${fieldName}Key`] = state[`${fieldName}Key`] + 1
-      this.setState({...state})
-
-      return
-    }
-
-    this.addTag(fieldName)
+    this.addTag(fieldName, value.trim())
   }
 
   checkTagsKeyDown(event, fieldName) {
     if (event.keyCode !== 13) return
 
     event.preventDefault()
-    if (this[`$${fieldName}`].value.length === 0) {
+    const value = this[`$${fieldName}`].value.trim()
+    if (value.length === 0) {
       this.submit()
 
       return
     }
 
-    this.addTag(fieldName)
+    this.addTag(fieldName, value)
   }
 
-  addTag(fieldName) {
+  addTag(fieldName, value) {
     this.refocusField = `$${fieldName}`
     const state = {...this.state}
     state[`${fieldName}Key`] = state[`${fieldName}Key`] + 1
-    state[`${fieldName}Tags`].push(this[`$${fieldName}`].value.trim())
+    if (value.length !== 0 && !state[`${fieldName}Tags`].includes(value)) {
+      state[`${fieldName}Tags`].push(value)
+    }
     this.setState({...state})
   }
 
