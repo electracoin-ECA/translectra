@@ -157,7 +157,7 @@ export default class Form extends React.PureComponent {
 
     if (field.isDisabled) {
       return (
-        <div className='form-group row' key={index}>
+        <div className='form-group row' key={String(index)}>
           <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
           <div className='col-sm-10 col-form-label font-weight-bold'>
             {this.props.initialData[field.name]}
@@ -169,7 +169,7 @@ export default class Form extends React.PureComponent {
     switch (field.type) {
       case 'boolean':
         return (
-          <div className='form-group row' key={index}>
+          <div className='form-group row' key={String(index)}>
             <div className='col-sm-10 offset-sm-2'>
               <input
                 className='form-check-input ml-0 mr-2'
@@ -187,7 +187,7 @@ export default class Form extends React.PureComponent {
 
       case 'collection':
         return (
-          <div className='form-group row' key={index}>
+          <div className='form-group row' key={String(index)}>
             <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
             <div className='col-sm-10'>
               <input
@@ -222,7 +222,7 @@ export default class Form extends React.PureComponent {
                       <span
                         children={collectionItem.name}
                         className='dropdown-item'
-                        key={index}
+                        key={String(index)}
                         onClick={() => this.selectCollectionItem(field.name, collectionItem._id)}
                       />
                     ))
@@ -236,8 +236,9 @@ export default class Form extends React.PureComponent {
                     <button
                       children={collectionItem.name}
                       className='btn btn-sm btn-info mr-1'
-                      key={index}
+                      key={`${field.name}-${index}`}
                       onClick={() => this.unselectCollectionItem(field.name, collectionItem._id)}
+                      type='button'
                     />
                   ))}
                 </div>
@@ -248,7 +249,7 @@ export default class Form extends React.PureComponent {
 
       case 'foreign':
         return (
-          <div className='form-group row' key={index}>
+          <div className='form-group row' key={String(index)}>
             <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
             <div className='col-sm-10'>
               <select
@@ -262,7 +263,7 @@ export default class Form extends React.PureComponent {
                 {this.props.foreignData[field.name].map((foreignItem, index) => (
                   <option
                     children={foreignItem.name}
-                    key={index}
+                    key={String(index)}
                     value={foreignItem._id}
                   />
                 ))}
@@ -274,7 +275,7 @@ export default class Form extends React.PureComponent {
 
       case 'tags':
         return (
-          <div className='form-group row' key={index}>
+          <div className='form-group row' key={String(index)}>
             <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
             <div className='col-sm-10'>
               <input
@@ -296,8 +297,9 @@ export default class Form extends React.PureComponent {
                     <button
                       children={tag}
                       className='btn btn-sm btn-info mr-1'
-                      key={String(index)}
+                      key={`${field.name}-${index}`}
                       onClick={() => this.removeTag(field.name, tag)}
+                      type='button'
                     />
                   ))}
                 </div>
@@ -308,7 +310,7 @@ export default class Form extends React.PureComponent {
 
       case 'textarea':
         return (
-          <div className='form-group row' key={index}>
+          <div className='form-group row' key={String(index)}>
             <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
             <div className='col-sm-10'>
               <textarea
@@ -329,7 +331,7 @@ export default class Form extends React.PureComponent {
 
       default:
         return (
-          <div className='form-group row' key={index}>
+          <div className='form-group row' key={String(index)}>
             <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
             <div className='col-sm-10'>
               <input
