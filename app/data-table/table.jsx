@@ -5,6 +5,8 @@ export default class Table extends React.PureComponent {
   constructor(props) {
     super(props)
 
+    this.actionColumnsLength = Number(this.props.canDelete) + Number(this.props.canEdit)
+
     this.state = {
       isDeleting: false,
       openedItemId: '',
@@ -113,7 +115,7 @@ export default class Table extends React.PureComponent {
       if (this.state.isDeleting) {
         return (
           <tr className='table-info' key={+Date.now()}>
-            <td className='no-select' colSpan={this.props.columns.length + 2}>
+            <td className='no-select' colSpan={this.props.columns.length + this.actionColumnsLength}>
               Deleting {item[this.props.defaultName]}...
             </td>
           </tr>
@@ -209,25 +211,32 @@ export default class Table extends React.PureComponent {
               return <td key={`${item._id}-${name}`}>{item[name]}</td>
           }
         })}
-        <td
-          className={`${buttonClass} text-center no-select list__iconCell list__iconCell-action`}
-          onClick={() => this.edit(item._id)}
-        >
-          <i className='material-icons'>edit</i>
-        </td>
-        <td
-          className={`${buttonClass} text-center no-select list__iconCell list__iconCell-action`}
-          onClick={() => this.remove(item._id)}
-        >
-          <i className='material-icons'>delete</i>
-        </td>
+        {this.props.canEdit && (
+          <td
+            className={`${buttonClass} text-center no-select list__iconCell list__iconCell-action`}
+            onClick={() => this.edit(item._id)}
+          >
+            <i className='material-icons'>edit</i>
+          </td>
+        )}
+        {this.props.canDelete && (
+          <td
+            className={`${buttonClass} text-center no-select list__iconCell list__iconCell-action`}
+            onClick={() => this.remove(item._id)}
+          >
+            <i className='material-icons'>delete</i>
+          </td>
+        )}
       </tr>,
       this.props.columns
         .filter(({ type }) => type === 'collection')
         .map(({ name }, index) => item[name].length !== 0
           ? (
             <tr key={`${item._id}-${name}`}>
-              <td className='pt-0' colSpan={this.props.columns.length + 2} style={{ borderTop: 0, lineHeight: 1 }}>
+              <td
+                className='pt-0' colSpan={this.props.columns.length + this.actionColumnsLength}
+                style={{ borderTop: 0, lineHeight: 1 }}
+              >
                 {item[name].map(({ _id, name: _name }) =>
                   <span children={_name} className='badge badge-info no-select mr-1' key={_id} />,
                 )}
@@ -243,7 +252,7 @@ export default class Table extends React.PureComponent {
             <tr key={`${item._id}-${name}`}>
               <td
                 className='bg-light font-italic'
-                colSpan={this.props.columns.length + 2}
+                colSpan={this.props.columns.length + this.actionColumnsLength}
                 style={{ borderTop: 0, fontSize: '12px' }}
               >
                 {item[name]}
@@ -261,8 +270,8 @@ export default class Table extends React.PureComponent {
         <thead>
           <tr className={`no-select${this.props.isLoading ? ' text-muted' : ''}`}>
             {this.props.columns.map(this.renderHead.bind(this))}
-            <th className='list__iconHeadCell' scope='col' />
-            <th className='list__iconHeadCell' scope='col' />
+            {this.props.canEdit && <th className='list__iconHeadCell' scope='col' />}
+            {this.props.canDelete && <th className='list__iconHeadCell' scope='col' />}
           </tr>
         </thead>
         <tbody>

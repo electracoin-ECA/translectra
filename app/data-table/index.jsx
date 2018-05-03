@@ -16,6 +16,9 @@ export default class App extends React.PureComponent {
   constructor(props) {
     super(props)
 
+    this.canCreate = this.props.meta.canCreate === undefined || this.props.meta.canCreate
+    this.canDelete = this.props.meta.canDelete === undefined || this.props.meta.canDelete
+    this.canEdit = this.props.meta.canEdit === undefined || this.props.meta.canEdit
     this.sortBy = props.meta.sortBy
     this.sortOrder = props.meta.sortOrder
 
@@ -28,8 +31,6 @@ export default class App extends React.PureComponent {
       isFormOpen: false,
       isLoading: false,
       items: [],
-      sortBy: props.meta.sortBy,
-      sortOrder: props.meta.sortOrder,
     }
   }
 
@@ -163,7 +164,7 @@ export default class App extends React.PureComponent {
   render() {
     return (
       <div>
-        <div className={`${this.props.meta.canCreate ? 'd-flex justify-content-between ' : ''}mb-4`}>
+        <div className={`${this.canCreate ? 'd-flex justify-content-between ' : ''}mb-4`}>
           <div className='input-group mr-3'>
             <div className='input-group-prepend'>
               <i className='input-group-text material-icons no-select' style={{ fontSize: '1.5rem' }}>search</i>
@@ -178,7 +179,7 @@ export default class App extends React.PureComponent {
               ref={node => this.$searchInput = node}
             />
           </div>
-          {this.props.meta.canCreate && (
+          {this.canCreate && (
             <button
               children={`New ${capitalizeFirstLetter(this.props.model)}`}
               className='btn btn-primary no-select'
@@ -203,6 +204,8 @@ export default class App extends React.PureComponent {
         )}
 
         <Table
+          canDelete={this.canDelete}
+          canEdit={this.canEdit}
           columns={this.props.schema.filter(({ isColumn }) => isColumn)}
           defaultName={this.props.meta.defaultName}
           isLoading={this.state.isLoading}
