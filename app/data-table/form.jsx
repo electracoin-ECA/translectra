@@ -86,6 +86,17 @@ export default class Form extends React.PureComponent {
   renderField(field, index) {
     const hasError = this.props.errors[field.name] !== undefined
 
+    if (field.isDisabled) {
+      return (
+        <div className='form-group row' key={index}>
+          <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
+          <div className='col-sm-10 col-form-label font-weight-bold'>
+            {this.props.initialData[field.name]}
+          </div>
+        </div>
+      )
+    }
+
     switch (field.type) {
       case 'boolean':
         return (
