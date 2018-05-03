@@ -24,7 +24,7 @@ const projectSchema = new mongoose.Schema({
 projectSchema.plugin(mongooseUniqueValidator)
 projectSchema.path('versions').validate(v => v && v.length > 0, `You must create at least one version for each project.`)
 projectSchema.path('versions').validate(
-  v => /^v\d+\.\d+.\d+$/.test(v),
+  versions => !Boolean(versions.filter(version => !/^v\d+\.\d+.\d+$/.test(version)).length),
   `The project versions must be of form "vX.Y.Z" (X, Y & Z being numbers).`
 )
 
