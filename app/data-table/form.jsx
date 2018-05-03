@@ -15,7 +15,7 @@ export default class Form extends React.PureComponent {
       .reduce((prev, { name }) => {
         prev[`${name}IsFocused`] = false
         prev[`${name}Query`] = ''
-        prev[`${name}SelectedItems`] = []
+        prev[`${name}SelectedItems`] = props.initialData === undefined ? [] : props.initialData[name]
 
         return prev
       }, {})
@@ -24,7 +24,7 @@ export default class Form extends React.PureComponent {
       .filter(({ type }) => type === 'tags')
       .reduce((prev, { name }) => {
         prev[`${name}Key`] = 0
-        prev[`${name}Tags`] = []
+        prev[`${name}Tags`] = props.initialData === undefined ? [] : props.initialData[name]
 
         return prev
       }, {})
@@ -354,10 +354,8 @@ export default class Form extends React.PureComponent {
     return (
       <div className='card card-body bg-light mb-4'>
         <form
-          action='/admin/country'
           autoComplete='off'
           className='form mb-0'
-          method='post'
           noValidate
           onSubmit={this.submit.bind(this)}
           ref={node => this.$form = node}
