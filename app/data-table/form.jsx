@@ -90,13 +90,14 @@ export default class Form extends React.PureComponent {
       case 'boolean':
         return (
           <div className='form-group row' key={index}>
-            <div className='col-sm-10 offset-md-2'>
+            <div className='col-sm-10 offset-sm-2'>
               <input
-                className='form-check-input'
+                className='form-check-input ml-0 mr-2'
                 defaultChecked={this.props.initialData !== undefined ? this.props.initialData[field.name] : false}
                 disabled={this.props.isLoading}
                 id={field.name}
                 name={field.name}
+                style={{ position: 'static' }}
                 type='checkbox'
               />
               <label className='form-check-label no-select' htmlFor={field.name}>{field.label}</label>
