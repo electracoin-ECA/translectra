@@ -6,7 +6,7 @@ const settingSchema = new mongoose.Schema({
     required: true,
   },
   value: {
-    type: String,
+    type: Schema.Types.Mixed,
     required: true,
   },
   createdAt: {
