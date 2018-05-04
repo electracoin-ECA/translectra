@@ -24,7 +24,7 @@ export default class KeyController extends BaseController {
               return
             }
 
-            this.render('management/key', { projects, users })
+            this.render('management/keys', { projects, users })
           })
       })
   }

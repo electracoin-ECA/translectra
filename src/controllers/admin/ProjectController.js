@@ -2,6 +2,6 @@ import BaseController from '..'
 
 export default class ProjectController extends BaseController {
   get() {
-    this.render('admin/project')
+    this.render('admin/projects')
   }
 }

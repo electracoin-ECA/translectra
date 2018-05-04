@@ -13,7 +13,7 @@ export default class LanguageController extends BaseController {
           return
         }
 
-        this.render('admin/language', { countries })
+        this.render('admin/languages', { countries })
       })
   }
 }
