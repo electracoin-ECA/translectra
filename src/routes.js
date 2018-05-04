@@ -29,25 +29,25 @@ const routes = [
     Admin
   */
   {
-    path: '/admin/country',
+    path: '/admin/countries',
     method: 'get',
     middleware: isAdmin,
     controller: AdminCountryController,
   },
   {
-    path: '/admin/language',
+    path: '/admin/languages',
     method: 'get',
     middleware: isAdmin,
     controller: AdminLanguageController,
   },
   {
-    path: '/admin/project',
+    path: '/admin/projects',
     method: 'get',
     middleware: isAdmin,
     controller: AdminProjectController,
   },
   {
-    path: '/admin/user',
+    path: '/admin/users',
     method: 'get',
     middleware: isAdmin,
     controller: AdminUserController,
@@ -236,13 +236,13 @@ const routes = [
     Management
   */
   {
-    path: '/management/key',
+    path: '/management/keys',
     method: 'get',
     middleware: isManager,
     controller: ManagementKeyController,
   },
   {
-    path: '/management/version',
+    path: '/management/versions',
     method: 'get',
     middleware: isManager,
     controller: ManagementVersionController,
