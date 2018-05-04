@@ -13,7 +13,7 @@ export default class VersionController extends BaseController {
           return
         }
 
-        this.render('admin/language', { projects })
+        this.render('management/version', { projects })
       })
   }
 }
