@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 import Project from './Project'
+import User from './User'
 
 const versionSchema = new mongoose.Schema({
   project: {
@@ -12,6 +13,11 @@ const versionSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, `The version name is a required field.`],
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
   createdAt: {
     type: Date,
