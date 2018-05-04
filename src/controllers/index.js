@@ -55,75 +55,87 @@ export default class BaseController extends lexpress.BaseController {
     })
   }
 
-  apiPost(Model, fields) {
+  apiPost(Model, fields, before, after) {
+    before = before || function(done) { done() }
+    after = after || function(done) { done() }
     this.isJson = true
 
-    const modelData = fields.reduce((prev, field) => {
-      prev[field] = this.req.body[field]
+    before(() => {
+      const modelData = fields.reduce((prev, field) => {
+        prev[field] = this.req.body[field]
 
-      return prev
-    }, {})
+        return prev
+      }, {})
 
-    const modelInstance = new Model({
-      ...modelData,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    })
-
-    modelInstance.save((err) => {
-      if (err !== null) {
-        this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err.errors)
-
-        return
-      }
-
-      this.res.status(HTTP_STATUS_CODE_CREATED).json({})
-    })
-  }
-
-  apiPut(Model, fields) {
-    this.isJson = true
-
-    const modelData = fields.reduce((prev, field) => {
-      prev[field] = this.req.body[field]
-
-      return prev
-    }, {})
-
-    Model.findByIdAndUpdate(
-      this.req.params.id,
-      {
+      const modelInstance = new Model({
         ...modelData,
+        createdAt: Date.now(),
         updatedAt: Date.now(),
-      },
-      // http://mongoosejs.com/docs/validation.html#update-validators
-      // https://www.npmjs.com/package/mongoose-unique-validator#find--updates
-      {
-        context: 'query',
-        runValidators: true,
-      },
-      (err) => {
+      })
+
+      modelInstance.save((err) => {
         if (err !== null) {
           this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err.errors)
 
           return
         }
 
-        this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({})
+        after(() => this.res.status(HTTP_STATUS_CODE_CREATED).json({}))
       })
+    })
   }
 
-  apiDelete(Model) {
+  apiPut(Model, fields, before, after) {
+    before = before || function(done) { done() }
+    after = after || function(done) { done() }
     this.isJson = true
 
-    Model.remove({ _id: this.req.params.id }, err => {
-      if (err !== null) {
-        this.answerError(err)
+    before(() => {
+      const modelData = fields.reduce((prev, field) => {
+        prev[field] = this.req.body[field]
 
-        return
-      }
+        return prev
+      }, {})
 
-      this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({})
+      Model.findByIdAndUpdate(
+        this.req.params.id,
+        {
+          ...modelData,
+          updatedAt: Date.now(),
+        },
+        // http://mongoosejs.com/docs/validation.html#update-validators
+        // https://www.npmjs.com/package/mongoose-unique-validator#find--updates
+        {
+          context: 'query',
+          runValidators: true,
+        },
+        (err) => {
+          if (err !== null) {
+            this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err.errors)
+
+            return
+          }
+
+          after(() => this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({}))
+        })
+    })
+  }
+
+  apiDelete(Model, before, after) {
+    before = before || function(done) { done() }
+    after = after || function(done) { done() }
+    this.isJson = true
+
+    before(() => {
+      Model.remove({ _id: this.req.params.id }, err => {
+        if (err !== null) {
+          this.answerError(err)
+
+          return
+        }
+
+        after(() => this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({}))
+      })
     })
   }
 }
