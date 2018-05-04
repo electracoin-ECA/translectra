@@ -15,6 +15,7 @@ nav(class='navbar navbar-expand-md navbar-dark fixed-top bg-dark no-select')
           a(class='nav-link dropdown-toggle' href='#' data-toggle='dropdown') Management
           div(class='dropdown-menu')
             a(class='dropdown-item' href='/management/key') Keys
+            a(class='dropdown-item' href='/management/version') Versions
       if (global.me && global.me.isAdmin)
         li(class='nav-item dropdown')
           a(class='nav-link dropdown-toggle' href='#' data-toggle='dropdown') Administration
@@ -23,6 +24,7 @@ nav(class='navbar navbar-expand-md navbar-dark fixed-top bg-dark no-select')
             a(class='dropdown-item' href='/admin/language') Languages
             a(class='dropdown-item' href='/admin/project') Projects
             a(class='dropdown-item' href='/admin/user') Users
+            a(class='dropdown-item' href='/admin/setting') Settings
 
   if global.me
     a(class='btn btn-secondary btn-sm' href='/auth/logout' aria-label='Log out')
