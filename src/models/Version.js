@@ -19,6 +19,10 @@ const versionSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     required: true,
