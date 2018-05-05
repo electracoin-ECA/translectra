@@ -1,9 +1,20 @@
 import mongoose from 'mongoose'
 
+import Key from './Key'
 import Language from './Language'
 import User from './User'
+import Version from './Version'
 
 const translationSchema = new mongoose.Schema({
+  key: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Key',
+    required: true,
+  },
+  versions: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Version',
+  }],
   language: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Language',
@@ -26,14 +37,6 @@ const translationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   }],
-  versions: [{
-    type: String,
-    unique: [true, `You can't have duplicates in your project version names.`],
-    validate: {
-      validator: v => v.length === 0 || /^v\d+\.\d+.\d+$/.test(v),
-      message: `The project versions must be of form "vX.Y.Z" (X, Y & Z being numbers).`,
-    },
-  }],
   isAccepted: {
     type: Boolean,
     default: false,
@@ -47,5 +50,10 @@ const translationSchema = new mongoose.Schema({
     required: true,
   },
 })
+
+translationSchema.path('versions').validate(
+  versions => Array.isArray(versions) && versions.length > 0,
+  `You must attach at least one version for each translation.`
+)
 
 export default mongoose.model('Translation', translationSchema)
