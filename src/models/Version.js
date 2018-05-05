@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import mongooseUniqueValidator from 'mongoose-unique-validator'
 import semverRegex from 'semver-regex'
 
 import Project from './Project'
