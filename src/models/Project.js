@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 import R from 'ramda'
 
+import User from './User'
 import Version from './Version'
 
 const projectSchema = new mongoose.Schema({
@@ -14,6 +15,11 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Version',
   }],
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, `The project author is a required field.`],
+  },
   createdAt: {
     type: Date,
     required: true,
