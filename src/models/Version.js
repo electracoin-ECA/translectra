@@ -9,7 +9,7 @@ const versionSchema = new mongoose.Schema({
   project: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project',
-    required: [true, `The version project is a required field.`],
+    // required: [true, `The version project is a required field.`],
   },
   name: {
     type: String,
@@ -23,10 +23,6 @@ const versionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  },
-  readOnly: {
-    type: Boolean,
-    default: false,
   },
   createdAt: {
     type: Date,
