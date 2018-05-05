@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
+import semverRegex from 'semver-regex'
 
 import Project from './Project'
 import User from './User'
@@ -13,6 +14,10 @@ const versionSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, `The version name is a required field.`],
+    validate: {
+      validator: v => semverRegex().test(v),
+      message: `The version name must be a valid SemVer string.`,
+    },
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
