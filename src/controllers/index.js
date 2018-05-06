@@ -1,13 +1,14 @@
 import * as dotenv from 'dotenv'
 import * as lexpress from 'lexpress'
+import R from 'ramda'
 
 dotenv.config()
 
-const HTTP_STATUS_CODE_OK = 200
-const HTTP_STATUS_CODE_CREATED = 201
-const HTTP_STATUS_CODE_ACCEPTED = 202
-const HTTP_STATUS_CODE_BAD_REQUEST = 400
-const HTTP_STATUS_CODE_NOT_FOUND = 404
+export const HTTP_STATUS_CODE_OK = 200
+export const HTTP_STATUS_CODE_CREATED = 201
+export const HTTP_STATUS_CODE_ACCEPTED = 202
+export const HTTP_STATUS_CODE_BAD_REQUEST = 400
+export const HTTP_STATUS_CODE_NOT_FOUND = 404
 const LIMIT_DEFAULT = 25
 const LIMIT_MAX = 100
 const VERSION = require('../../package.json').version
@@ -22,6 +23,99 @@ export default class BaseController extends lexpress.BaseController {
     }
 
     this.res.render(view, { ...data, flash: this.req.flash(), global })
+  }
+
+  create(Model, data) {
+    return new Promise((resolve, reject) => {
+      const modelInstance = new Model({
+        ...data,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      })
+
+      modelInstance.save((err, item) => {
+        if (err !== null) {
+          reject(err)
+
+          return
+        }
+
+        resolve(item)
+      })
+    })
+  }
+
+  update(Model, id, data) {
+    return new Promise((resolve, reject) => {
+      Model.findByIdAndUpdate(
+        id,
+        {
+          ...data,
+          updatedAt: Date.now(),
+        },
+        // http://mongoosejs.com/docs/validation.html#update-validators
+        // https://www.npmjs.com/package/mongoose-unique-validator#find--updates
+        {
+          context: 'query',
+          runValidators: true,
+        },
+        (err, item) => {
+          if (err !== null) {
+            reject(err)
+
+            return
+          }
+
+          resolve(item)
+        })
+    })
+  }
+
+  updateCollection(Model, parentId, names) {
+    return new Promise((resolve, reject) => {
+      Model.find({ parent: parentId }, (err, items) => {
+        if (err !== null) {
+          reject(err)
+
+          return
+        }
+
+        const namesToCreate = names.filter(name => R.find(R.propEq('name', name))(items) === undefined)
+        const itemsToRemove = items.filter(({ name }) => !names.includes(name))
+        const creationPromises = namesToCreate.map(name => this.create(Model, { parent: parentId, name }))
+        const removalPromise = this.remove(Model, itemsToRemove.map(({ _id }) => _id))
+        Promise.all([
+          ...creationPromises,
+          removalPromise,
+        ])
+          .then(() => Model.find({ parent: parentId }, (err, items) => {
+            if (err !== null) {
+              reject(err)
+
+              return
+            }
+
+            resolve(items.map(({ _id }) => _id))
+          }))
+          .catch(reject)
+      })
+    })
+  }
+
+  remove(Model, idOrIds) {
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds]
+
+    return new Promise((resolve, reject) => {
+      Model.remove({ _id: { $in: ids } }, (err, items) => {
+        if (err !== null) {
+          reject(err)
+
+          return
+        }
+
+        resolve(items)
+      })
+    })
   }
 
   apiGet(Model, searchFields, populationFields) {
@@ -55,87 +149,39 @@ export default class BaseController extends lexpress.BaseController {
     })
   }
 
-  apiPost(Model, fields, before, after) {
-    before = before || function(done) { done() }
-    after = after || function(done) { done() }
+  apiPost(Model, fields) {
     this.isJson = true
 
-    before(() => {
-      const modelData = fields.reduce((prev, field) => {
-        prev[field] = this.req.body[field]
+    const modelData = fields.reduce((prev, field) => {
+      prev[field] = this.req.body[field]
 
-        return prev
-      }, {})
+      return prev
+    }, {})
 
-      const modelInstance = new Model({
-        ...modelData,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      })
-
-      modelInstance.save((err) => {
-        if (err !== null) {
-          this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err.errors)
-
-          return
-        }
-
-        after(() => this.res.status(HTTP_STATUS_CODE_CREATED).json({}))
-      })
-    })
+    this.create(Model, modelData)
+      .then(() => this.res.status(HTTP_STATUS_CODE_CREATED).json({}))
+      .catch(err => this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err.errors))
   }
 
-  apiPut(Model, fields, before, after) {
-    before = before || function(done) { done() }
-    after = after || function(done) { done() }
+  apiPut(Model, fields) {
     this.isJson = true
 
-    before(() => {
-      const modelData = fields.reduce((prev, field) => {
-        prev[field] = this.req.body[field]
+    const modelData = fields.reduce((prev, field) => {
+      prev[field] = this.req.body[field]
 
-        return prev
-      }, {})
+      return prev
+    }, {})
 
-      Model.findByIdAndUpdate(
-        this.req.params.id,
-        {
-          ...modelData,
-          updatedAt: Date.now(),
-        },
-        // http://mongoosejs.com/docs/validation.html#update-validators
-        // https://www.npmjs.com/package/mongoose-unique-validator#find--updates
-        {
-          context: 'query',
-          runValidators: true,
-        },
-        (err) => {
-          if (err !== null) {
-            this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err.errors)
-
-            return
-          }
-
-          after(() => this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({}))
-        })
-    })
+    this.update(Model, this.req.params.id, modelData)
+      .then(() => this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({}))
+      .catch(err => this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err.errors))
   }
 
-  apiDelete(Model, before, after) {
-    before = before || function(done) { done() }
-    after = after || function(done) { done() }
+  apiDelete(Model) {
     this.isJson = true
 
-    before(() => {
-      Model.remove({ _id: this.req.params.id }, err => {
-        if (err !== null) {
-          this.answerError(err)
-
-          return
-        }
-
-        after(() => this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({}))
-      })
-    })
+    this.remove(Model, this.req.params.id)
+      .then(() => this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({}))
+      .catch(err => this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err))
   }
 }
