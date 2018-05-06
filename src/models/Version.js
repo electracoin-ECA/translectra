@@ -5,10 +5,10 @@ import Project from './Project'
 import User from './User'
 
 const versionSchema = new mongoose.Schema({
-  project: {
+  parent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project',
-    // required: [true, `The version project is a required field.`],
+    required: [true, `The version project is a required field.`],
   },
   name: {
     type: String,
@@ -17,11 +17,6 @@ const versionSchema = new mongoose.Schema({
       validator: v => semverRegex().test(v),
       message: `The version name must be a valid SemVer string.`,
     },
-  },
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
   },
   createdAt: {
     type: Date,
