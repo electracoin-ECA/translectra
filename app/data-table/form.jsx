@@ -287,12 +287,12 @@ export default class Form extends React.PureComponent {
               <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
               {this.state[`${field.name}Tags`].length !== 0 && (
                 <div className='mt-1'>
-                  {this.state[`${field.name}Tags`].map((tag, index) => (
+                  {this.state[`${field.name}Tags`].map(({ name }, index) => (
                     <button
-                      children={tag}
+                      children={name}
                       className='btn btn-sm btn-info mr-1'
                       key={`${field.name}-${index}`}
-                      onClick={() => this.removeTag(field.name, tag)}
+                      onClick={() => this.removeTag(field.name, name)}
                       type='button'
                     />
                   ))}
