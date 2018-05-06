@@ -24,7 +24,7 @@ export default class Form extends React.PureComponent {
       .filter(({ type }) => type === 'tags')
       .reduce((prev, { name }) => {
         prev[`${name}Key`] = 0
-        prev[`${name}Tags`] = props.initialData === undefined ? [] : props.initialData[name]
+        prev[`${name}Tags`] = props.initialData === undefined ? [] : props.initialData[name].map(({ name }) => name)
 
         return prev
       }, {})
@@ -287,12 +287,12 @@ export default class Form extends React.PureComponent {
               <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
               {this.state[`${field.name}Tags`].length !== 0 && (
                 <div className='mt-1'>
-                  {this.state[`${field.name}Tags`].map(({ name }, index) => (
+                  {this.state[`${field.name}Tags`].map((tag, index) => (
                     <button
-                      children={name}
+                      children={tag}
                       className='btn btn-sm btn-info mr-1'
                       key={`${field.name}-${index}`}
-                      onClick={() => this.removeTag(field.name, name)}
+                      onClick={() => this.removeTag(field.name, tag)}
                       type='button'
                     />
                   ))}
