@@ -171,6 +171,8 @@ export default class BaseController extends lexpress.BaseController {
           ...keys.map(({ translations }) => this.remove(Translation, translations)),
           this.remove(Key, ids),
         ])
+          .then(resolve)
+          .catch(reject)
       })
     })
   }
