@@ -4,11 +4,6 @@ import BaseController from '..'
 import Key from '../../models/Key'
 import Project from '../../models/Project'
 
-import {
-  HTTP_STATUS_CODE_BAD_REQUEST,
-  HTTP_STATUS_CODE_CREATED,
-} from '..'
-
 export default class ProjectController extends BaseController {
   get() {
     this.apiGet(Project, ['name'], ['author'])
