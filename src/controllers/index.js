@@ -2,6 +2,9 @@ import * as dotenv from 'dotenv'
 import * as lexpress from 'lexpress'
 import R from 'ramda'
 
+import Key from '../../models/Key'
+import Translation from '../../models/Translation'
+
 dotenv.config()
 
 export const HTTP_STATUS_CODE_OK = 200
@@ -70,37 +73,6 @@ export default class BaseController extends lexpress.BaseController {
         })
     })
   }
-
-  /*updateCollection(Model, parentId, names) {
-    return new Promise((resolve, reject) => {
-      Model.find({ parent: parentId }, (err, items) => {
-        if (err !== null) {
-          reject(err)
-
-          return
-        }
-
-        const namesToCreate = names.filter(name => R.find(R.propEq('name', name))(items) === undefined)
-        const itemsToRemove = items.filter(({ name }) => !names.includes(name))
-        const creationPromises = namesToCreate.map(name => this.create(Model, { parent: parentId, name }))
-        const removalPromise = this.remove(Model, itemsToRemove.map(({ _id }) => _id))
-        Promise.all([
-          ...creationPromises,
-          removalPromise,
-        ])
-          .then(() => Model.find({ parent: parentId }, (err, items) => {
-            if (err !== null) {
-              reject(err)
-
-              return
-            }
-
-            resolve(items.map(({ _id }) => _id))
-          }))
-          .catch(reject)
-      })
-    })
-  }*/
 
   remove(Model, idOrIds) {
     const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds]
@@ -183,5 +155,23 @@ export default class BaseController extends lexpress.BaseController {
     this.remove(Model, this.req.params.id)
       .then(() => this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({}))
       .catch(err => this.res.status(HTTP_STATUS_CODE_BAD_REQUEST).json(err))
+  }
+
+  removeKeys(ids) {
+    return new Promise((resolve, reject) => {
+      Key.find({ _id: { $in: ids } }, (err, keys) => {
+        if (err !== null) {
+          reject(err)
+
+          return
+        }
+
+        return Promise.all([
+          // We remove the project from the related keys
+          ...keys.map(({ translations }) => this.remove(Translation, translations)),
+          this.remove(Key, ids),
+        ])
+      })
+    })
   }
 }
