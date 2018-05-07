@@ -24,6 +24,19 @@ export default class ProjectController extends BaseController {
   }
 
   delete() {
-    this.apiDelete(Project)
+    this.isJson = true
+
+    Key.find({ projects: { $elemMatch: { $eq: this.req.params.id } } }, (err, keys) => {
+      if (err !== null) {
+        this.answerError(err)
+
+        return
+      }
+
+      this.removeKeys(keys.map(({ _id }) => _id))
+        // We remove the project
+        .then(() => this.apiDelete(Project))
+        .catch(this.answerError.bind(this))
+    })
   }
 }
