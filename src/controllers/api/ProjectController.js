@@ -15,7 +15,7 @@ export default class ProjectController extends BaseController {
   }
 
   put() {
-    this.apiPost(Project, ['name'])
+    this.apiPut(Project, ['name'])
   }
 
   delete() {
