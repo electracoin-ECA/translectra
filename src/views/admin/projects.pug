@@ -5,11 +5,15 @@ block meta
   meta(name='schema' content=JSON.stringify([
     { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
     { name: 'versions', type: 'tags', isColumn: false, isField: true, label: 'Versions' },
+    { name: 'author', type: 'foreign', isColumn: true, isField: false, label: 'Author' },
     { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
     { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
   ]))
   meta(name='meta' content=JSON.stringify({
     defaultName: 'name',
+    foreignData: {
+      author: users,
+    },
     sortBy: 'name',
     sortOrder: true,
   }))
