@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv'
 import * as lexpress from 'lexpress'
 import R from 'ramda'
 
-import Key from '../../models/Key'
-import Translation from '../../models/Translation'
+import Key from '../models/Key'
+import Translation from '../models/Translation'
 
 dotenv.config()
 
