@@ -10,7 +10,7 @@ import capitalizeFirstLetter from '../helpers/capitalizeFirstLetter'
 axios.interceptors.response.use(response => response, error => Promise.reject(error.response))
 
 const API_URL = '/api'
-const FETCH_INTERVAL = 100000
+const FETCH_INTERVAL = 5000
 
 export default class App extends React.PureComponent {
   constructor(props) {
