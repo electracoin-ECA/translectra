@@ -11,11 +11,9 @@ import ApiLanguageController from './controllers/api/LanguageController'
 import ApiProjectController from './controllers/api/ProjectController'
 import ApiTranslateController from './controllers/api/TranslateController'
 import ApiUserController from './controllers/api/UserController'
-import ApiVersionController from './controllers/api/VersionController'
 import AuthCallbackController from './controllers/auth/CallbackController'
 import AuthLogOutController from './controllers/auth/LogOutController'
 import ManagementKeyController from './controllers/management/KeyController'
-import ManagementVersionController from './controllers/management/VersionController'
 import UserDashboardController from './controllers/user/DashboardController'
 import UserTranslateController from './controllers/user/TranslateController'
 import WebHomeController from './controllers/web/HomeController'
@@ -182,30 +180,6 @@ const routes = [
     middleware: isAdmin,
     controller: ApiUserController,
   },
-  {
-    path: '/api/version',
-    method: 'get',
-    middleware: isManager,
-    controller: ApiVersionController,
-  },
-  {
-    path: '/api/version',
-    method: 'post',
-    middleware: isManager,
-    controller: ApiVersionController,
-  },
-  {
-    path: '/api/version/:id',
-    method: 'put',
-    middleware: isManager,
-    controller: ApiVersionController,
-  },
-  {
-    path: '/api/version/:id',
-    method: 'delete',
-    middleware: isManager,
-    controller: ApiVersionController,
-  },
 
   /* ========================================
     Auth
@@ -240,12 +214,6 @@ const routes = [
     method: 'get',
     middleware: isManager,
     controller: ManagementKeyController,
-  },
-  {
-    path: '/management/versions',
-    method: 'get',
-    middleware: isManager,
-    controller: ManagementVersionController,
   },
 
   /* ========================================

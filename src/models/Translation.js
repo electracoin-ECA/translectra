@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 import Key from './Key'
 import Language from './Language'
 import User from './User'
-import Version from './Version'
 
 const translationSchema = new mongoose.Schema({
   key: {
@@ -11,10 +10,6 @@ const translationSchema = new mongoose.Schema({
     ref: 'Key',
     required: true,
   },
-  versions: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Version',
-  }],
   language: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Language',
@@ -50,10 +45,5 @@ const translationSchema = new mongoose.Schema({
     required: true,
   },
 })
-
-translationSchema.path('versions').validate(
-  versions => Array.isArray(versions) && versions.length > 0,
-  `You must attach at least one version for each translation.`
-)
 
 export default mongoose.model('Translation', translationSchema)

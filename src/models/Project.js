@@ -3,7 +3,6 @@ import mongooseUniqueValidator from 'mongoose-unique-validator'
 import R from 'ramda'
 
 import User from './User'
-import Version from './Version'
 
 const projectSchema = new mongoose.Schema({
   name: {
@@ -11,10 +10,6 @@ const projectSchema = new mongoose.Schema({
     required: [true, `The project name is a required field.`],
     unique: [true, `This project name is already taken.`],
   },
-  versions: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Version',
-  }],
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -31,9 +26,5 @@ const projectSchema = new mongoose.Schema({
 })
 
 projectSchema.plugin(mongooseUniqueValidator)
-projectSchema.path('versions').validate(
-  versions => Array.isArray(versions) && versions.length > 0,
-  `You must create at least one version for each project.`
-)
 
 export default mongoose.model('Project', projectSchema)

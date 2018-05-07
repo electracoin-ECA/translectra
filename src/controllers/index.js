@@ -71,7 +71,7 @@ export default class BaseController extends lexpress.BaseController {
     })
   }
 
-  updateCollection(Model, parentId, names) {
+  /*updateCollection(Model, parentId, names) {
     return new Promise((resolve, reject) => {
       Model.find({ parent: parentId }, (err, items) => {
         if (err !== null) {
@@ -100,7 +100,7 @@ export default class BaseController extends lexpress.BaseController {
           .catch(reject)
       })
     })
-  }
+  }*/
 
   remove(Model, idOrIds) {
     const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds]
