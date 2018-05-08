@@ -15,7 +15,7 @@ if (document.getElementById('data-table') !== null) {
 
 if (document.getElementById('translate-table') !== null) {
   ReactDOM.render(
-    <TranslateTable isManager={getMeta('isManager')} meta={getMeta('meta')} />,
+    <TranslateTable isManager={getMeta('isManager')} meta={getMeta('meta')} userId={getMeta('userId')} />,
     document.getElementById('translate-table')
   )
 }
