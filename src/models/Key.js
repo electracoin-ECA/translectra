@@ -45,12 +45,12 @@ const keySchema = new mongoose.Schema({
     ref: 'Translation',
     unique: true,
   }],
-  currentVersion: {
+  version: {
     type: Number,
     default: 1,
     validate: {
       validator: v => v < 1 || Math.floor(v) !== v,
-      message: `The current version must be an integer greater or equal to 1.`,
+      message: `The key version must be an integer greater or equal to 1.`,
     },
   },
   createdAt: {
