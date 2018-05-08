@@ -34,6 +34,10 @@ const translationSchema = new mongoose.Schema({
   version: {
     type: Number,
     required: true,
+    validate: {
+      validator: v => v < 1 || Math.floor(v) !== v,
+      message: `The translation version must be an integer greater or equal to 1.`,
+    },
   },
   createdAt: {
     type: Date,
