@@ -25,7 +25,10 @@ block content
           td(class='text-center') #{`${language.count - language.doneCount} / ${language.count}`}
           td(class='text-center') #{`${language.doneCount} / ${language.count}`}
           td(class='text-right' style='padding: .5rem .75rem 0;')
-            a(class='btn btn-primary btn-sm' href='/auth/login') Translate
+            a(
+              class='btn btn-primary btn-sm'
+              href=`/auth/loginAndRedirect?to=${encodeURIComponent('/user/translate?languageId=' + language.id)}`
+            ) Translate
         tr
           td(colspan='6' style='border-top: 0; padding-top: 0;')
             div(class='progress')
