@@ -12,7 +12,7 @@ const languageSchema = new mongoose.Schema({
     required: [true, `The language code is a required field.`],
     unique: true,
     validate: {
-      validator: v => v.length === 0 || /^[a-z]{2}-[A-Z]{2}$/.test(v),
+      validator: v => v.length === 0 || /^[a-z]{2}(-[A-Z]{2})?$/.test(v),
       message: `The language code must be of form "xx-XX".`,
     },
   },
