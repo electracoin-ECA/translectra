@@ -48,6 +48,10 @@ const keySchema = new mongoose.Schema({
   currentVersion: {
     type: Number,
     default: 1,
+    validate: {
+      validator: v => v < 1 || Math.floor(v) !== v,
+      message: `The current version must be an integer greater or equal to 1.`,
+    },
   },
   createdAt: {
     type: Date,
