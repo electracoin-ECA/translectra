@@ -30,7 +30,6 @@ const keyLanguageSchema = new mongoose.Schema({
   translations: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Translation',
-    unique: true,
   }],
   isDone: {
     type: Boolean,
@@ -46,6 +45,8 @@ const keyLanguageSchema = new mongoose.Schema({
   },
 })
 
-keySchema.path('projects').validate(v => v && v.length > 0, `You must attach at least one project to a key language.`)
+keyLanguageSchema
+  .path('projects')
+  .validate(v => v && v.length > 0, `You must attach at least one project to a key language.`)
 
 export default mongoose.model('KeyLanguage', keyLanguageSchema)
