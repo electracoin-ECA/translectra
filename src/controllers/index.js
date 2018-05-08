@@ -78,6 +78,20 @@ export default class BaseController extends lexpress.BaseController {
     })
   }
 
+  findWhere(Model, conditions) {
+    return new Promise((resolve, reject) => {
+      Model.find(conditions, (err, items) => {
+        if (err !== null) {
+          reject(err)
+
+          return
+        }
+
+        resolve(items)
+      })
+    })
+  }
+
   create(Model, data) {
     return new Promise((resolve, reject) => {
       const modelInstance = new Model({
