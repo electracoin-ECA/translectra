@@ -5,6 +5,8 @@ import { User } from '../../models/User'
 
 export default class CallbackController extends BaseController {
   get() {
-    this.res.redirect('/')
+    const redirectionPath = this.req.flash('redirectionPath')
+
+    this.res.redirect(redirectionPath === undefined ? '/' : redirectionPath)
   }
 }
