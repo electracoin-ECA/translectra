@@ -11,7 +11,7 @@ export default class App extends React.PureComponent {
     super(props)
 
     this.state = {
-      currentLanguageId: '',
+      currentLanguageId: props.meta.languageId,
       currentProjectId: '',
       currentStatus: 'PENDING',
       formData: undefined,
@@ -21,6 +21,10 @@ export default class App extends React.PureComponent {
       isLoading: false,
       items: [],
     }
+  }
+
+  componentDidMount() {
+    if (this.state.currentLanguageId.length !== 0) this.fetch(true)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -162,11 +166,16 @@ export default class App extends React.PureComponent {
           >
             <option children='All Projects' key={'all'} value='' />
             {this.props.meta.foreignData.projects.map(({ _id, name }) =>
-              <option children={name} key={_id} value={_id} />
+              <option
+                children={name}
+                key={_id}
+                value={_id}
+              />
             )}
           </select>
           <select
             className='form-control'
+            defaultValue={this.state.currentLanguageId}
             disabled={this.state.isLoading}
             onChange={this.selectLanguage.bind(this)}
             ref={node => this.$languageSelect = node}
