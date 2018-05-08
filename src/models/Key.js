@@ -45,9 +45,9 @@ const keySchema = new mongoose.Schema({
     ref: 'Translation',
     unique: true,
   }],
-  isDone: {
-    type: Boolean,
-    default: false,
+  currentVersion: {
+    type: Number,
+    default: 1,
   },
   createdAt: {
     type: Date,
