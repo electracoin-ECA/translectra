@@ -4,12 +4,12 @@ block meta
   meta(name='model' content=JSON.stringify('key'))
   meta(name='schema' content=JSON.stringify([
     { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
+    { name: 'version', type: 'number', isColumn: true, isField: false, label: 'Version' },
     { name: 'projects', type: 'collection', isColumn: true, isField: true, label: 'Projects' },
     { name: 'note', type: 'tooltip', isColumn: true, isField: true, label: 'Note' },
     { name: 'url', type: 'link', isColumn: true, isField: true, label: 'URL' },
     { name: 'value', type: 'textarea', isColumn: true, isField: true, label: 'Value' },
     { name: 'author', type: 'foreign', isColumn: true, isField: false, label: 'Author' },
-    { name: 'isDone', type: 'boolean', isColumn: true, isField: false, label: 'Done' },
     { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
     { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
   ]))
