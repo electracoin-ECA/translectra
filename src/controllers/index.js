@@ -218,7 +218,7 @@ export default class BaseController extends lexpress.BaseController {
 
   removeKeys(ids) {
     return Promise.all([
-      this.removeWhere(Key, { id: { $in: ids } }),
+      this.removeWhere(Key, { _id: { $in: ids } }),
       this.removeWhere(KeyLanguage, { key: { $in: ids } }),
       this.removeWhere(Translation, { key: { $in: ids } }),
     ])
