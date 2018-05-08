@@ -45,6 +45,10 @@ const keySchema = new mongoose.Schema({
     ref: 'Translation',
     unique: true,
   }],
+  isDone: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     required: true,
