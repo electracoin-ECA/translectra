@@ -7,6 +7,6 @@ export default class CallbackController extends BaseController {
   get() {
     const redirectionPath = this.req.flash('redirectionPath')
 
-    this.res.redirect(redirectionPath === undefined ? '/' : redirectionPath)
+    this.res.redirect(redirectionPath.length === 0 ? '/' : redirectionPath[0])
   }
 }
