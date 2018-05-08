@@ -11,6 +11,7 @@ export const HTTP_STATUS_CODE_OK = 200
 export const HTTP_STATUS_CODE_CREATED = 201
 export const HTTP_STATUS_CODE_ACCEPTED = 202
 export const HTTP_STATUS_CODE_BAD_REQUEST = 400
+export const HTTP_STATUS_CODE_FORBIDDEN = 403
 export const HTTP_STATUS_CODE_NOT_FOUND = 404
 const LIMIT_DEFAULT = 25
 const LIMIT_MAX = 100
@@ -26,6 +27,54 @@ export default class BaseController extends lexpress.BaseController {
     }
 
     this.res.render(view, { ...data, flash: this.req.flash(), global })
+  }
+
+  find(Model, searchFields, populationFields) {
+    populationFields = populationFields || []
+
+    return new Promise((resolve, reject) => {
+      const conditions = searchFields.reduce((prev, searchField) => {
+        const nextOr = {}
+        nextOr[searchField] = { $regex: new RegExp( this.req.query.query !== undefined ? this.req.query.query : '', 'i') }
+        prev.$or.push(nextOr)
+
+        return prev
+      }, { $or: [] })
+      const limit = this.req.query.limit !== undefined ? Number(this.req.query.limit) : LIMIT_DEFAULT
+
+      let query = Model
+        .find(conditions)
+        .sort(`${this.req.query.sortOrder === '-1' ? '-' : ''}${this.req.query.sortBy}`)
+        .limit(limit > LIMIT_MAX ? LIMIT_MAX : limit)
+
+      populationFields.forEach(populationField => {
+        if (typeof populationField === 'string') {
+          query.populate(populationField, 'name')
+
+          return
+        }
+
+        const populateQuery = { path: populationField.name }
+        if (!populationField.isFull) populateQuery.select = 'name'
+        if (populationField.subPopulation !== undefined) {
+          populateQuery.populate = {
+            path: populationField.subPopulation,
+            select: 'name',
+          }
+        }
+        query.populate(populateQuery)
+      })
+
+      query.exec((err, items) => {
+        if (err !== null) {
+          reject(err)
+
+          return
+        }
+
+        resolve(items)
+      })
+    })
   }
 
   create(Model, data) {
@@ -94,31 +143,9 @@ export default class BaseController extends lexpress.BaseController {
     populationFields = populationFields || []
     this.isJson = true
 
-    const conditions = searchFields.reduce((prev, searchField) => {
-      const nextOr = {}
-      nextOr[searchField] = { $regex: new RegExp( this.req.query.query !== undefined ? this.req.query.query : '', 'i') }
-      prev.$or.push(nextOr)
-
-      return prev
-    }, { $or: [] })
-    const limit = this.req.query.limit !== undefined ? Number(this.req.query.limit) : LIMIT_DEFAULT
-
-    let query = Model
-      .find(conditions)
-      .sort(`${this.req.query.sortOrder === '-1' ? '-' : ''}${this.req.query.sortBy}`)
-      .limit(limit > LIMIT_MAX ? LIMIT_MAX : limit)
-
-    populationFields.forEach(populationField => query = query.populate(populationField, 'name'))
-
-    query.exec((err, items) => {
-      if (err !== null) {
-        this.answerError(err)
-
-        return
-      }
-
-      this.res.status(HTTP_STATUS_CODE_OK).json(items)
-    })
+    this.find(Model, searchFields, populationFields)
+      .then(items => this.res.status(HTTP_STATUS_CODE_OK).json(items))
+      .catch(this.answerError.bind(this))
   }
 
   apiPost(Model, fields) {
