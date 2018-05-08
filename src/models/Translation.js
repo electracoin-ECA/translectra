@@ -31,6 +31,10 @@ const translationSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  version: {
+    type: Number,
+    required: true,
+  },
   createdAt: {
     type: Date,
     required: true,
