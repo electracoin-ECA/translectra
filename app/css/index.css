@@ -95,3 +95,21 @@ body {
 .list__iconCell-action:hover > i {
   color: white;
 }
+
+.translation__icon,
+.translation__action-on,
+.translation__action-off {
+  font-size: 1.5rem;
+}
+.translation__action-on,
+.translation__action-off {
+  cursor: pointer;
+}
+.translation__action-off,
+.translation__action-on:hover {
+  color: #6c757d;
+}
+.translation__action-on,
+.translation__action-off:hover {
+  color: #007bff;
+}
