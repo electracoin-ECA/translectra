@@ -5,15 +5,11 @@ block meta
   meta(name='schema' content=JSON.stringify([
     { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
     { name: 'code', type: 'text', isColumn: true, isField: true, label: 'Code' },
-    { name: 'country', type: 'foreign', isColumn: true, isField: true, label: 'Country' },
     { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
     { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
   ]))
   meta(name='meta' content=JSON.stringify({
     defaultName: 'name',
-    foreignData: {
-      country: countries,
-    },
     sortBy: 'updatedAt',
     sortOrder: false,
   }))

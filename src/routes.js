@@ -1,11 +1,9 @@
 import passport from 'passport'
 
-import AdminCountryController from './controllers/admin/CountryController'
 import AdminLanguageController from './controllers/admin/LanguageController'
 import AdminProjectController from './controllers/admin/ProjectController'
 import AdminUserController from './controllers/admin/UserController'
 import AdminSettingsController from './controllers/admin/SettingsController'
-import ApiCountryController from './controllers/api/CountryController'
 import ApiKeyController from './controllers/api/KeyController'
 import ApiLanguageController from './controllers/api/LanguageController'
 import ApiProjectController from './controllers/api/ProjectController'
@@ -26,12 +24,6 @@ const routes = [
   /* ========================================
     Admin
   */
-  {
-    path: '/admin/countries',
-    method: 'get',
-    middleware: isAdmin,
-    controller: AdminCountryController,
-  },
   {
     path: '/admin/languages',
     method: 'get',
@@ -60,30 +52,6 @@ const routes = [
   /* ========================================
     Api
   */
-  {
-    path: '/api/country',
-    method: 'get',
-    middleware: isAdmin,
-    controller: ApiCountryController,
-  },
-  {
-    path: '/api/country',
-    method: 'post',
-    middleware: isAdmin,
-    controller: ApiCountryController,
-  },
-  {
-    path: '/api/country/:id',
-    method: 'put',
-    middleware: isAdmin,
-    controller: ApiCountryController,
-  },
-  {
-    path: '/api/country/:id',
-    method: 'delete',
-    middleware: isAdmin,
-    controller: ApiCountryController,
-  },
   {
     path: '/api/key',
     method: 'get',
@@ -159,7 +127,19 @@ const routes = [
   {
     path: '/api/translate',
     method: 'get',
-    middleware: isAdmin,
+    middleware: isUser,
+    controller: ApiTranslateController,
+  },
+  {
+    path: '/api/translate',
+    method: 'post',
+    middleware: isUser,
+    controller: ApiTranslateController,
+  },
+  {
+    path: '/api/translate/:id/:action',
+    method: 'put',
+    middleware: isUser,
     controller: ApiTranslateController,
   },
   {

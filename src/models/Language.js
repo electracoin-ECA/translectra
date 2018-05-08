@@ -1,14 +1,7 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
-import Country from './Country'
-
 const languageSchema = new mongoose.Schema({
-  country: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Country',
-    required: [true, `The language country is a required field.`],
-  },
   name: {
     type: String,
     required: [true, `The language name is a required field.`],
