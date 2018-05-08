@@ -71,6 +71,12 @@ const routes = [
     controller: ApiKeyController,
   },
   {
+    path: '/api/key/:id/:action',
+    method: 'put',
+    middleware: isManager,
+    controller: ApiKeyController,
+  },
+  {
     path: '/api/key/:id',
     method: 'delete',
     middleware: isManager,
