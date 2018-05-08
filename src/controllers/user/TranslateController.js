@@ -24,7 +24,11 @@ export default class TranslateController extends BaseController {
               return
             }
 
-            this.render('user/translate', { languages, projects })
+            this.render('user/translate', {
+              languages,
+              projects,
+              languageId: this.req.query.languageId === undefined ? '' : this.req.query.languageId,
+            })
           })
       })
   }
