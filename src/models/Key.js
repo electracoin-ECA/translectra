@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 import Project from './Project'
-import Translation from './Translation'
 import User from './User'
 
 const keySchema = new mongoose.Schema({
@@ -40,11 +39,6 @@ const keySchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  translations: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Translation',
-    unique: true,
-  }],
   version: {
     type: Number,
     default: 1,
