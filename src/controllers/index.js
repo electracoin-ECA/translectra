@@ -3,6 +3,7 @@ import * as lexpress from 'lexpress'
 import R from 'ramda'
 
 import Key from '../models/Key'
+import KeyLanguage from '../models/KeyLanguage'
 import Translation from '../models/Translation'
 
 dotenv.config()
@@ -139,6 +140,20 @@ export default class BaseController extends lexpress.BaseController {
     })
   }
 
+  removeWhere(Model, conditions) {
+    return new Promise((resolve, reject) => {
+      Model.remove(conditions, (err, items) => {
+        if (err !== null) {
+          reject(err)
+
+          return
+        }
+
+        resolve(items)
+      })
+    })
+  }
+
   apiGet(Model, searchFields, populationFields) {
     populationFields = populationFields || []
     this.isJson = true
@@ -185,22 +200,10 @@ export default class BaseController extends lexpress.BaseController {
   }
 
   removeKeys(ids) {
-    return new Promise((resolve, reject) => {
-      Key.find({ _id: { $in: ids } }, (err, keys) => {
-        if (err !== null) {
-          reject(err)
-
-          return
-        }
-
-        return Promise.all([
-          // We remove the project from the related keys
-          ...keys.map(({ translations }) => this.remove(Translation, translations)),
-          this.remove(Key, ids),
-        ])
-          .then(resolve)
-          .catch(reject)
-      })
-    })
+    return Promise.all([
+      this.removeWhere(Key, { id: { $in: ids } }),
+      this.removeWhere(KeyLanguage, { key: { $in: ids } }),
+      this.removeWhere(Translation, { key: { $in: ids } }),
+    ])
   }
 }
