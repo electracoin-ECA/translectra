@@ -5,6 +5,11 @@ import Language from './Language'
 import User from './User'
 
 const translationSchema = new mongoose.Schema({
+  key: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Key',
+    required: true,
+  },
   language: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Language',
