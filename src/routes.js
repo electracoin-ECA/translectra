@@ -187,6 +187,14 @@ const routes = [
     }),
   },
   {
+    path: '/auth/loginAndRedirect',
+    method: 'get',
+    call: (req, res) => {
+      req.flash('redirectionPath', req.query.to)
+      res.redirect('/auth/login')
+    },
+  },
+  {
     path: '/auth/logout',
     method: 'get',
     controller: AuthLogOutController,
