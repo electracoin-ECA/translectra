@@ -49,7 +49,7 @@ const keySchema = new mongoose.Schema({
     type: Number,
     default: 1,
     validate: {
-      validator: v => v < 1 || Math.floor(v) !== v,
+      validator: v => v >= 1 && Math.floor(v) === v,
       message: `The key version must be an integer greater or equal to 1.`,
     },
   },
