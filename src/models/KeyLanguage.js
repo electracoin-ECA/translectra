@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import Key from './Key'
 import Project from './Project'
 import Language from './Language'
+import Translation from './Translation'
 
 const keyLanguageSchema = new mongoose.Schema({
   key: {
@@ -25,6 +26,11 @@ const keyLanguageSchema = new mongoose.Schema({
   projects: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project',
+  }],
+  translations: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Translation',
+    unique: true,
   }],
   isDone: {
     type: Boolean,
