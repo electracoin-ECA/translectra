@@ -14,6 +14,7 @@ import AuthLogOutController from './controllers/auth/LogOutController'
 import ManagementKeyController from './controllers/management/KeyController'
 import UserDashboardController from './controllers/user/DashboardController'
 import UserTranslateController from './controllers/user/TranslateController'
+import WebDownloadController from './controllers/web/DownloadController'
 import WebHomeController from './controllers/web/HomeController'
 
 import isAdmin from './middlewares/isAdmin'
@@ -211,7 +212,7 @@ const routes = [
   },
 
   /* ========================================
-    Website
+    User
   */
   {
     path: '/user/dashboard',
@@ -229,6 +230,11 @@ const routes = [
   /* ========================================
     Website
   */
+  {
+    path: '/download',
+    method: 'get',
+    controller: WebDownloadController,
+  },
   {
     path: '/',
     method: 'get',
