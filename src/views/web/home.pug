@@ -28,6 +28,7 @@ block content
             a(
               class='btn btn-primary btn-sm'
               href=`/auth/loginAndRedirect?to=${encodeURIComponent('/user/translate?languageId=' + language.id)}`
+              target='_blank'
             ) Translate
         tr
           td(colspan='6' style='border-top: 0; padding-top: 0;')
@@ -56,7 +57,7 @@ block content
           td(class='text-center') #{`${project.count - project.doneCount} / ${project.count}`}
           td(class='text-center') #{`${project.doneCount} / ${project.count}`}
           td(class='text-right' style='padding: .5rem .75rem 0;')
-            a(class='btn btn-secondary btn-sm' href='#') Download
+            a(class='btn btn-secondary btn-sm' href=`/download?projectId=${project.id}`) Download
         tr
           td(colspan='6' style='border-top: 0; padding-top: 0;')
             div(class='progress')
