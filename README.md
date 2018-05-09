@@ -13,7 +13,7 @@
 
 This TMS is highly inspired by [Attlassian Translations](https://translations.atlassian.com/) which is unfortunately not open-sourced. We all know how translations management can be laborious and we tried to create a tool that can fit multiple kind of projects: software development, documentation, marketing, etc.
 
-We have started implementating a full versionning system (for both translation keys and projects). You can check our [roadmap](#roadmap) to see what's coming next.
+We have started implementing a full versionning system (for both translation keys and projects).
 
 ## Features
 
