@@ -2,6 +2,8 @@
 /node_modules
 /public/fonts/MaterialIcons-Regular.woff2
 /public/js
+/temp/*
+!/temp/README.md
 
 *.crt
 *.csr
