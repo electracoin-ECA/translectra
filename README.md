@@ -36,7 +36,7 @@ We have started implementing a full versionning system (for both translation key
 
 ## Demo
 
-We are using this tool to handle all our translations: [https://translations.electraproject.org](https://translations.electraproject.org). You won't be able to see the administrators and managers part but it will give you a good idea of how it works:
+We are using this tool to handle all our translations: [https://translations.electraproject.org](https://translations.electraproject.org). You won't be able to see the administrators and managers part but it will give you a good idea of how it works.
 
 ## Deploy
 
