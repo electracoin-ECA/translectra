@@ -9,9 +9,34 @@
 
 [![NSP Status](https://nodesecurity.io/orgs/ivan-gabriele/projects/9a5931e7-b38c-4e64-9a6f-c832982ab133/badge)](https://nodesecurity.io/orgs/ivan-gabriele/projects/9a5931e7-b38c-4e64-9a6f-c832982ab133)
 
-## Example
+## Introduction
 
-Electra Project is using this tool to handle all their translations: [https://translations.electraproject.org](https://translations.electraproject.org).
+This TMS is highly inspired by [Attlassian Translations](https://translations.atlassian.com/) which is unfortunately not open-sourced. We all know how translations management can be laborious and we tried to create a tool that can fit multiple kind of projects: software development, documentation, marketing, etc.
+
+We have started implementating a full versionning system (for both translation keys and projects). You can check our [roadmap](#roadmap) to see what's coming next.
+
+## Features
+
+- Ready to deploy: can be automatically integrated with a CI host (Heroku, AWS, Azure, etc)
+- Cross-projects translation keys
+- Multiple submissions management for each key (per language)
+- Voting and approval system for submitted translations
+
+## Roadmap
+
+- Keys versionning (in progress)
+- Projects versionning (in progress)
+- Default language setting
+- XLIFF and Gettext PO exports
+- JSON, XLIFF and Gettext PO imports
+- Comment translation submissions
+- Edit translation submissions
+- Remove translation submissions
+- User dashboard
+
+## Demo
+
+We are using this tool to handle all our translations: [https://translations.electraproject.org](https://translations.electraproject.org). You won't be able to see the administrators and managers part but it will give you a good idea of how it works:
 
 ## Deploy
 
@@ -19,13 +44,13 @@ Translectra is quite easy to deploy and just require environment variables and a
 
 ### Setup Google signup/login
 
-Since Translectra is dedicated to crowdsourced translations, we found that the most universal and easiest way to manage the authentication process was to focus on authentications via Google accounts.
+Since Translectra is dedicated to crowdsourced translations, we found that the most universal and easiest way to manage the authentication process was only support the signup/login via Google accounts, at least for the current major version.
 
 You thus need to setup a [Google Developer account](https://console.developers.google.com) if you don't already have one.
 
 Once it's done, you'll need to setup your credentials, with `https://www.example.com/auth/callback` as authorized redirect URIs. You can add `https://localhost/auth/callback` if you want to run it locally.
 
-You will also need to enable **Google+ API**.
+You will also need to enable the **Google+ API**.
 
 ### Mandatory environment variables
 
