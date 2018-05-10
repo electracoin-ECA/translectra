@@ -21,10 +21,11 @@ We have started implementing a full versionning system (for both translation key
 - Cross-projects translation keys
 - Multiple submissions management for each key (per language)
 - Voting and approval system for submitted translations
+- Keys versionning
+- Markdown support
 
 ## Roadmap
 
-- Keys versionning (in progress)
 - Projects versionning (in progress)
 - Default language setting
 - XLIFF and Gettext PO exports
