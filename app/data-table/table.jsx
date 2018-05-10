@@ -23,6 +23,7 @@ export default class Table extends React.PureComponent {
 
   componentDidMount() {
     this.updateRowWidth()
+    window.addEventListener('resize', this.updateRowWidth.bind(this))
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
