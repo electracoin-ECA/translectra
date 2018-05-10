@@ -86,7 +86,7 @@ export default class Table extends React.PureComponent {
               : translation.isAccepted ? 'translation__icon text-success' : 'translation__icon text-light'
 
             return (
-              <div className='mb-3' key={translations._id}>
+              <div className='mb-3' key={translation._id}>
                 <div className='d-flex justify-content-between bg-light border p-1'>
                   <div className=''>{translation.value}</div>
                   <div className='d-flex flex-column align-items-center pr-0 no-select' style={{ minWidth: '2rem' }}>
