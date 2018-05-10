@@ -70,8 +70,7 @@ export default class KeyController extends BaseController {
         return
       }
 
-      let isDone = key.isDone
-      let translations = key.translations
+      let hasToUpgrade = false
       let version = key.version
       if (this.req.params.action !== undefined) {
         if (this.req.params.action !== 'upgrade') {
@@ -80,8 +79,7 @@ export default class KeyController extends BaseController {
           return
         }
 
-        isDone = false
-        translations = []
+        hasToUpgrade = true
         version += 1
       }
 
@@ -102,12 +100,20 @@ export default class KeyController extends BaseController {
               return
             }
 
-            Promise.all(keyLanguages.map(keyLanguage => this.update(KeyLanguage, keyLanguage.id, {
-              version,
-              projects: this.req.body.projects || key.projects,
-              translations,
-              isDone,
-            })))
+            Promise.all(keyLanguages.map(keyLanguage => this.update(
+              KeyLanguage,
+              keyLanguage.id,
+              {
+                ...hasToUpgrade
+                  ? {
+                    translations: [],
+                    isDone: false,
+                  }
+                  : {},
+                version,
+                projects: key.projects,
+              }
+            )))
               .then(() => this.res.status(HTTP_STATUS_CODE_CREATED).json({}))
               .catch(this.answerError.bind(this))
           })
