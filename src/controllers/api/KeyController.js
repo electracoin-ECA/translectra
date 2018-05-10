@@ -24,6 +24,7 @@ export default class KeyController extends BaseController {
       note: this.req.body.note,
       url: this.req.body.url,
       value: this.req.body.value,
+      isMarkdown: this.req.body.isMarkdown,
       author: this.req.user.id,
     })
       .then(key => {
@@ -90,6 +91,7 @@ export default class KeyController extends BaseController {
         note: this.req.body.note || key.note,
         url: this.req.body.url || key.url,
         value: this.req.body.value || key.value,
+        isMarkdown: this.req.body.isMarkdown || key.isMarkdown,
         version,
       })
         .then(key => {
