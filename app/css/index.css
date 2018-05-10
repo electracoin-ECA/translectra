@@ -109,6 +109,46 @@ code {
   color: white;
 }
 
+/*
+  Form
+*/
+.form__markdownField,
+.form__markdownPreview {
+  font-size: 14px;
+  height: 20rem;
+}
+.form__markdownField {
+  font-family: monospace;
+}
+.form__markdownPreview {
+  max-height: 20rem;
+  white-space: pre-wrap;
+}
+.form__markdownPreview h1 {
+  font-size: 1.5rem;
+}
+.form__markdownPreview h2 {
+  font-size: 1.25rem;
+}
+.form__markdownPreview h3 {
+  font-size: 1.1rem;
+}
+.form__markdownPreview h4, h5, h6 {
+  font-size: 1rem;
+}
+
+/*
+  Key
+*/
+.key__markdownPreview {
+  max-height: 20rem;
+  white-space: pre-wrap;
+}
+
+/*
+  Translation
+*/
+
 .translation__icon,
 .translation__action-on,
 .translation__action-off {
@@ -126,3 +166,4 @@ code {
 .translation__action-off:hover {
   color: #007bff;
 }
+
