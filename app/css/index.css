@@ -14,8 +14,9 @@ body {
   padding: 4.5rem 0 2rem;
 }
 
-code {
+pre {
   font-family: monospace;
+  font-size: .875rem;
 }
 
 /*
@@ -47,6 +48,15 @@ code {
   border-color: #cccccc;
   -webkit-box-shadow: none;
   box-shadow: none;
+}
+
+/*
+  Highlight.js
+*/
+
+.hljs {
+  background: inherit;
+  padding: 0;
 }
 
 /*
