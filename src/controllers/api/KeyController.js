@@ -85,25 +85,24 @@ export default class KeyController extends BaseController {
       }
 
       this.update(Key, this.req.params.id, {
-        name: this.req.body.name,
-        projects: this.req.body.projects,
-        note: this.req.body.note,
-        url: this.req.body.url,
-        value: this.req.body.value,
+        name: this.req.body.name || key.name,
+        projects: this.req.body.projects || key.projects,
+        note: this.req.body.note || key.note,
+        url: this.req.body.url || key.url,
+        value: this.req.body.value || key.value,
         version,
       })
         .then(key => {
-          Language.find({ key: key.id }, (err, languages) => {
+          KeyLanguage.find({ key: key.id }, (err, keyLanguages) => {
             if (err !== null) {
               this.answerError(err)
 
               return
             }
 
-            Promise.all(languages.map(language => this.update(KeyLanguage, {
-              version: version,
-              language: language.id,
-              projects: this.req.body.projects,
+            Promise.all(keyLanguages.map(keyLanguage => this.update(KeyLanguage, keyLanguage.id, {
+              version,
+              projects: this.req.body.projects || key.projects,
               translations,
               isDone,
             })))
