@@ -38,6 +38,20 @@ export default class App extends React.PureComponent {
     this.fetch(true)
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (Boolean(nextProps.isLoading)) {
+      return {
+        isLoading: true,
+      }
+    }
+
+    return null
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!Boolean(prevProps.isLoading) && Boolean(this.props.isLoading)) this.fetch(false)
+  }
+
   fetch(mustLoop) {
     const params = {
       sortBy: this.sortBy,
@@ -193,6 +207,7 @@ export default class App extends React.PureComponent {
         )}
 
         <Table
+          extraActions={this.props.extraActions === undefined ? [] : this.props.extraActions}
           canDelete={this.canDelete}
           canEdit={this.canEdit}
           columns={this.props.schema.filter(({ isColumn }) => isColumn)}

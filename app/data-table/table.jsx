@@ -5,24 +5,28 @@ export default class Table extends React.PureComponent {
   constructor(props) {
     super(props)
 
-    this.actionColumnsLength = Number(this.props.canDelete) + Number(this.props.canEdit)
+    this.actionColumnsLength = Number(this.props.canDelete) + Number(this.props.canEdit) + props.extraActions.length
 
     this.state = {
-      isDeleting: false,
+      confirmActionForItemId: '',
+      confirmActionText: '',
+      confirmActionRunText: '',
+      isRunningAction: false,
       openedItemId: '',
-      removeConfirmationItemId: '',
       sortBy: props.sortBy,
       sortOrder: props.sortOrder,
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return !nextProps.isLoading && prevState.isDeleting
-      ? {
-        isDeleting: false,
-        removeConfirmationItemId: '',
+    if (!nextProps.isLoading && prevState.isRunningAction) {
+      return {
+        confirmActionForItemId: '',
+        isRunningAction: false,
       }
-      : null
+    }
+
+    return null
   }
 
   toggleOpenedItem(itemId) {
@@ -40,14 +44,35 @@ export default class Table extends React.PureComponent {
   remove(itemId) {
     if (this.props.isLoading) return
 
-    this.setState({ removeConfirmationItemId: itemId })
+    this.setState({
+      confirmActionForItemId: itemId,
+      confirmActionText: `Are you sure to delete « {defaultName} » ?`,
+      confirmActionRunText: `Deleting « {defaultName} »...`,
+      onActionConfirm: this.delete.bind(this),
+    })
   }
 
   delete(itemId) {
     if (this.props.isLoading) return
 
-    this.setState({ isDeleting: true })
+    this.setState({ isRunningAction: true })
     this.props.onDelete(itemId)
+  }
+
+  confirmExtraAction(index, itemId) {
+    this.setState({
+      confirmActionForItemId: itemId,
+      confirmActionText: this.props.extraActions[index].confirmActionText,
+      confirmActionRunText: this.props.extraActions[index].confirmActionRunText,
+      onActionConfirm: () => this.runExtraAction(index, itemId),
+    })
+  }
+
+  runExtraAction(index, itemId) {
+    if (this.props.isLoading) return
+
+    this.setState({ isRunningAction: true })
+    this.props.extraActions[index].onActionConfirm(itemId)
   }
 
   renderHead({ label, name, type }) {
@@ -111,12 +136,12 @@ export default class Table extends React.PureComponent {
   }
 
   renderRow(item) {
-    if (item._id === this.state.removeConfirmationItemId) {
-      if (this.state.isDeleting) {
+    if (item._id === this.state.confirmActionForItemId) {
+      if (this.state.isRunningAction) {
         return (
           <tr className='table-info' key={+Date.now()}>
             <td className='no-select' colSpan={this.props.columns.length + this.actionColumnsLength}>
-              Deleting {item[this.props.defaultName]}...
+              {this.state.confirmActionRunText.replace('{defaultName}', item[this.props.defaultName])}
             </td>
           </tr>
         )
@@ -125,17 +150,17 @@ export default class Table extends React.PureComponent {
       return (
         <tr className='table-danger' key={+Date.now()}>
           <td className='no-select' colSpan={this.props.columns.length}>
-            Are you sure to remove « {item[this.props.defaultName]} » ?
+            {this.state.confirmActionText.replace('{defaultName}', item[this.props.defaultName])}
           </td>
           <td
             className='bg-danger text-light text-center no-select list__iconCell list__iconCell-action'
-            onClick={() => this.delete(item._id)}
+            onClick={() => this.state.onActionConfirm(item._id)}
           >
             <i className='material-icons'>done</i>
           </td>
           <td
             className='bg-primary text-light text-center no-select list__iconCell list__iconCell-action'
-            onClick={() => this.setState({ removeConfirmationItemId: '' })}
+            onClick={() => this.setState({ confirmActionForItemId: '' })}
           >
             <i className='material-icons'>clear</i>
           </td>
@@ -143,7 +168,7 @@ export default class Table extends React.PureComponent {
       )
     }
 
-    const buttonClass = this.props.isLoading ? 'text-muted' : 'text-primary'
+    const actionClass = this.props.isLoading ? 'text-muted' : 'text-primary'
 
     return [
       <tr key={item._id}>
@@ -211,9 +236,18 @@ export default class Table extends React.PureComponent {
               return <td key={`${item._id}-${name}`}>{item[name]}</td>
           }
         })}
+        {this.props.extraActions.map((action, index) => (
+          <td
+            className={`${actionClass} text-center no-select list__iconCell list__iconCell-action`}
+            key={String(index)}
+            onClick={() => this.confirmExtraAction(index, item._id)}
+          >
+            <i className='material-icons'>{action.icon}</i>
+          </td>
+        ))}
         {this.props.canEdit && (
           <td
-            className={`${buttonClass} text-center no-select list__iconCell list__iconCell-action`}
+            className={`${actionClass} text-center no-select list__iconCell list__iconCell-action`}
             onClick={() => this.edit(item._id)}
           >
             <i className='material-icons'>edit</i>
@@ -221,7 +255,7 @@ export default class Table extends React.PureComponent {
         )}
         {this.props.canDelete && (
           <td
-            className={`${buttonClass} text-center no-select list__iconCell list__iconCell-action`}
+            className={`${actionClass} text-center no-select list__iconCell list__iconCell-action`}
             onClick={() => this.remove(item._id)}
           >
             <i className='material-icons'>delete</i>
@@ -270,6 +304,7 @@ export default class Table extends React.PureComponent {
         <thead>
           <tr className={`no-select${this.props.isLoading ? ' text-muted' : ''}`}>
             {this.props.columns.map(this.renderHead.bind(this))}
+            {this.props.extraActions.map((a, index) => <th className='list__iconHeadCell' key={index} scope='col' />)}
             {this.props.canEdit && <th className='list__iconHeadCell' scope='col' />}
             {this.props.canDelete && <th className='list__iconHeadCell' scope='col' />}
           </tr>
