@@ -168,6 +168,7 @@ export default class Table extends React.PureComponent {
           <button
             children='Translate'
             className='btn btn-sm btn-success'
+            disabled={keyLanguage.isDone || this.isLoading}
             onClick={() => this.toggleTranslationForm(keyLanguage._id)}
             type='button'
           />
