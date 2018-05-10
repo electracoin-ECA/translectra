@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import React from 'react'
 
 import capitalizeFirstLetter from '../helpers/capitalizeFirstLetter'
+import MarkdownField from './markdown-field'
 
 export default class Form extends React.PureComponent {
   constructor(props) {
@@ -267,6 +268,22 @@ export default class Form extends React.PureComponent {
           </div>
         )
 
+      case 'markdown':
+        return (
+          <div className='form-group row' key={String(index)}>
+            <label className='col-sm-2 col-form-label no-select' htmlFor={field.name}>{field.label}</label>
+            <div className='col-sm-10'>
+              <MarkdownField
+                defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name] : ''}
+                isDisabled={this.props.isLoading}
+                hasError={hasError}
+                name={field.name}
+              />
+              <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
+            </div>
+          </div>
+        )
+
       case 'tags':
         return (
           <div className='form-group row' key={String(index)}>
@@ -302,7 +319,6 @@ export default class Form extends React.PureComponent {
           </div>
         )
 
-      case 'markdown':
       case 'textarea':
         return (
           <div className='form-group row' key={String(index)}>
