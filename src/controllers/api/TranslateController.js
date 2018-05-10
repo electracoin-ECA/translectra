@@ -64,6 +64,12 @@ export default class TranslateController extends BaseController {
         return
       }
 
+      if (keyLanguage.isDone) {
+        this.answerError('Bad Request', HTTP_STATUS_CODE_BAD_REQUEST)
+
+        return
+      }
+
       this.create(Translation, {
         key: keyLanguage.key,
         language: this.req.body.language,
@@ -113,6 +119,12 @@ export default class TranslateController extends BaseController {
         .exec((err, keyLanguage) => {
           if (err !== null) {
             this.answerError(err)
+
+            return
+          }
+
+          if (keyLanguage === null) {
+            this.answerError('Not Found', HTTP_STATUS_CODE_NOT_FOUND)
 
             return
           }
