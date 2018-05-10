@@ -108,6 +108,10 @@ code {
 .list__iconCell-action:hover > i {
   color: white;
 }
+.list__markdownHighlight {
+  max-height: 20rem;
+  white-space: pre-wrap;
+}
 
 /*
   Form
@@ -135,14 +139,6 @@ code {
 }
 .form__markdownPreview h4, h5, h6 {
   font-size: 1rem;
-}
-
-/*
-  Key
-*/
-.key__markdownPreview {
-  max-height: 20rem;
-  white-space: pre-wrap;
 }
 
 /*
