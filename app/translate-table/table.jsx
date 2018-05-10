@@ -1,3 +1,4 @@
+import highlightJs from 'highlight.js'
 import moment from 'moment'
 import * as R from 'ramda'
 import React from 'react'
@@ -8,8 +9,32 @@ export default class Table extends React.PureComponent {
   constructor(props) {
     super(props)
 
+    this.highlightedKeyLanguageIds = []
+
     this.state = {
       openedKeyLanguageId: '',
+      rowWidth: '0',
+    }
+  }
+
+  componentDidMount() {
+    this.updateRowWidth()
+    window.addEventListener('resize', this.updateRowWidth.bind(this))
+  }
+
+  UNSAFE_componentWillUpdate(nextProps) {
+    this.highlightedKeyLanguageIds = this.highlightedKeyLanguageIds
+      .filter(keyLanguageId => Boolean(nextProps.items.findIndex(({ _id }) => _id === keyLanguageId) + 1))
+  }
+
+  updateRowWidth() {
+    this.setState({ rowWidth: `${document.querySelector('tr').clientWidth}px` })
+  }
+
+  highlightValue(keyLanguageId, $node) {
+    if (!this.highlightedKeyLanguageIds.includes(keyLanguageId) && $node !== null) {
+      this.highlightedKeyLanguageIds.push(keyLanguageId)
+      highlightJs.highlightBlock($node)
     }
   }
 
@@ -19,17 +44,17 @@ export default class Table extends React.PureComponent {
     this.props.onSubmit(this.state.openedKeyLanguageId, this.$translationValueTextarea.value)
   }
 
-  toggleTranslationForm(keyId) {
+  toggleTranslationForm(keyLanguageId) {
     this.setState({
-      openedKeyLanguageId: this.state.openedKeyLanguageId === keyId ? '' : keyId,
+      openedKeyLanguageId: this.state.openedKeyLanguageId === keyLanguageId ? '' : keyLanguageId,
     })
   }
 
-  renderForm(keyId) {
+  renderForm(keyLanguageId) {
     const hasError = this.props.errors.value !== undefined
 
     return (
-      <tr key={`${keyId}-form`}>
+      <tr key={`${keyLanguageId}-form`}>
         <td className='border-top-0 p-0' colSpan='6'>
           <form
             autoComplete='off'
@@ -60,7 +85,7 @@ export default class Table extends React.PureComponent {
     )
   }
 
-  renderTranslations(keyId, translations) {
+  renderTranslations(keyLanguageId, translations) {
     const translationsWithScore = translations.map(translation => ({
       ...translation,
       score: translation.upVotes.length - translation.downVotes.length,
@@ -72,7 +97,7 @@ export default class Table extends React.PureComponent {
     ])(translationsWithScore)
 
     return (
-      <tr key={`${keyId}-translations`}>
+      <tr key={`${keyLanguageId}-translations`}>
         <td className='border-top-0 p-2' colSpan='6'>
           {translationsWithScoreSorted.map(translation => {
             const voteUpActionClass = translation.author._id !== this.props.userId
@@ -111,7 +136,7 @@ export default class Table extends React.PureComponent {
                       children='check'
                       className={`material-icons ${acceptActionClass}`}
                       onClick={() => this.props.isManager
-                        ? this.props.onAccept(keyId, translation._id, !translation.isAccepted)
+                        ? this.props.onAccept(keyLanguageId, translation._id, !translation.isAccepted)
                         : void 0
                       }
                     />
@@ -183,8 +208,14 @@ export default class Table extends React.PureComponent {
         </td>
       </tr>,
       <tr key={`${keyLanguage._id}-value`}>
-        <td className='font-weight-bold pt-0 border-top-0' colSpan='6'>
-          {keyLanguage.key.value}
+        <td className='font-weight-bold pt-0 border-top-0' colSpan='6' ref={this.highlightMarkdown}>
+          <pre className='pre-scrollable list__markdownHighlight mt-3' style={{ maxWidth: this.state.rowWidth }}>
+            <code
+              children={keyLanguage.key.value}
+              className='markdown'
+              ref={node => this.highlightValue(keyLanguage._id, node)}
+            />
+          </pre>
         </td>
       </tr>,
       !hasMine && keyLanguage._id === this.state.openedKeyLanguageId && this.renderForm(keyLanguage._id),
