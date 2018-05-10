@@ -39,9 +39,11 @@ export default class MarkdownField extends React.PureComponent {
             <li className='nav-item' onClick={this.togglePreview.bind(this)}>
               <span className={`nav-link${!this.state.isPreviewOpened ? ' active' : ''}`}>Write</span>
             </li>
-            <li className='nav-item' onClick={this.togglePreview.bind(this)}>
-              <span className={`nav-link${this.state.isPreviewOpened ? ' active' : ''}`}>Preview</span>
-            </li>
+            {!Boolean(this.props.isText) && (
+              <li className='nav-item' onClick={this.togglePreview.bind(this)}>
+                <span className={`nav-link${this.state.isPreviewOpened ? ' active' : ''}`}>Preview</span>
+              </li>
+            )}
           </ul>
         </div>
         <div className='card-body p-0'>

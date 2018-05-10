@@ -41,6 +41,7 @@ export default class Table extends React.PureComponent {
   componentDidUpdate() {
     if (
       this.hasMarkdownFields &&
+      Boolean(this.$code) &&
       this.state.openedItemId.length !== 0 &&
       this.state.highlightedItemId !== this.state.openedItemId
     ) {
@@ -312,11 +313,14 @@ export default class Table extends React.PureComponent {
           ? (
             <tr key={`${item._id}-${name}`}>
               <td className='border-top-0 p-0' colSpan={this.props.columns.length + this.actionColumnsLength}>
-                <pre className='pre-scrollable list__markdownHighlight mt-3' style={{ maxWidth: this.state.rowWidth }}>
+                <pre
+                  className='bg-light p-2 pre-scrollable list__markdownHighlight mt-3'
+                  style={{ maxWidth: this.state.rowWidth }}
+                >
                   <code
                     children={item[name]}
-                    className={type === 'markdown' ? 'markdown' : undefined}
-                    ref={node => this.$code = node}
+                    className={type === 'markdown' && Boolean(item.isMarkdown) ? 'markdown' : undefined}
+                    ref={node => type === 'markdown' && Boolean(item.isMarkdown) ? this.$code = node : void 0}
                   />
                 </pre>
               </td>

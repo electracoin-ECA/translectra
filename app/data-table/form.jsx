@@ -33,6 +33,7 @@ export default class Form extends React.PureComponent {
     this.state = {
       ...collectionsStateProps,
       ...tagsStateProps,
+      isMarkdown: Boolean(props.initialData) && Boolean(props.initialData.isMarkdown),
     }
   }
 
@@ -119,6 +120,10 @@ export default class Form extends React.PureComponent {
     this.setState({...state})
   }
 
+  switchTextareaToMarkdown($checkbox) {
+    this.setState({ isMarkdown: $checkbox.checked })
+  }
+
   submit(event) {
     if (event !== undefined) event.preventDefault()
 
@@ -172,6 +177,7 @@ export default class Form extends React.PureComponent {
                 disabled={this.props.isLoading}
                 id={field.name}
                 name={field.name}
+                onClick={event => field.name === 'isMarkdown' ? this.switchTextareaToMarkdown(event.target) : void 0}
                 style={{ position: 'static' }}
                 type='checkbox'
               />
@@ -276,6 +282,7 @@ export default class Form extends React.PureComponent {
               <MarkdownField
                 defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name] : ''}
                 isDisabled={this.props.isLoading}
+                isText={!this.state.isMarkdown}
                 hasError={hasError}
                 name={field.name}
               />
