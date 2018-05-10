@@ -58,12 +58,12 @@ const keySchema = new mongoose.Schema({
 })
 
 keySchema.path('projects').validate(v => v && v.length > 0, `You must attach at least one project to a key.`)
-keySchema.path('url').validate(
-  function(v) {
-    return (typeof this.value === 'string' && this.value.length > 0) || (typeof v === 'string' && v.length > 0)
-  },
-  `You must fill either the URL or the value of a key.`
-)
+// keySchema.path('url').validate(
+//   function(v) {
+//     return (typeof this.value === 'string' && this.value.length > 0) || (typeof v === 'string' && v.length > 0)
+//   },
+//   `You must fill either the URL or the value of a key.`
+// )
 keySchema.path('value').validate(
   function(v) {
     return (typeof this.url === 'string' && this.url.length > 0) || (typeof v === 'string' && v.length > 0)
