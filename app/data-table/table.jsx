@@ -13,6 +13,7 @@ export default class Table extends React.PureComponent {
       confirmActionForItemId: '',
       confirmActionText: '',
       confirmActionRunText: '',
+      highlightedItemId: '',
       isRunningAction: false,
       openedItemId: '',
       rowWidth: '0',
@@ -38,7 +39,14 @@ export default class Table extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    if (this.hasMarkdownFields && this.state.openedItemId.length !== 0) highlightJs.highlightBlock(this.$pre)
+    if (
+      this.hasMarkdownFields &&
+      this.state.openedItemId.length !== 0 &&
+      this.state.highlightedItemId !== this.state.openedItemId
+    ) {
+      this.setState({ highlightedItemId: this.state.openedItemId })
+      highlightJs.highlightBlock(this.$code)
+    }
   }
 
   updateRowWidth() {
@@ -47,6 +55,7 @@ export default class Table extends React.PureComponent {
 
   toggleOpenedItem(itemId) {
     this.setState({
+      highlightedItemId: '',
       openedItemId: this.state.openedItemId === itemId ? '' : itemId,
     })
   }
@@ -303,12 +312,12 @@ export default class Table extends React.PureComponent {
           ? (
             <tr key={`${item._id}-${name}`}>
               <td className='border-top-0 p-0' colSpan={this.props.columns.length + this.actionColumnsLength}>
-                <pre
-                  className='bg-light pre-scrollable p-2'
-                  style={{ maxHeight: '10rem', maxWidth: this.state.rowWidth, whiteSpace: 'pre-wrap' }}
-                  ref={node => this.$pre = node}
-                >
-                  <code className={type === 'markdown' ? 'markdown' : undefined}>{item[name]}</code>
+                <pre className='pre-scrollable list__markdownHighlight mt-3' style={{ maxWidth: this.state.rowWidth }}>
+                  <code
+                    children={item[name]}
+                    className={type === 'markdown' ? 'markdown' : undefined}
+                    ref={node => this.$code = node}
+                  />
                 </pre>
               </td>
             </tr>
