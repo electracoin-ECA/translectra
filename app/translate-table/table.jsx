@@ -130,6 +130,7 @@ export default class Table extends React.PureComponent {
 
   renderRow(keyLanguage) {
     const buttonClass = this.props.isLoading ? 'text-muted' : 'text-primary'
+    const hasMine = Boolean(keyLanguage.translations.findIndex(({ author }) => author._id === this.props.userId) + 1)
 
     return [
       <tr className='text-secondary' key={keyLanguage._id} style={{ fontSize: '12px' }}>
@@ -168,7 +169,7 @@ export default class Table extends React.PureComponent {
           <button
             children='Translate'
             className='btn btn-sm btn-success'
-            disabled={keyLanguage.isDone || this.isLoading}
+            disabled={keyLanguage.isDone || this.isLoading || hasMine}
             onClick={() => this.toggleTranslationForm(keyLanguage._id)}
             type='button'
           />
@@ -186,7 +187,7 @@ export default class Table extends React.PureComponent {
           {keyLanguage.key.value}
         </td>
       </tr>,
-      keyLanguage._id === this.state.openedKeyLanguageId && this.renderForm(keyLanguage._id),
+      !hasMine && keyLanguage._id === this.state.openedKeyLanguageId && this.renderForm(keyLanguage._id),
       keyLanguage.translations.length !== 0 && this.renderTranslations(keyLanguage._id, keyLanguage.translations),
     ]
   }
@@ -196,15 +197,15 @@ export default class Table extends React.PureComponent {
       <table className='table table-sm'>
         <thead>
           <tr className={`no-select${this.props.isLoading ? ' text-muted' : ''}`}>
-            <th key='name' scope='col'>Name</th>
-            <th key='version' scope='col'>Version</th>
-            <th key={'updatedAt'} scope='col'>
+            <th scope='col'>Name</th>
+            <th scope='col'>Version</th>
+            <th scope='col'>
               Created
               <i className='material-icons'>arrow_drop_down</i>
             </th>
-            <th key='note' scope='col' />
-            <th key='url' scope='col' />
-            <th key='translate' scope='col' />
+            <th scope='col' />
+            <th scope='col' />
+            <th scope='col' />
           </tr>
         </thead>
         <tbody>
