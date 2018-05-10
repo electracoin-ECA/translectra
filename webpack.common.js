@@ -34,6 +34,7 @@ const assets = {
   entry: {
     app: [
       './node_modules/bootstrap/dist/css/bootstrap.min.css',
+      './node_modules/highlight.js/styles/github.css',
       './app/css/index.css',
     ],
   },
