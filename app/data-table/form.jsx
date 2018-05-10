@@ -302,6 +302,7 @@ export default class Form extends React.PureComponent {
           </div>
         )
 
+      case 'markdown':
       case 'textarea':
         return (
           <div className='form-group row' key={String(index)}>

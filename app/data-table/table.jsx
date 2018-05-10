@@ -1,3 +1,4 @@
+import highlightJs from 'highlight.js'
 import moment from 'moment'
 import React from 'react'
 
@@ -6,6 +7,7 @@ export default class Table extends React.PureComponent {
     super(props)
 
     this.actionColumnsLength = Number(this.props.canDelete) + Number(this.props.canEdit) + props.extraActions.length
+    this.hasMarkdownFields = Boolean(props.columns.filter(({ type }) => type === 'markdown').length)
 
     this.state = {
       confirmActionForItemId: '',
@@ -13,9 +15,14 @@ export default class Table extends React.PureComponent {
       confirmActionRunText: '',
       isRunningAction: false,
       openedItemId: '',
+      rowWidth: '0',
       sortBy: props.sortBy,
       sortOrder: props.sortOrder,
     }
+  }
+
+  componentDidMount() {
+    this.updateRowWidth()
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -27,6 +34,14 @@ export default class Table extends React.PureComponent {
     }
 
     return null
+  }
+
+  componentDidUpdate() {
+    if (this.hasMarkdownFields && this.state.openedItemId.length !== 0) highlightJs.highlightBlock(this.$pre)
+  }
+
+  updateRowWidth() {
+    this.setState({ rowWidth: `${document.querySelector('tr').clientWidth}px` })
   }
 
   toggleOpenedItem(itemId) {
@@ -90,6 +105,7 @@ export default class Table extends React.PureComponent {
         )
 
       case 'link':
+      case 'markdown':
       case 'textarea':
       case 'tooltip':
         return (
@@ -206,6 +222,7 @@ export default class Table extends React.PureComponent {
                 )
                 : <td className='list__iconCell' key={`${item._id}-${name}`} />
 
+            case 'markdown':
             case 'textarea':
               return item[name] !== undefined && item[name].length !== 0
                 ? (
@@ -280,16 +297,18 @@ export default class Table extends React.PureComponent {
           : undefined
         ),
       this.state.openedItemId === item._id && this.props.columns
-        .filter(({ type }) => type === 'textarea')
-        .map(({ name }, index) => item[name].length !== 0
+        .filter(({ type }) => ['markdown', 'textarea'].includes(type))
+        .map(({ name, type }, index) => item[name].length !== 0
           ? (
             <tr key={`${item._id}-${name}`}>
-              <td
-                className='bg-light font-italic'
-                colSpan={this.props.columns.length + this.actionColumnsLength}
-                style={{ borderTop: 0, fontSize: '12px' }}
-              >
-                {item[name]}
+              <td className='border-top-0 p-0' colSpan={this.props.columns.length + this.actionColumnsLength}>
+                <pre
+                  className='bg-light pre-scrollable p-2'
+                  style={{ maxHeight: '10rem', maxWidth: this.state.rowWidth, whiteSpace: 'pre-wrap' }}
+                  ref={node => this.$pre = node}
+                >
+                  <code className={type === 'markdown' ? 'markdown' : undefined}>{item[name]}</code>
+                </pre>
               </td>
             </tr>
           )
