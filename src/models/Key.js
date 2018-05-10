@@ -34,6 +34,10 @@ const keySchema = new mongoose.Schema({
   value: {
     type: String,
   },
+  isMarkdown: {
+    type: Boolean,
+    default: false,
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
