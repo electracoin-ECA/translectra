@@ -286,7 +286,11 @@ export default class Form extends React.PureComponent {
                 hasError={hasError}
                 name={field.name}
               />
-              <div className='invalid-feedback'>{hasError && this.props.errors[field.name].message}</div>
+              <div
+                children={hasError && this.props.errors[field.name].message}
+                className='invalid-feedback'
+                style={{ display: hasError && Boolean(this.props.errors[field.name]) ? 'block' : 'none' }}
+              />
             </div>
           </div>
         )
