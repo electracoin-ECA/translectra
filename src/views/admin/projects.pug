@@ -4,6 +4,7 @@ block meta
   meta(name='model' content=JSON.stringify('project'))
   meta(name='schema' content=JSON.stringify([
     { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
+    { name: 'type', type: 'foreign', isColumn: true, isField: true, label: 'Type' },
     { name: 'author', type: 'foreign', isColumn: true, isField: false, label: 'Author' },
     { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
     { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
@@ -12,6 +13,10 @@ block meta
     defaultName: 'name',
     foreignData: {
       author: users,
+      type: [
+        { _id: 'DOCUMENTS', name: 'Documents' },
+        { _id: 'KEY-VALUE PAIRS', name: 'Key-Value Pairs' },
+      ],
     },
     sortBy: 'name',
     sortOrder: true,
