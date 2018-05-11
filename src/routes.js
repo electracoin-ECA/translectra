@@ -150,6 +150,12 @@ const routes = [
     controller: ApiTranslateController,
   },
   {
+    path: '/api/translate/:id',
+    method: 'delete',
+    middleware: isUser,
+    controller: ApiTranslateController,
+  },
+  {
     path: '/api/user',
     method: 'get',
     middleware: isAdmin,
