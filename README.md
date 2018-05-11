@@ -32,7 +32,6 @@ We have started implementing a full versionning system (for both translation key
 - JSON, XLIFF and Gettext PO imports
 - Comment translation submissions
 - Edit translation submissions
-- Remove translation submissions
 - User dashboard
 
 ## Demo
