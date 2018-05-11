@@ -196,4 +196,50 @@ export default class TranslateController extends BaseController {
 
     this.answerError('Bad Request', HTTP_STATUS_CODE_BAD_REQUEST)
   }
+
+  delete() {
+    Translation.findById(this.req.params.id, (err, translation) => {
+      if (err !== null) {
+        this.answerError(err)
+
+        return
+      }
+
+      if (translation === null) {
+        this.answerError('Not Found', HTTP_STATUS_CODE_NOT_FOUND)
+
+        return
+      }
+
+      if (!this.req.user.isManager && String(translation.author) !== this.req.user.id) {
+        this.answerError('Forbidden', HTTP_STATUS_CODE_FORBIDDEN)
+
+        return
+      }
+
+      this.remove(Translation, this.req.params.id)
+        .then(() => {
+          if (!translation.isAccepted) {
+            this.res.status(HTTP_STATUS_CODE_ACCEPTED).json({})
+
+            return
+          }
+
+          this.findWhere(KeyLanguage, { translations: translation.id })
+            .then(keysLanguages => {
+              if (keysLanguages.length === 0) {
+                this.answerError('Not Found', HTTP_STATUS_CODE_NOT_FOUND)
+
+                return
+              }
+
+              const keyLanguage = keysLanguages[0]
+
+              this.update(KeyLanguage, keyLanguage.id, { isDone: false })
+            })
+            .catch(this.answerError.bind(this))
+        })
+        .catch(this.answerError.bind(this))
+    })
+  }
 }
