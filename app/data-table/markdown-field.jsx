@@ -54,6 +54,7 @@ export default class MarkdownField extends React.PureComponent {
             defaultValue={this.props.defaultValue !== undefined ? this.props.defaultValue : ''}
             disabled={this.props.isDisabled}
             id={this.props.name}
+            lang={this.props.lang}
             name={this.props.name}
             spellCheck='false'
             style={{ display: !this.state.isPreviewOpened ? 'block' : 'none' }}
