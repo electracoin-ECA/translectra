@@ -13,7 +13,7 @@ const projectSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ['DOCUMENTS', 'KEY-VALUE PAIRS'],
-    default: 'KEY VALUE PAIRS',
+    required: [true, `The project type is a required field.`],
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
