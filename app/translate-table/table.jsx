@@ -13,6 +13,8 @@ export default class Table extends React.PureComponent {
     this.highlightedKeyLanguageIds = []
 
     this.state = {
+      confirmRemovalForTranslationId: '',
+      isDeleting: false,
       openedKeyLanguageId: '',
       rowWidth: '0',
     }
@@ -39,16 +41,32 @@ export default class Table extends React.PureComponent {
     }
   }
 
+  toggleTranslationForm(keyLanguageId) {
+    this.setState({
+      openedKeyLanguageId: this.state.openedKeyLanguageId === keyLanguageId ? '' : keyLanguageId,
+    })
+  }
+
   submit(event) {
     event.preventDefault()
 
     this.props.onSubmit(this.state.openedKeyLanguageId, this.$form.value.value)
   }
 
-  toggleTranslationForm(keyLanguageId) {
+  remove(translationId) {
+    if (this.props.isLoading) return
+
     this.setState({
-      openedKeyLanguageId: this.state.openedKeyLanguageId === keyLanguageId ? '' : keyLanguageId,
+      confirmRemovalForTranslationId: translationId,
+      isDeleting: false,
     })
+  }
+
+  delete(translationId) {
+    if (this.props.isLoading) return
+
+    this.setState({ isDeleting: true })
+    this.props.onDelete(translationId)
   }
 
   renderForm(keyLanguageId, isMarkdown) {
@@ -147,8 +165,34 @@ export default class Table extends React.PureComponent {
                     />
                   </div>
                 </div>
-                <div className='mt-1 text-secondary no-select' style={{ fontSize: '12px' }}>
-                  {`${capitalizeFirstLetter(moment(translation.createdAt).fromNow())} by ${translation.author.name}.`}
+                <div className='mt-1 text-secondary d-flex justify-content-between' style={{ fontSize: '12px' }}>
+                  <div className='no-select'>
+                    {`${capitalizeFirstLetter(moment(translation.createdAt).fromNow())} by ${translation.author.name}.`}
+                  </div>
+                  <div>
+                    {translation._id === this.state.confirmRemovalForTranslationId
+                      ? this.state.isDeleting
+                        ? 'Deleting...'
+                        : (
+                          <div>
+                            {`Are your sure to delete ${translation.author._id === this.props.userId ? 'your' : 'this'} translation ?`}
+                            <span
+                              children='[YES]'
+                              className='mx-3'
+                              onClick={() => this.delete(translation._id)}
+                              style={{ cursor: 'pointer' }}
+                            />
+                            <span
+                              children='[NO]'
+                              className='mx-3'
+                              onClick={() => this.setState({ confirmRemovalForTranslationId: '' })}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </div>
+                        )
+                      : <span onClick={() => this.remove(translation._id)} style={{ cursor: 'pointer' }}>[DELETE]</span>
+                    }
+                  </div>
                 </div>
               </div>
             )

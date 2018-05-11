@@ -115,6 +115,16 @@ export default class App extends React.PureComponent {
       .catch(() => this.setState({ isLoading: false }))
   }
 
+  delete(translationId) {
+    if (this.state.isLoading) return
+
+    this.setState({ isLoading: true })
+
+    axios.delete(`${API_URL}/${translationId}`)
+      .then(() => this.fetch(false))
+      .catch(() => this.setState({ isLoading: false }))
+  }
+
   selectLanguage() {
     this.setState({ currentLanguageId: this.$languageSelect.value })
   }
@@ -202,6 +212,7 @@ export default class App extends React.PureComponent {
             <Table
               errors={this.state.formErrors}
               onAccept={this.accept.bind(this)}
+              onDelete={this.delete.bind(this)}
               onSubmit={this.create.bind(this)}
               onVote={this.vote.bind(this)}
               isLoading={this.state.isLoading}
