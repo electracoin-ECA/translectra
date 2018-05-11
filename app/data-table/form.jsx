@@ -256,7 +256,10 @@ export default class Form extends React.PureComponent {
             <div className='col-sm-10'>
               <select
                 className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
-                defaultValue={this.props.initialData !== undefined ? this.props.initialData[field.name]._id : ''}
+                defaultValue={this.props.initialData !== undefined
+                  ? field.type == 'enum' ? this.props.initialData[field.name] : this.props.initialData[field.name]._id
+                  : ''
+                }
                 disabled={this.props.isLoading}
                 id={field.name}
                 name={field.name}
