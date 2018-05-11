@@ -13,7 +13,7 @@
     "prestart": "npm run build",
     "start": "node build/index.js",
     "start:dev": "npm run watch",
-    "test": "mocha 'src/**/*.spec.js'",
+    "test": "cross-env mocha 'src/**/*.spec.js'",
     "postversion": "npm publish",
     "watch": "concurrently \"npm run watch:build\" \"npm run watch:start\"",
     "watch:build": "webpack --config webpack.dev.js --watch",
@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
+    "cross-env": "^5.1.5",
     "mocha": "^5.1.1",
     "nodemon": "^1.17.4"
   },
