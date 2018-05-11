@@ -389,6 +389,12 @@ export default class Form extends React.PureComponent {
           <div className='form-group row'>
             <div className='col-sm-10 offset-sm-2 text-right'>
               <button
+                children='Cancel'
+                className='btn btn-secondary mr-3'
+                onClick={this.props.onCancel.bind(this)}
+                type='button'
+              />
+              <button
                 children={capitalizeFirstLetter(this.props.action)}
                 className='btn btn-primary'
                 disabled={this.props.isLoading}
