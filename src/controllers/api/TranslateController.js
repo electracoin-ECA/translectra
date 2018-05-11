@@ -29,6 +29,7 @@ export default class TranslateController extends BaseController {
       .sort(`${this.req.query.sortOrder === '-1' ? '-' : ''}${this.req.query.sortBy}`)
       .limit(10)
       .populate('key')
+      .populate('language', 'code')
       .populate('projects', 'name')
       .populate({
         path: 'translations',
