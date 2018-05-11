@@ -4,6 +4,7 @@ import * as R from 'ramda'
 import React from 'react'
 
 import capitalizeFirstLetter from '../helpers/capitalizeFirstLetter'
+import MarkdownField from '../data-table/markdown-field'
 
 export default class Table extends React.PureComponent {
   constructor(props) {
@@ -41,7 +42,7 @@ export default class Table extends React.PureComponent {
   submit(event) {
     event.preventDefault()
 
-    this.props.onSubmit(this.state.openedKeyLanguageId, this.$translationValueTextarea.value)
+    this.props.onSubmit(this.state.openedKeyLanguageId, this.$form.value.value)
   }
 
   toggleTranslationForm(keyLanguageId) {
@@ -50,7 +51,7 @@ export default class Table extends React.PureComponent {
     })
   }
 
-  renderForm(keyLanguageId) {
+  renderForm(keyLanguageId, isMarkdown) {
     const hasError = this.props.errors.value !== undefined
 
     return (
@@ -58,20 +59,24 @@ export default class Table extends React.PureComponent {
         <td className='border-top-0 p-0' colSpan='6'>
           <form
             autoComplete='off'
-            className='form bg-light p-2 border mb-2'
+            className='form mb-2'
             noValidate
             onSubmit={this.submit.bind(this)}
+            ref={node => this.$form = node}
           >
             <div className='form-group'>
-              <textarea
-                autoCapitalize='off'
-                autoCorrect='off'
-                className={['form-control', hasError ? 'is-invalid' : ''].join(' ').trim()}
-                disabled={this.props.isLoading}
-                ref={node => this.$translationValueTextarea = node}
-                spellCheck='false'
+              <MarkdownField
+                defaultValue=''
+                isDisabled={this.props.isLoading}
+                isText={!isMarkdown}
+                hasError={hasError}
+                name='value'
               />
-              <div className='invalid-feedback'>{hasError && this.props.errors.value.message}</div>
+              <div
+                children={hasError && this.props.errors.value.message}
+                className='invalid-feedback'
+                style={{ display: hasError && Boolean(this.props.errors.value) ? 'block' : 'none' }}
+              />
             </div>
             <button
               children='Submit'
@@ -208,8 +213,8 @@ export default class Table extends React.PureComponent {
         </td>
       </tr>,
       <tr key={`${keyLanguage._id}-value`}>
-        <td className='font-weight-bold pt-0 border-top-0' colSpan='6' ref={this.highlightMarkdown}>
-          <pre className='pre-scrollable list__markdownHighlight mt-3' style={{ maxWidth: this.state.rowWidth }}>
+        <td className='pt-0 border-top-0' colSpan='6' ref={this.highlightMarkdown}>
+          <pre className='bg-light pre-scrollable list__markdownHighlight p-2 mt-3' style={{ maxWidth: this.state.rowWidth }}>
             <code
               children={keyLanguage.key.value}
               className='markdown'
@@ -218,7 +223,10 @@ export default class Table extends React.PureComponent {
           </pre>
         </td>
       </tr>,
-      !hasMine && keyLanguage._id === this.state.openedKeyLanguageId && this.renderForm(keyLanguage._id),
+      !hasMine && keyLanguage._id === this.state.openedKeyLanguageId && this.renderForm(
+        keyLanguage._id,
+        keyLanguage.key.isMarkdown
+      ),
       keyLanguage.translations.length !== 0 && this.renderTranslations(keyLanguage._id, keyLanguage.translations),
     ]
   }
