@@ -4,7 +4,7 @@ block meta
   meta(name='model' content=JSON.stringify('project'))
   meta(name='schema' content=JSON.stringify([
     { name: 'name', type: 'text', isColumn: true, isField: true, label: 'Name' },
-    { name: 'type', type: 'foreign', isColumn: true, isField: true, label: 'Type' },
+    { name: 'type', type: 'enum', isColumn: true, isField: true, label: 'Type' },
     { name: 'author', type: 'foreign', isColumn: true, isField: false, label: 'Author' },
     { name: 'updatedAt', type: 'date', isColumn: true, isField: false, label: 'Updated' },
     { name: 'createdAt', type: 'date', isColumn: true, isField: false, label: 'Created' },
