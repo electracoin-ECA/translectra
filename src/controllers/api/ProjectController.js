@@ -6,16 +6,16 @@ import Project from '../../models/Project'
 
 export default class ProjectController extends BaseController {
   get() {
-    this.apiGet(Project, ['name'], ['author'])
+    this.apiGet(Project, ['name', 'type'], ['author'])
   }
 
   post() {
     this.req.body.author = this.req.user._id
-    this.apiPost(Project, ['name', 'author'])
+    this.apiPost(Project, ['name', 'type', 'author'])
   }
 
   put() {
-    this.apiPut(Project, ['name'])
+    this.apiPut(Project, ['name', 'type'])
   }
 
   delete() {
