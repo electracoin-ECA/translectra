@@ -217,6 +217,9 @@ export default class Table extends React.PureComponent {
             case 'date':
               return <td key={`${item._id}-${name}`}>{moment(item[name]).fromNow()}</td>
 
+            case 'enum':
+              return <td key={`${item._id}-${name}`}>{item[name]}</td>
+
             case 'foreign':
               return <td key={`${item._id}-${name}`}>{item[name].name}</td>
 
