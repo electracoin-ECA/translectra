@@ -201,6 +201,7 @@ export default class App extends React.PureComponent {
             initialData={this.state.formData}
             isLoading={this.state.isLoading}
             key={String(this.state.formKey)}
+            onCancel={() => this.setState({ isFormOpen: false })}
             onSubmit={this.state.formAction === 'create' ? this.create.bind(this) : this.update.bind(this)}
             schema={this.props.schema.filter(({ isField }) => isField)}
           />
