@@ -10,6 +10,11 @@ const projectSchema = new mongoose.Schema({
     required: [true, `The project name is a required field.`],
     unique: [true, `This project name is already taken.`],
   },
+  type: {
+    type: String,
+    enum: ['DOCUMENTS', 'KEY-VALUE PAIRS'],
+    default: 'KEY VALUE PAIRS',
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
