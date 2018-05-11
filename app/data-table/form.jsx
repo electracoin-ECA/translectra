@@ -248,6 +248,7 @@ export default class Form extends React.PureComponent {
           </div>
         )
 
+      case 'enum':
       case 'foreign':
         return (
           <div className='form-group row' key={String(index)}>
