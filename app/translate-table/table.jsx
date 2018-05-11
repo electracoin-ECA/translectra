@@ -69,11 +69,11 @@ export default class Table extends React.PureComponent {
     this.props.onDelete(translationId)
   }
 
-  renderForm(keyLanguageId, isMarkdown) {
+  renderForm(keyLanguage) {
     const hasError = this.props.errors.value !== undefined
 
     return (
-      <tr key={`${keyLanguageId}-form`}>
+      <tr key={`${keyLanguage._id}-form`}>
         <td className='border-top-0 p-0' colSpan='6'>
           <form
             autoComplete='off'
@@ -85,9 +85,10 @@ export default class Table extends React.PureComponent {
             <div className='form-group'>
               <MarkdownField
                 defaultValue=''
-                isDisabled={this.props.isLoading}
-                isText={!isMarkdown}
                 hasError={hasError}
+                isDisabled={this.props.isLoading}
+                isText={!keyLanguage.key.isMarkdown}
+                lang={keyLanguage.language.code}
                 name='value'
               />
               <div
@@ -108,7 +109,7 @@ export default class Table extends React.PureComponent {
     )
   }
 
-  renderTranslations(keyLanguageId, translations) {
+  renderTranslations(keyLanguage, translations) {
     const translationsWithScore = translations.map(translation => ({
       ...translation,
       score: translation.upVotes.length - translation.downVotes.length,
@@ -120,7 +121,7 @@ export default class Table extends React.PureComponent {
     ])(translationsWithScore)
 
     return (
-      <tr key={`${keyLanguageId}-translations`}>
+      <tr key={`${keyLanguage._id}-translations`}>
         <td className='border-top-0 p-2' colSpan='6'>
           {translationsWithScoreSorted.map(translation => {
             const voteUpActionClass = translation.author._id !== this.props.userId
@@ -136,7 +137,7 @@ export default class Table extends React.PureComponent {
             return (
               <div className='mb-3' key={translation._id}>
                 <div className='d-flex justify-content-between bg-light border p-1'>
-                  <div className=''>{translation.value}</div>
+                  <div lang={keyLanguage.language.code}>{translation.value}</div>
                   <div className='d-flex flex-column align-items-center pr-0 no-select' style={{ minWidth: '2rem' }}>
                     <i
                       children='arrow_drop_up'
@@ -159,7 +160,7 @@ export default class Table extends React.PureComponent {
                       children='check'
                       className={`material-icons ${acceptActionClass}`}
                       onClick={() => this.props.isManager
-                        ? this.props.onAccept(keyLanguageId, translation._id, !translation.isAccepted)
+                        ? this.props.onAccept(keyLanguage._id, translation._id, !translation.isAccepted)
                         : void 0
                       }
                     />
@@ -267,11 +268,8 @@ export default class Table extends React.PureComponent {
           </pre>
         </td>
       </tr>,
-      !hasMine && keyLanguage._id === this.state.openedKeyLanguageId && this.renderForm(
-        keyLanguage._id,
-        keyLanguage.key.isMarkdown
-      ),
-      keyLanguage.translations.length !== 0 && this.renderTranslations(keyLanguage._id, keyLanguage.translations),
+      !hasMine && keyLanguage._id === this.state.openedKeyLanguageId && this.renderForm(keyLanguage),
+      keyLanguage.translations.length !== 0 && this.renderTranslations(keyLanguage, keyLanguage.translations),
     ]
   }
 
