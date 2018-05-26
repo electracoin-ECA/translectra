@@ -1,4 +1,4 @@
-![Translectra](https://i.imgur.com/yqNo3nY.png)
+![Logo](https://i.imgur.com/nZ7wHOu.png)
 
 # Translectra
 
