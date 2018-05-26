@@ -1,5 +1,3 @@
-![Translectra](https://i.imgur.com/yqNo3nY.png)
-
 # Translectra
 
 > Open-source Translation Management System in NodeJS.
