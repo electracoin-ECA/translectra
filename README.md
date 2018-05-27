@@ -1,6 +1,4 @@
-![Logo](https://i.imgur.com/nZ7wHOu.png)
-
-# Translectra
+![Translectra](https://raw.githubusercontent.com/Electra-project/translectra/master/public/img/logo-icon-left.svg)
 
 > Open-source Translation Management System in NodeJS.
 
