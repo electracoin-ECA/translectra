@@ -7,7 +7,7 @@
 [![David](https://img.shields.io/david/Electra-project/translectra.svg?style=flat-square)](https://david-dm.org/Electra-project/translectra)
 [![David](https://img.shields.io/david/dev/Electra-project/translectra.svg?style=flat-square)](https://david-dm.org/Electra-project/translectra)
 
-[![NSP Status](https://nodesecurity.io/orgs/ivan-gabriele/projects/9a5931e7-b38c-4e64-9a6f-c832982ab133/badge)](https://nodesecurity.io/orgs/ivan-gabriele/projects/9a5931e7-b38c-4e64-9a6f-c832982ab133)
+[![NSP Status](https://nodesecurity.io/orgs/electra-project/projects/3e54f722-a58c-47ba-a053-aa040cd75001/badge)](https://nodesecurity.io/orgs/electra-project/projects/3e54f722-a58c-47ba-a053-aa040cd75001)
 
 ## Introduction
 
