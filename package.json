@@ -17,7 +17,9 @@
     "postversion": "npm publish",
     "watch": "concurrently \"npm run watch:build\" \"npm run watch:start\"",
     "watch:build": "webpack --config webpack.dev.js --watch",
-    "watch:start": "nodemon --config nodemon.json build/index.js"
+    "watch:start": "nodemon --config nodemon.json build/index.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "archiver": "^2.1.1",
@@ -59,7 +61,8 @@
     "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4",
     "webpack-merge": "^4.1.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "snyk": "^1.161.1"
   },
   "devDependencies": {
     "babel-register": "^6.26.0",
@@ -82,5 +85,6 @@
   "bugs": {
     "url": "https://github.com/Electra-project/translectra/issues"
   },
-  "homepage": "https://github.com/Electra-project/translectra#readme"
+  "homepage": "https://github.com/Electra-project/translectra#readme",
+  "snyk": true
 }
